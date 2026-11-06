@@ -1,0 +1,629 @@
+openapi: 3.1.0
+info:
+  title: Book Library Management API
+  version: 1.0.0
+  description: >-
+    REST contract for the authenticated librarian dashboard and workflows.
+    Any endpoint may return 500 with the Error response shape for an unexpected
+    server failure.
+servers:
+  - url: /api
+tags:
+  - name: Authentication
+  - name: Books
+  - name: Members
+  - name: Loans
+  - name: Health
+paths:
+  /auth/session:
+    get:
+      tags: [Authentication]
+      summary: Read the current sign-in state and obtain a CSRF token
+      responses:
+        "200":
+          description: Current session state; may be unauthenticated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionState"
+  /auth/login:
+    post:
+      tags: [Authentication]
+      summary: Sign in as a librarian
+      security:
+        - csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, minLength: 1 }
+      responses:
+        "200":
+          description: Signed in; session identifier is issued as a secure HttpOnly cookie.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionState"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /auth/logout:
+    post:
+      tags: [Authentication]
+      summary: Sign out and invalidate the current session
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      responses:
+        "204":
+          description: Session invalidated.
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /health:
+    get:
+      tags: [Health]
+      summary: Read basic service health
+      responses:
+        "200":
+          description: Service is responding and its required dependencies are available.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties:
+                  status: { type: string, enum: [ok] }
+                  timestamp: { type: string, format: date-time }
+        "503":
+          description: A required dependency is unavailable.
+  /books:
+    get:
+      tags: [Books]
+      summary: Search, filter, sort, and page through the authenticated catalog
+      security:
+        - sessionCookie: []
+      parameters:
+        - { $ref: "#/components/parameters/Search" }
+        - { $ref: "#/components/parameters/Category" }
+        - { $ref: "#/components/parameters/BookStatus" }
+        - name: sort
+          in: query
+          schema: { type: string, enum: [title, created_at, status_priority], default: title }
+        - name: direction
+          in: query
+          schema: { type: string, enum: [asc, desc], default: asc }
+        - { $ref: "#/components/parameters/Page" }
+        - { $ref: "#/components/parameters/PageSize" }
+      responses:
+        "200":
+          description: Matching catalog page.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookPage"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      tags: [Books]
+      summary: Create a book
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookInput"
+      responses:
+        "201":
+          description: Book created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /books/{bookId}:
+    parameters:
+      - { $ref: "#/components/parameters/BookId" }
+    get:
+      tags: [Books]
+      summary: Read a book record
+      security:
+        - sessionCookie: []
+      responses:
+        "200":
+          description: Book record.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    patch:
+      tags: [Books]
+      summary: Update a book
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookUpdate"
+      responses:
+        "200":
+          description: Updated book.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+    delete:
+      tags: [Books]
+      summary: Archive a book without breaking historical loan references
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      responses:
+        "204":
+          description: Book archived.
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /members:
+    get:
+      tags: [Members]
+      summary: List members
+      security:
+        - sessionCookie: []
+      parameters:
+        - { $ref: "#/components/parameters/Page" }
+        - { $ref: "#/components/parameters/PageSize" }
+      responses:
+        "200":
+          description: Member page.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MemberPage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      tags: [Members]
+      summary: Create a member
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MemberInput"
+      responses:
+        "201":
+          description: Member created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Member"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /members/{memberId}:
+    parameters:
+      - { $ref: "#/components/parameters/MemberId" }
+    get:
+      tags: [Members]
+      summary: Read a member
+      security:
+        - sessionCookie: []
+      responses:
+        "200":
+          description: Member record.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Member"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      tags: [Members]
+      summary: Update a member
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MemberUpdate"
+      responses:
+        "200":
+          description: Updated member.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Member"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+    delete:
+      tags: [Members]
+      summary: Archive a member without breaking historical loan references
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      responses:
+        "204":
+          description: Member archived.
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /loans:
+    get:
+      tags: [Loans]
+      summary: List loan records
+      security:
+        - sessionCookie: []
+      parameters:
+        - name: status
+          in: query
+          schema: { type: string, enum: [active, overdue, returned] }
+        - { $ref: "#/components/parameters/Page" }
+        - { $ref: "#/components/parameters/PageSize" }
+      responses:
+        "200":
+          description: Loan page.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoanPage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /loans/issue:
+    post:
+      tags: [Loans]
+      summary: Issue an available book to a member
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [book_id, member_id]
+              properties:
+                book_id: { $ref: "#/components/schemas/ObjectId" }
+                member_id: { $ref: "#/components/schemas/ObjectId" }
+      responses:
+        "201":
+          description: Loan created and book/member state updated atomically.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Loan"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /loans/overdue:
+    get:
+      tags: [Loans]
+      summary: List outstanding loans past their due date
+      security:
+        - sessionCookie: []
+      parameters:
+        - { $ref: "#/components/parameters/Page" }
+        - { $ref: "#/components/parameters/PageSize" }
+      responses:
+        "200":
+          description: Overdue loan page; status is computed using the library time zone.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoanPage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /loans/return/{loanId}:
+    post:
+      tags: [Loans]
+      summary: Return an outstanding loan
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/ObjectId"
+      responses:
+        "200":
+          description: Loan returned and book/member state updated atomically.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Loan"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /loans/{loanId}:
+    get:
+      tags: [Loans]
+      summary: Read a loan
+      security:
+        - sessionCookie: []
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/ObjectId"
+      responses:
+        "200":
+          description: Loan with book and member summaries.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Loan"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: library_session
+    csrfToken:
+      type: apiKey
+      in: header
+      name: X-CSRF-Token
+  parameters:
+    Search:
+      name: q
+      in: query
+      schema: { type: string, maxLength: 200 }
+      description: Case-insensitive partial match against title or author.
+    Category:
+      name: category
+      in: query
+      schema: { type: string }
+    BookStatus:
+      name: status
+      in: query
+      schema: { type: string, enum: [available, issued, maintenance] }
+    Page:
+      name: page
+      in: query
+      schema: { type: integer, minimum: 1, default: 1 }
+    PageSize:
+      name: pageSize
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+    BookId:
+      name: bookId
+      in: path
+      required: true
+      schema: { $ref: "#/components/schemas/ObjectId" }
+    MemberId:
+      name: memberId
+      in: path
+      required: true
+      schema: { $ref: "#/components/schemas/ObjectId" }
+  schemas:
+    ObjectId:
+      type: string
+      pattern: "^[0-9a-fA-F]{24}$"
+    BookInput:
+      type: object
+      required: [title, author, isbn, category]
+      properties:
+        title: { type: string, minLength: 1 }
+        author: { type: string, minLength: 1 }
+        isbn: { type: string, minLength: 1 }
+        category: { type: string, minLength: 1 }
+        status: { type: string, enum: [available, maintenance], default: available }
+    BookUpdate:
+      type: object
+      minProperties: 1
+      properties:
+        title: { type: string, minLength: 1 }
+        author: { type: string, minLength: 1 }
+        isbn: { type: string, minLength: 1 }
+        category: { type: string, minLength: 1 }
+        status: { type: string, enum: [available, maintenance] }
+    Book:
+      type: object
+      required: [_id, title, author, isbn, category, status, created_at, updated_at]
+      properties:
+        _id: { $ref: "#/components/schemas/ObjectId" }
+        title: { type: string }
+        author: { type: string }
+        isbn: { type: string }
+        category: { type: string }
+        status: { type: string, enum: [available, issued, maintenance] }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+    MemberInput:
+      type: object
+      required: [name, email]
+      properties:
+        name: { type: string, minLength: 1 }
+        email: { type: string, format: email }
+    MemberUpdate:
+      type: object
+      minProperties: 1
+      properties:
+        name: { type: string, minLength: 1 }
+        email: { type: string, format: email }
+    Member:
+      allOf:
+        - $ref: "#/components/schemas/MemberInput"
+        - type: object
+          required: [_id, active_loans_count, created_at]
+          properties:
+            _id: { $ref: "#/components/schemas/ObjectId" }
+            active_loans_count: { type: integer, minimum: 0 }
+            created_at: { type: string, format: date-time }
+    Loan:
+      type: object
+      required: [_id, book_id, member_id, issue_date, due_date, status]
+      properties:
+        _id: { $ref: "#/components/schemas/ObjectId" }
+        book_id: { $ref: "#/components/schemas/ObjectId" }
+        member_id: { $ref: "#/components/schemas/ObjectId" }
+        issue_date: { type: string, format: date-time }
+        due_date: { type: string, format: date }
+        return_date: { type: [string, "null"], format: date-time }
+        status: { type: string, enum: [active, overdue, returned] }
+    PageMetadata:
+      type: object
+      required: [page, pageSize, total, totalPages]
+      properties:
+        page: { type: integer, minimum: 1 }
+        pageSize: { type: integer, minimum: 1 }
+        total: { type: integer, minimum: 0 }
+        totalPages: { type: integer, minimum: 0 }
+    BookPage:
+      allOf:
+        - $ref: "#/components/schemas/PageMetadata"
+        - type: object
+          required: [items]
+          properties:
+            items:
+              type: array
+              items: { $ref: "#/components/schemas/Book" }
+    MemberPage:
+      allOf:
+        - $ref: "#/components/schemas/PageMetadata"
+        - type: object
+          required: [items]
+          properties:
+            items:
+              type: array
+              items: { $ref: "#/components/schemas/Member" }
+    LoanPage:
+      allOf:
+        - $ref: "#/components/schemas/PageMetadata"
+        - type: object
+          required: [items]
+          properties:
+            items:
+              type: array
+              items: { $ref: "#/components/schemas/Loan" }
+    SessionState:
+      type: object
+      required: [authenticated, csrf_token]
+      properties:
+        authenticated: { type: boolean }
+        csrf_token: { type: string }
+        librarian:
+          type: [object, "null"]
+          properties:
+            id: { $ref: "#/components/schemas/ObjectId" }
+            email: { type: string, format: email }
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field: { type: string }
+              issue: { type: string }
+  responses:
+    BadRequest:
+      description: Invalid input or an operation rejected by a business rule.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Unauthorized:
+      description: Librarian sign-in is required or credentials are invalid.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Forbidden:
+      description: The request failed CSRF or access policy validation.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    NotFound:
+      description: The requested resource does not exist.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Conflict:
+      description: A unique value or current state conflicts with the operation.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    InternalError:
+      description: Unexpected server failure; the response does not expose internals.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }

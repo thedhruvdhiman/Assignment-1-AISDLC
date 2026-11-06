@@ -1,0 +1,25 @@
+{
+  "name": "book-library-management",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "build": "npm run build -w backend && npm run build -w frontend",
+    "typecheck": "npm run typecheck -w backend && npm run typecheck -w frontend",
+    "test": "npm run test -w backend && npm run test -w frontend",
+    "provision:librarian": "npm run provision:librarian -w backend",
+    "seed:dev": "npm run seed:dev -w backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "typescript": "^5.9.3"
+  },
+  "allowScripts": {
+    "argon2@0.44.0": true,
+    "esbuild@0.28.2": true,
+    "mongodb-memory-server@10.4.3": true
+  }
+}
