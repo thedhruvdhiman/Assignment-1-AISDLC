@@ -1,0 +1,157 @@
+{
+  "captured_at": "2026-11-07T18:19:56+00:00",
+  "files": [
+    {
+      "path": "backend/src/app.ts",
+      "sha256": "5a6dfeec695c958d1e3d0a9b227931414cc5647f3764dd6769585eb00b465ef6"
+    },
+    {
+      "path": "backend/src/config/database.ts",
+      "sha256": "6961ded06b1e952cceb3bce66adb5f0acdb70ab6da3e21fedbe7a059cdc8e448"
+    },
+    {
+      "path": "backend/src/config/development-database.ts",
+      "sha256": "fe08bd79b4e6393bd8e040b240e6e59867511eef58899c73c7d5c1ab4dff8615"
+    },
+    {
+      "path": "backend/src/config/environment.ts",
+      "sha256": "1b3d38cc653be85b09e019339ad570ce489099c8e94e4cf334845aca0ee4dbf8"
+    },
+    {
+      "path": "backend/src/config/session.ts",
+      "sha256": "1a4c04a68d58c071e04dce0c5453cda6bca41fe43dcd75cd7d6462b8a8132cbc"
+    },
+    {
+      "path": "backend/src/middleware/csrf.ts",
+      "sha256": "72d1e51fb2e7910de9af85427359ea6350de49bc1985560bc5271ed0b270876b"
+    },
+    {
+      "path": "backend/src/middleware/error-handler.ts",
+      "sha256": "a614cb772f32c8e5c82efac2768d19bd5c9850dda54bb5af271b669fffdbfe02"
+    },
+    {
+      "path": "backend/src/middleware/require-librarian.ts",
+      "sha256": "cf4f5484adcba9d55e6dbed072ab11aa3bfc4b3f26a34c29bf88216bc7f729bd"
+    },
+    {
+      "path": "backend/src/models/book.model.ts",
+      "sha256": "29c77c26c44140ce02fcef4f7b7698d6a62720870d8ff28604e095854eb687c5"
+    },
+    {
+      "path": "backend/src/models/librarian.model.ts",
+      "sha256": "3deb529993b87153f85e371bbde8566f0ce881fa15a1bcd9cc4e0b0bffa143c1"
+    },
+    {
+      "path": "backend/src/models/loan.model.ts",
+      "sha256": "508b4ec5172845b4bc1d1026c5d0eb836886bb0f84cb2074d58252bf1320f257"
+    },
+    {
+      "path": "backend/src/models/member.model.ts",
+      "sha256": "312b4b8b974d95b7b13ab0d831163dc32e46e9888b145ecbad6791c634655580"
+    },
+    {
+      "path": "backend/src/observability/logger.ts",
+      "sha256": "e17424386c4f9dc2cbef2dbbfa6021a59ee90894a5981ee30aaf18589531eedb"
+    },
+    {
+      "path": "backend/src/routes/auth.routes.ts",
+      "sha256": "f25113b3a7ffd7657fd629ba3855769d46c20a3da04e04981805555958769d83"
+    },
+    {
+      "path": "backend/src/routes/books.routes.ts",
+      "sha256": "0c01340b3ec032c83f3813bf084c4e3f6d020cdb05757fc472230b140efeed07"
+    },
+    {
+      "path": "backend/src/routes/csrf.routes.ts",
+      "sha256": "d5c8215de01de5a8dc17efb48ed7579e603821e4e59508ade9021e216032f392"
+    },
+    {
+      "path": "backend/src/routes/health.routes.ts",
+      "sha256": "9c68fe18f24825a0fbb0623e447806c4f8ebcd6e64a642dc9fe8711f3afe47ab"
+    },
+    {
+      "path": "backend/src/routes/loans.routes.ts",
+      "sha256": "14eb55413717c449bcc3c4b811166c5c56c30bd9312848f06fbd99944dc662f4"
+    },
+    {
+      "path": "backend/src/routes/members.routes.ts",
+      "sha256": "8a71e13f37fba11067cca87da9fb545436a8e9ca16c97cd0254bd8146f34b5a8"
+    },
+    {
+      "path": "backend/src/scripts/provision-librarian.ts",
+      "sha256": "04ffb60e238d8576f82609569a253886fd5c168a85b11fa59dd62d29f43b139f"
+    },
+    {
+      "path": "backend/src/scripts/seed-development.ts",
+      "sha256": "e58dda440966650ee4b542ac949d7b1b0aa34ffea05bd9a181ba777b460b8f5f"
+    },
+    {
+      "path": "backend/src/server.ts",
+      "sha256": "d410126968058b80c066190b12be2262f193de9f1d921d8fc964fc1266639d53"
+    },
+    {
+      "path": "backend/src/services/auth.service.ts",
+      "sha256": "00122d338b8850a4b16ea47cb232ebbfb593fb95c26e3aaad5a497d2b4ee5740"
+    },
+    {
+      "path": "backend/src/services/book.service.ts",
+      "sha256": "87bd99aa5f9526657173c2762ca642f81a8eaaad9a59592561f2b292e7df6004"
+    },
+    {
+      "path": "backend/src/services/due-date.service.ts",
+      "sha256": "833b216021f65b3f63e280d3465cf443632c41d30e15865450877d581aaa9730"
+    },
+    {
+      "path": "backend/src/services/librarian-provisioning.service.ts",
+      "sha256": "9d9c35231b8eeb480ff9025e6e6b571241ec4dc1a2522cc8d2927f556a05a748"
+    },
+    {
+      "path": "backend/src/services/loan.service.ts",
+      "sha256": "0a43100d66dfc4d2140039abf112207408cb5742528b9bffb71d38c7317e1538"
+    },
+    {
+      "path": "backend/src/services/member.service.ts",
+      "sha256": "9288aee06e27e4a5219fd992be282b028ad46cd4792f816eec07da420f1be553"
+    },
+    {
+      "path": "backend/src/types/session.d.ts",
+      "sha256": "ea88b7a74e0c1a92469d0cd1fb7b881f1648f309ccfa4d06e207d9b6f92c62d9"
+    },
+    {
+      "path": "frontend/src/App.vue",
+      "sha256": "813e02ddc31dd0e7f742638ff135e630db10c4744900c396778a78d0523244c8"
+    },
+    {
+      "path": "frontend/src/api/books.ts",
+      "sha256": "47f50c81fbd47176b5688e8c90b10315a839b9b04aab1ebd5fee9b294eb3c0b1"
+    },
+    {
+      "path": "frontend/src/api/client.ts",
+      "sha256": "84e443e5da93a87e638cb3e56652ff84781858f373aa2114baac832fcff754da"
+    },
+    {
+      "path": "frontend/src/api/loans.ts",
+      "sha256": "6198042da9833e2d0e4c8af1cd637b4df260a4310dcf82e996b7ac7d8ca93801"
+    },
+    {
+      "path": "frontend/src/api/members.ts",
+      "sha256": "a97b211c342c5373126004a28a586cbbee57035fac9a311304dc0e91393b7165"
+    },
+    {
+      "path": "frontend/src/api/types.ts",
+      "sha256": "7d17e974189b0e50fd05bd27bf806e3550bc07993b0beb60f6f7014e7fb374ed"
+    },
+    {
+      "path": "frontend/src/main.ts",
+      "sha256": "d84655965257e86e771cbf38fe4b6e3e53f7955b2c7937f9333e1081b2880c93"
+    },
+    {
+      "path": "frontend/src/styles.css",
+      "sha256": "ba548c871f6bf293bc37e5ac0025e1882eccd552a0e07fd2b3621b6fd521b2ad"
+    }
+  ],
+  "provenance": "exact tracked backend/src and frontend/src files extracted from the Git commit below; not reconstructed",
+  "snapshot": "historical-baseline-198ee64",
+  "source_commit": "198ee641279a1bc29fbe89c2925dc0f0c0a4841f",
+  "source_commit_date": "2026-11-07T03:16:37+05:30"
+}

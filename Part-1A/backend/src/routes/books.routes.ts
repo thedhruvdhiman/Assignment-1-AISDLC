@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { requireCsrf } from '../middleware/csrf';
 import { HttpError } from '../middleware/error-handler';
 import { requireLibrarian } from '../middleware/require-librarian';
-import { archiveBook, createBook, getBook, listBooks, updateBook } from '../services/book.service';
+import { archiveBook, createBook, getBook, listBooks, restoreBook, updateBook } from '../services/book.service';
 
 export const booksRouter = Router();
 booksRouter.use(requireLibrarian);
@@ -33,6 +33,7 @@ booksRouter.get('/', async (req, res) => {
     status: z.enum(['available', 'issued', 'maintenance']).optional(),
     sort: z.enum(['title', 'created_at', 'status_priority']).optional(),
     direction: z.enum(['asc', 'desc']).optional(),
+    archived: z.enum(['true', 'false']).transform((value) => value === 'true').optional(),
   }).safeParse(req.query);
   if (!parsed.success) throw new HttpError(400, 'INVALID_QUERY', 'One or more catalog query parameters are invalid.');
   const page = pagination(req.query as Record<string, unknown>);
@@ -43,6 +44,12 @@ booksRouter.get('/:bookId', async (req, res) => {
   const bookId = String(req.params.bookId);
   if (!idSchema.safeParse(bookId).success) throw new HttpError(400, 'INVALID_ID', 'Book ID is invalid.');
   res.json(await getBook(bookId));
+});
+
+booksRouter.post('/:bookId/restore', requireCsrf, async (req, res) => {
+  const bookId = String(req.params.bookId);
+  if (!idSchema.safeParse(bookId).success) throw new HttpError(400, 'INVALID_ID', 'Book ID is invalid.');
+  res.json(await restoreBook(bookId));
 });
 
 booksRouter.post('/', requireCsrf, async (req, res) => {

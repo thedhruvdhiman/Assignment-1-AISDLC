@@ -63,6 +63,28 @@ missing-member rollback, overdue filtering, and health status. Contract details 
 [contracts/openapi.yaml](./contracts/openapi.yaml); entities and invariants are in
 [data-model.md](./data-model.md).
 
+## Verify archive restoration
+
+1. Sign in as a librarian and open book management. Confirm delete archives rather than
+   permanently removes a book, and that the Active and Archived views are easy to find.
+   Confirm active mode excludes archived books, then open Archived books and find the
+   deleted record.
+2. Restore an archived book. Confirm it leaves archived mode and appears in the active
+   catalog with its original ID, status, and loan-history references intact.
+3. Repeat the delete, browse, and restore flow for a member. Confirm the restored member
+   appears in the active member list with its original ID and active-loan count.
+4. Confirm an active book/member cannot be restored again, an unknown ID is reported as
+   not found, and unauthenticated or CSRF-invalid restore requests are rejected.
+5. Confirm an archived ISBN/email remains reserved, so restoring the original record
+   does not create a duplicate identifier.
+
+Run `npm test` and `npm run typecheck` from `Part-1A/`. The backend integration tests
+must exercise archive-filtered pagination, restore persistence and invalid transitions,
+authorization/CSRF, and the frontend tests must exercise the archived mode, restore
+action, and resulting active-list refresh. The contract test must assert both restore
+paths and the archived list parameter. Successful restores return the record to the
+ordinary catalog/member workflow without changing its preserved state.
+
 ## Operational checks
 
 - `GET /api/health` returns `200` with `status: "ok"` while MongoDB is connected and

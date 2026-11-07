@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites tests="64" failures="0" errors="0" skipped="0">
+  <testsuite name="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" tests="16" failures="0" skipped="0" errors="0">
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows provisions an account once and leaves existing credentials unchanged on repeat" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows rejects invalid credentials and regenerates the session after successful login" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows requires a librarian session for catalog, member, and loan reads" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows rejects state changes without a valid CSRF token and exposes health status" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows records sign-in and lending outcomes without logging credentials and reports health" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows issues and returns a book with consistent inventory and member counts" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows rejects concurrent duplicate issues and leaves only one active loan" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows rejects an unavailable book and does not create an extra loan" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows rolls back book status when the selected member does not exist" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows supports book and member CRUD with normalized unique values" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows rolls back unavailable issue references and rejects repeated returns" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows rolls back every return mutation if a related record cannot be updated" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows lists only outstanding loans past their due date as overdue" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows searches and filters books case-insensitively with validated pagination and stable sorting" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows lists archived books separately and restores them without changing identity, status, or loan history" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/library-api.test.ts" name="librarian access and atomic loan workflows lists archived members separately and restores them without changing identity, counts, or loan history" />
+  </testsuite>
+  <testsuite name="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/startup.test.ts" tests="3" failures="0" skipped="0" errors="0">
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/startup.test.ts" name="startup prerequisites rejects startup when required environment configuration is missing" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/startup.test.ts" name="startup prerequisites propagates an unreachable database error so the server cannot start" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/startup.test.ts" name="startup prerequisites rejects a standalone MongoDB deployment without transaction support" />
+  </testsuite>
+  <testsuite name="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/seed-safety.test.ts" tests="4" failures="0" skipped="0" errors="0">
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/seed-safety.test.ts" name="development seed safety refuses unsafe target before connecting or writing" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/seed-safety.test.ts" name="development seed safety refuses unsafe target before connecting or writing" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/seed-safety.test.ts" name="development seed safety refuses unsafe target before connecting or writing" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/integration/seed-safety.test.ts" name="development seed safety refuses unsafe target before connecting or writing" />
+  </testsuite>
+  <testsuite name="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/development-database.test.ts" tests="11" failures="0" skipped="0" errors="0">
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/development-database.test.ts" name="local development database guard allows loopback allowlisted URI mongodb://127.0.0.1:27017/library?replicaSet=rs0" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/development-database.test.ts" name="local development database guard allows loopback allowlisted URI mongodb://localhost:27017/library_dev" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/development-database.test.ts" name="local development database guard allows loopback allowlisted URI mongodb://[::1]:27017/book_library_dev" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/development-database.test.ts" name="local development database guard rejects unsafe URI mongodb+srv://cluster.example/library in development mode" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/development-database.test.ts" name="local development database guard rejects unsafe URI mongodb://example.com:27017/library in development mode" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/development-database.test.ts" name="local development database guard rejects unsafe URI mongodb://127.0.0.1:27017/production in development mode" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/development-database.test.ts" name="local development database guard rejects unsafe URI mongodb://127.0.0.1:27017/library in production mode" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/development-database.test.ts" name="local development database guard rejects unsafe URI not a URI in development mode" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/development-database.test.ts" name="librarian environment validation accepts a valid local credential pair" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/development-database.test.ts" name="librarian environment validation rejects incomplete or weak credentials and production development credentials" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/development-database.test.ts" name="librarian environment validation rejects missing and weak provisioning credentials" />
+  </testsuite>
+  <testsuite name="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/contract/openapi.test.ts" tests="3" failures="0" skipped="0" errors="0">
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/contract/openapi.test.ts" name="OpenAPI contract declares every API route group and workflow path" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/contract/openapi.test.ts" name="OpenAPI contract resolves every schema, parameter, and response reference" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/contract/openapi.test.ts" name="OpenAPI contract documents atomic loan operations and catalog/member validation contracts" />
+  </testsuite>
+  <testsuite name="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/due-date.test.ts" tests="3" failures="0" skipped="0" errors="0">
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/due-date.test.ts" name="library calendar dates adds fourteen calendar days in the library time zone across a DST change" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/due-date.test.ts" name="library calendar dates uses the requested time zone for the current calendar date" />
+    <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1/Assignment 1 | AISDLC/Part-1A/backend/tests/unit/due-date.test.ts" name="library calendar dates rejects non-positive loan periods" />
+  </testsuite>
+  <testsuite name="tests/components/CatalogView.test.ts" timestamp="2026-11-07T17:52:35.720Z" hostname="Dhruvs-MacBook-Air.local" tests="22" failures="0" errors="0" skipped="0" time="0.123124667">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; does not request or render catalog data before authentication" time="0.014815292">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; signs in before loading the librarian dashboard and signs out cleanly" time="0.012070667">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; keeps the login screen and reports failed credentials" time="0.003822542">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; renders labeled search and availability controls after authentication" time="0.002545917">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; returns to sign-in and clears dashboard data when the session expires" time="0.002511375">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; applies search and status filters and announces an empty result" time="0.003034333">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; pages and sorts catalog results deterministically" time="0.010803833">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; lets a librarian edit an existing book" time="0.013236875">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; lets a librarian browse archived books and restore one to the active catalog" time="0.007500708">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; lets a librarian browse archived members and restore one to the active list" time="0.004665667">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; shows duplicate book errors in the management form" time="0.00375075">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; adds a book after sign-in and refreshes the inventory" time="0.004244083">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; confirms book issue and displays the due date" time="0.003986125">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; announces member-loading failures in the issue dialog" time="0.002930709">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; announces pending member loading in the issue dialog" time="0.003281667">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; requires return confirmation before calling the API" time="0.012892959">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; lets a librarian edit a member profile" time="0.003609708">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; shows an accessible empty state when there are no overdue loans" time="0.002270875">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; provides named tables, dialog relationships, and visible keyboard focus" time="0.003033042">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; validates member registration and shows duplicate-email errors" time="0.004339875">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; keeps the UI desktop-targeted with visible keyboard focus styling" time="0.000165875">
+        </testcase>
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; shows overdue loan summaries and a friendly empty state" time="0.003041583">
+        </testcase>
+  </testsuite>
+  <testsuite name="tests/components/accessibility.test.ts" timestamp="2026-11-07T17:52:35.721Z" hostname="Dhruvs-MacBook-Air.local" tests="2" failures="0" errors="0" skipped="0" time="0.359558625">
+    <testcase classname="tests/components/accessibility.test.ts" name="WCAG 2.2 AA accessibility &gt; audits the sign-in screen and authenticated catalog" time="0.358546875">
+      <system-err>
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+
+            </system-err>
+    </testcase>
+    <testcase classname="tests/components/accessibility.test.ts" name="WCAG 2.2 AA accessibility &gt; keeps the interface palette above WCAG AA text and focus contrast thresholds" time="0.00060975">
+        </testcase>
+  </testsuite>
+</testsuites>

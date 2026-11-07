@@ -15,8 +15,10 @@ describe('OpenAPI contract', () => {
       '/health',
       '/books',
       '/books/{bookId}',
+      '/books/{bookId}/restore',
       '/members',
       '/members/{memberId}',
+      '/members/{memberId}/restore',
       '/loans',
       '/loans/issue',
       '/loans/overdue',
@@ -50,5 +52,20 @@ describe('OpenAPI contract', () => {
     expect(contract).toContain('/loans/overdue:');
     expect(contract).toContain('/members/{memberId}:');
     expect(contract).toContain('/books/{bookId}:');
+    expect(contract).toContain('/books/{bookId}/restore:');
+    expect(contract).toContain('/members/{memberId}/restore:');
+    expect(contract).toContain('name: archived');
+    expect(contract).toContain('description: Select archived records when true; active records are returned by default.');
+
+    const bookRestore = contract.split('  /books/{bookId}/restore:\n')[1]?.split('  /members:\n')[0];
+    const memberRestore = contract.split('  /members/{memberId}/restore:\n')[1]?.split('  /members/{memberId}:\n')[0];
+    expect(bookRestore).toContain('    post:');
+    expect(bookRestore).toContain('        - sessionCookie: []\n          csrfToken: []');
+    expect(bookRestore).toContain('        "200":');
+    expect(bookRestore).toContain('        "409":');
+    expect(memberRestore).toContain('    post:');
+    expect(memberRestore).toContain('        - sessionCookie: []\n          csrfToken: []');
+    expect(memberRestore).toContain('        "200":');
+    expect(memberRestore).toContain('        "409":');
   });
 });

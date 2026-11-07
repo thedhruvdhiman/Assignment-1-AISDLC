@@ -139,3 +139,41 @@
 - **Alternatives considered**: Starting the API before MongoDB or presenting a healthy
   state while persistence is unavailable would misrepresent readiness and violate the
   transactional data-integrity requirement.
+
+## Archive Restoration (2026-11-07)
+
+### Archived record discovery and restore
+
+- **Decision**: Keep the existing soft-archive model and add an `archived` boolean
+  filter to book/member list endpoints. The default remains the active-only list;
+  `archived=true` returns only archived rows. Add explicit CSRF-protected restore
+  endpoints for books and members, and expose active/archived modes with restore
+  controls in the existing librarian screens. Restore atomically clears `archived_at`
+  only when it is set and returns the restored resource.
+- **Rationale**: The current system preserves records and loan references but filters
+  archived rows from every ordinary list and has no restore endpoint or UI, making
+  recovery impossible for librarians. A list filter reuses existing pagination and
+  avoids a separate archive resource or duplicated route hierarchy.
+- **Alternatives considered**: Permanently deleting records and recreating them would
+  change identifiers, disconnect loan history, and risk uniqueness conflicts. A
+  separate archive collection would require moving records and references. Making
+  ordinary lists include archived rows by default would change existing behavior and
+  make active catalog/member workflows ambiguous.
+
+### Restore state and invariants
+
+- **Decision**: A restore succeeds only for an archived record; an unknown record
+  returns the existing not-found response and a record already active returns a
+  conflict. Preserve the book's status, member's loan count, unique ISBN/email
+  ownership, and all loan references/history. Update the book's `updated_at` through
+  the existing timestamp behavior; retain creation timestamps. Use atomic conditional
+  updates so concurrent archive/restore attempts cannot silently apply a stale
+  transition.
+- **Rationale**: The `archived_at` field already represents the complete lifecycle
+  state, while archive operations already reject active loans. Conditional updates
+  maintain explicit state transitions and align with the existing error and MongoDB
+  patterns without adding a schema migration.
+- **Alternatives considered**: Resetting restored books to `available` could make a
+  maintenance book lendable unexpectedly. Resetting member counts or rewriting loans
+  would violate domain invariants. Treating an active record as a successful restore
+  would hide stale client state instead of reporting it.

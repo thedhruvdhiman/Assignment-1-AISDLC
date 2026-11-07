@@ -13,8 +13,12 @@ const mocks = vi.hoisted(() => ({
   createBook: vi.fn(),
   createMember: vi.fn(),
   listBooks: vi.fn(),
+  deleteBook: vi.fn(),
+  restoreBook: vi.fn(),
   updateBook: vi.fn(),
+  deleteMember: vi.fn(),
   listMembers: vi.fn(),
+  restoreMember: vi.fn(),
   updateMember: vi.fn(),
   issueBook: vi.fn(),
   listLoans: vi.fn(),
@@ -31,15 +35,17 @@ vi.mock('../../src/api/client', () => ({
 
 vi.mock('../../src/api/books', () => ({
   createBook: mocks.createBook,
-  deleteBook: vi.fn(),
+  deleteBook: mocks.deleteBook,
   listBooks: mocks.listBooks,
+  restoreBook: mocks.restoreBook,
   updateBook: mocks.updateBook,
 }));
 
 vi.mock('../../src/api/members', () => ({
   createMember: mocks.createMember,
-  deleteMember: vi.fn(),
+  deleteMember: mocks.deleteMember,
   listMembers: mocks.listMembers,
+  restoreMember: mocks.restoreMember,
   updateMember: mocks.updateMember,
 }));
 
@@ -241,6 +247,88 @@ describe('library application requirements', () => {
       isbn: 'ISBN-1',
       category: 'Fiction',
     });
+    wrapper.unmount();
+  });
+
+  it('lets a librarian browse archived books and restore one to the active catalog', async () => {
+    const book = {
+      _id: 'book-archived',
+      title: 'Archived book',
+      author: 'Library Staff',
+      isbn: 'ARCHIVE-1',
+      category: 'Reference',
+      status: 'maintenance',
+      created_at: '',
+      updated_at: '',
+    };
+    mocks.sessionState.mockResolvedValue({ authenticated: true, csrf_token: 'csrf' });
+    mocks.listBooks
+      .mockResolvedValueOnce({ items: [], page: 1, pageSize: 20, total: 0, totalPages: 0 })
+      .mockResolvedValueOnce({ items: [], page: 1, pageSize: 20, total: 0, totalPages: 0 })
+      .mockResolvedValueOnce({ items: [book], page: 1, pageSize: 20, total: 1, totalPages: 1 })
+      .mockResolvedValueOnce({ items: [], page: 1, pageSize: 20, total: 0, totalPages: 0 })
+      .mockResolvedValueOnce({ items: [book], page: 1, pageSize: 20, total: 1, totalPages: 1 });
+    mocks.restoreBook.mockResolvedValue(book);
+
+    const wrapper = mount(App);
+    await flushPromises();
+    await wrapper.get('nav button:nth-child(2)').trigger('click');
+    await wrapper.get('button[aria-label="Archived books"]').trigger('click');
+    await flushPromises();
+
+    expect(mocks.listBooks).toHaveBeenLastCalledWith(expect.objectContaining({ archived: true }));
+    expect(wrapper.text()).toContain(book.title);
+    expect(wrapper.findAll('button').some((button) => button.text() === 'Edit')).toBe(false);
+    const restoreButton = wrapper.findAll('button').find((button) => button.text() === 'Restore');
+    if (!restoreButton) throw new Error('Book restore button was not rendered.');
+    await restoreButton.trigger('click');
+    await flushPromises();
+
+    expect(mocks.restoreBook).toHaveBeenCalledWith(book._id);
+    expect(mocks.listBooks).toHaveBeenLastCalledWith(expect.objectContaining({ archived: true }));
+    expect(wrapper.get('[role="status"]').text()).toContain('Book restored to the active catalog.');
+    await wrapper.get('button[aria-label="Active books"]').trigger('click');
+    await flushPromises();
+    expect(mocks.listBooks).toHaveBeenLastCalledWith(expect.objectContaining({ archived: false }));
+    wrapper.unmount();
+  });
+
+  it('lets a librarian browse archived members and restore one to the active list', async () => {
+    const member = {
+      _id: 'member-archived',
+      name: 'Archived Reader',
+      email: 'archived-reader@example.com',
+      active_loans_count: 0,
+      created_at: '',
+    };
+    mocks.sessionState.mockResolvedValue({ authenticated: true, csrf_token: 'csrf' });
+    mocks.listMembers
+      .mockResolvedValueOnce({ items: [], page: 1, pageSize: 20, total: 0, totalPages: 0 })
+      .mockResolvedValueOnce({ items: [member], page: 1, pageSize: 20, total: 1, totalPages: 1 })
+      .mockResolvedValueOnce({ items: [], page: 1, pageSize: 20, total: 0, totalPages: 0 })
+      .mockResolvedValueOnce({ items: [member], page: 1, pageSize: 20, total: 1, totalPages: 1 });
+    mocks.restoreMember.mockResolvedValue(member);
+
+    const wrapper = mount(App);
+    await flushPromises();
+    await wrapper.get('nav button:nth-child(3)').trigger('click');
+    await wrapper.get('button[aria-label="Archived members"]').trigger('click');
+    await flushPromises();
+
+    expect(mocks.listMembers).toHaveBeenLastCalledWith(1, 20, true);
+    expect(wrapper.text()).toContain(member.name);
+    expect(wrapper.findAll('button').some((button) => button.text() === 'Edit')).toBe(false);
+    const restoreButton = wrapper.findAll('button').find((button) => button.text() === 'Restore');
+    if (!restoreButton) throw new Error('Member restore button was not rendered.');
+    await restoreButton.trigger('click');
+    await flushPromises();
+
+    expect(mocks.restoreMember).toHaveBeenCalledWith(member._id);
+    expect(mocks.listMembers).toHaveBeenLastCalledWith(1, 20, true);
+    expect(wrapper.get('[role="status"]').text()).toContain('Member restored to the active list.');
+    await wrapper.get('button[aria-label="Active members"]').trigger('click');
+    await flushPromises();
+    expect(mocks.listMembers).toHaveBeenLastCalledWith(1);
     wrapper.unmount();
   });
 

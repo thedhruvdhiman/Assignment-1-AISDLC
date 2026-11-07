@@ -96,6 +96,64 @@ describe('librarian access and atomic loan workflows', () => {
     await request(app).get('/api/health').expect(200);
   });
 
+  it('records sign-in and lending outcomes without logging credentials and reports health', async () => {
+    const info = jest.spyOn(console, 'info').mockImplementation(() => undefined);
+    const error = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    try {
+      const signedOutAgent = request.agent(app);
+      const session = await signedOutAgent.get('/api/auth/session').expect(200);
+      await signedOutAgent
+        .post('/api/auth/login')
+        .set('X-CSRF-Token', session.body.csrf_token as string)
+        .send({ email: 'missing@example.com', password: 'wrong-password-for-logging-test' })
+        .expect(401);
+
+      const missingBookId = new mongoose.Types.ObjectId().toString();
+      await agent
+        .post('/api/loans/issue')
+        .set('X-CSRF-Token', csrfToken)
+        .send({ book_id: missingBookId, member_id: new mongoose.Types.ObjectId().toString() })
+        .expect(404);
+
+      const book = await Book.create({
+        title: 'Operational Record',
+        author: 'Library Staff',
+        isbn: 'OPERATIONAL-1',
+        isbn_normalized: 'operational-1',
+        category: 'Reference',
+      });
+      const member = await Member.create({
+        name: 'Operational Reader',
+        email: 'operational-reader@example.com',
+        email_normalized: 'operational-reader@example.com',
+      });
+      const loan = await agent
+        .post('/api/loans/issue')
+        .set('X-CSRF-Token', csrfToken)
+        .send({ book_id: book.id, member_id: member.id })
+        .expect(201);
+      await agent
+        .post(`/api/loans/return/${loan.body._id as string}`)
+        .set('X-CSRF-Token', csrfToken)
+        .expect(200);
+      await request(app).get('/api/health').expect(200);
+
+      const infoEvents = info.mock.calls.map(([entry]) => JSON.parse(String(entry)) as { event: string });
+      const errorEvents = error.mock.calls.map(([entry]) => JSON.parse(String(entry)) as { event: string });
+      expect(infoEvents.map((entry) => entry.event)).toEqual(expect.arrayContaining([
+        'sign_in_failed',
+        'book_issue',
+        'book_return',
+      ]));
+      expect(errorEvents.map((entry) => entry.event)).toContain('book_issue_failed');
+      expect([...info.mock.calls, ...error.mock.calls].flat().join(' '))
+        .not.toContain('wrong-password-for-logging-test');
+    } finally {
+      info.mockRestore();
+      error.mockRestore();
+    }
+  });
+
   it('issues and returns a book with consistent inventory and member counts', async () => {
     const book = await Book.create({
       title: 'The Left Hand of Darkness',
@@ -432,5 +490,174 @@ describe('librarian access and atomic loan workflows', () => {
     expect((await agent.get('/api/books?q=.&pageSize=1').expect(200)).body.total).toBe(0);
     expect((await agent.get('/api/books?status=invalid').expect(400)).body.code).toBe('INVALID_QUERY');
     expect((await agent.get('/api/books?pageSize=101').expect(400)).body.code).toBe('INVALID_PAGINATION');
+  });
+
+  it('lists archived books separately and restores them without changing identity, status, or loan history', async () => {
+    const archivedBook = await Book.create({
+      title: 'Archived Reference',
+      author: 'Library Staff',
+      isbn: 'ARCHIVE-BOOK-1',
+      isbn_normalized: 'archive-book-1',
+      category: 'Reference',
+      status: 'maintenance',
+    });
+    const secondArchivedBook = await Book.create({
+      title: 'Second Archived Book',
+      author: 'Library Staff',
+      isbn: 'ARCHIVE-BOOK-2',
+      isbn_normalized: 'archive-book-2',
+      category: 'Fiction',
+    });
+    const activeBook = await Book.create({
+      title: 'Active Book',
+      author: 'Library Staff',
+      isbn: 'ACTIVE-BOOK-1',
+      isbn_normalized: 'active-book-1',
+      category: 'Fiction',
+    });
+    const member = await Member.create({
+      name: 'History Reader',
+      email: 'history-reader@example.com',
+      email_normalized: 'history-reader@example.com',
+    });
+    const historicalLoan = await Loan.create({
+      book_id: archivedBook.id,
+      member_id: member.id,
+      issue_date: new Date('2025-01-01T00:00:00.000Z'),
+      due_date: '2025-01-15',
+      return_date: new Date('2025-01-10T00:00:00.000Z'),
+    });
+
+    await agent.delete(`/api/books/${archivedBook.id}`).set('X-CSRF-Token', csrfToken).expect(204);
+    await agent.delete(`/api/books/${secondArchivedBook.id}`).set('X-CSRF-Token', csrfToken).expect(204);
+
+    const active = await agent.get('/api/books').expect(200);
+    expect(active.body.items.map((book: { _id: string }) => book._id)).toContain(activeBook.id);
+    expect(active.body.items.map((book: { _id: string }) => book._id)).not.toContain(archivedBook.id);
+
+    const archivedPage = await agent.get('/api/books?archived=true&page=1&pageSize=1').expect(200);
+    const secondArchivedPage = await agent.get('/api/books?archived=true&page=2&pageSize=1').expect(200);
+    expect(archivedPage.body.total).toBe(2);
+    expect(archivedPage.body.items).toHaveLength(1);
+    expect(secondArchivedPage.body.items).toHaveLength(1);
+    expect(archivedPage.body.items[0]._id).not.toBe(secondArchivedPage.body.items[0]._id);
+    expect((await agent.get('/api/books?archived=invalid').expect(400)).body.code).toBe('INVALID_QUERY');
+
+    await agent
+      .post(`/api/books/${archivedBook.id}/restore`)
+      .expect(403);
+    await request(app)
+      .post(`/api/books/${archivedBook.id}/restore`)
+      .expect(401);
+    await agent
+      .post('/api/books/not-an-id/restore')
+      .set('X-CSRF-Token', csrfToken)
+      .expect(400);
+    await agent
+      .post(`/api/books/${new mongoose.Types.ObjectId().toString()}/restore`)
+      .set('X-CSRF-Token', csrfToken)
+      .expect(404);
+
+    const restored = await agent
+      .post(`/api/books/${archivedBook.id}/restore`)
+      .set('X-CSRF-Token', csrfToken)
+      .expect(200);
+    expect(restored.body._id).toBe(archivedBook.id);
+    expect(restored.body.status).toBe('maintenance');
+    expect(restored.body.created_at).toBe(archivedBook.created_at.toISOString());
+    expect(await Loan.exists({ _id: historicalLoan.id, book_id: archivedBook.id })).toBeTruthy();
+    expect((await Book.findById(archivedBook.id))?.archived_at).toBeNull();
+    expect((await agent.get('/api/books').expect(200)).body.items.map((book: { _id: string }) => book._id))
+      .toContain(archivedBook.id);
+    expect((await agent.get('/api/books?archived=true').expect(200)).body.items.map((book: { _id: string }) => book._id))
+      .not.toContain(archivedBook.id);
+    await agent
+      .post(`/api/books/${archivedBook.id}/restore`)
+      .set('X-CSRF-Token', csrfToken)
+      .expect(409);
+  });
+
+  it('lists archived members separately and restores them without changing identity, counts, or loan history', async () => {
+    const archivedMember = await Member.create({
+      name: 'Archived Reader',
+      email: 'archived-reader@example.com',
+      email_normalized: 'archived-reader@example.com',
+      active_loans_count: 0,
+    });
+    const secondArchivedMember = await Member.create({
+      name: 'Second Archived Reader',
+      email: 'second-archived-reader@example.com',
+      email_normalized: 'second-archived-reader@example.com',
+      active_loans_count: 0,
+    });
+    const activeMember = await Member.create({
+      name: 'Active Reader',
+      email: 'active-reader@example.com',
+      email_normalized: 'active-reader@example.com',
+      active_loans_count: 0,
+    });
+    const book = await Book.create({
+      title: 'Member History',
+      author: 'Library Staff',
+      isbn: 'MEMBER-HISTORY-1',
+      isbn_normalized: 'member-history-1',
+      category: 'Reference',
+    });
+    const historicalLoan = await Loan.create({
+      book_id: book.id,
+      member_id: archivedMember.id,
+      issue_date: new Date('2025-01-01T00:00:00.000Z'),
+      due_date: '2025-01-15',
+      return_date: new Date('2025-01-10T00:00:00.000Z'),
+    });
+
+    await agent.delete(`/api/members/${archivedMember.id}`).set('X-CSRF-Token', csrfToken).expect(204);
+    await agent.delete(`/api/members/${secondArchivedMember.id}`).set('X-CSRF-Token', csrfToken).expect(204);
+
+    const active = await agent.get('/api/members').expect(200);
+    expect(active.body.items.map((member: { _id: string }) => member._id)).toContain(activeMember.id);
+    expect(active.body.items.map((member: { _id: string }) => member._id)).not.toContain(archivedMember.id);
+
+    const archivedPage = await agent.get('/api/members?archived=true&page=1&pageSize=1').expect(200);
+    const secondArchivedPage = await agent.get('/api/members?archived=true&page=2&pageSize=1').expect(200);
+    expect(archivedPage.body.total).toBe(2);
+    expect(archivedPage.body.items).toHaveLength(1);
+    expect(secondArchivedPage.body.items).toHaveLength(1);
+    expect(archivedPage.body.items[0]._id).not.toBe(secondArchivedPage.body.items[0]._id);
+    expect((await agent.get('/api/members?archived=invalid').expect(400)).body.code).toBe('INVALID_QUERY');
+
+    await agent
+      .post(`/api/members/${archivedMember.id}/restore`)
+      .expect(403);
+    await request(app)
+      .post(`/api/members/${archivedMember.id}/restore`)
+      .expect(401);
+    await agent
+      .post('/api/members/not-an-id/restore')
+      .set('X-CSRF-Token', csrfToken)
+      .expect(400);
+    await agent
+      .post(`/api/members/${new mongoose.Types.ObjectId().toString()}/restore`)
+      .set('X-CSRF-Token', csrfToken)
+      .expect(404);
+
+    const restored = await agent
+      .post(`/api/members/${archivedMember.id}/restore`)
+      .set('X-CSRF-Token', csrfToken)
+      .expect(200);
+    expect(restored.body._id).toBe(archivedMember.id);
+    expect(restored.body.email).toBe(archivedMember.email);
+    expect(restored.body.active_loans_count).toBe(0);
+    expect(restored.body.created_at).toBe(archivedMember.created_at.toISOString());
+    expect(await Loan.exists({ _id: historicalLoan.id, member_id: archivedMember.id })).toBeTruthy();
+    expect((await Member.findById(archivedMember.id))?.archived_at).toBeNull();
+    expect((await agent.get('/api/members').expect(200)).body.items.map((member: { _id: string }) => member._id))
+      .toContain(archivedMember.id);
+    expect((await agent.get('/api/members?archived=true').expect(200)).body.items.map((member: { _id: string }) => member._id))
+      .not.toContain(archivedMember.id);
+    await agent
+      .post(`/api/members/${archivedMember.id}/restore`)
+      .set('X-CSRF-Token', csrfToken)
+      .expect(409);
   });
 });

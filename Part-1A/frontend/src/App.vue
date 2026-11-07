@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { api, clearSessionState, sessionState, setCsrfToken } from './api/client';
-import { createBook, deleteBook, listBooks, updateBook } from './api/books';
-import { createMember, deleteMember, listMembers, updateMember } from './api/members';
+import { createBook, deleteBook, listBooks, restoreBook, updateBook } from './api/books';
+import { createMember, deleteMember, listMembers, restoreMember, updateMember } from './api/members';
 import { issueBook, listLoans, listOverdueLoans, returnLoan } from './api/loans';
 import type { Book, Loan, Member, Page } from './api/types';
 
@@ -23,6 +23,8 @@ const savingMember = ref(false);
 const books = ref<Page<Book> | null>(null);
 const members = ref<Page<Member> | null>(null);
 const loans = ref<Page<Loan> | null>(null);
+const showArchivedBooks = ref(false);
+const showArchivedMembers = ref(false);
 const search = ref('');
 const category = ref('');
 const status = ref('');
@@ -47,7 +49,6 @@ const bookEditForm = ref({ title: '', author: '', isbn: '', category: '' });
 const editingMember = ref<Member | null>(null);
 const memberEditForm = ref({ name: '', email: '' });
 
-const isStaffView = computed(() => ['books', 'members', 'loans', 'overdue'].includes(view.value));
 const navigation: { id: View; label: string; private: boolean }[] = [
   { id: 'catalog', label: 'Catalog', private: false },
   { id: 'books', label: 'Manage books', private: true },
@@ -106,9 +107,12 @@ async function loadView(): Promise<void> {
         sort: sort.value,
         direction: direction.value,
         page: page.value,
+        ...(view.value === 'books' ? { archived: showArchivedBooks.value } : {}),
       });
     } else if (view.value === 'members') {
-      members.value = await listMembers(page.value);
+      members.value = showArchivedMembers.value
+        ? await listMembers(page.value, 20, true)
+        : await listMembers(page.value);
     } else if (view.value === 'loans') {
       loans.value = await listLoans(page.value);
     } else {
@@ -125,6 +129,22 @@ function go(next: View): void {
   statusMessage.value = '';
   view.value = next;
   page.value = 1;
+  void loadView();
+}
+
+function setBookArchiveMode(archived: boolean): void {
+  showArchivedBooks.value = archived;
+  editingBook.value = null;
+  page.value = 1;
+  statusMessage.value = '';
+  void loadView();
+}
+
+function setMemberArchiveMode(archived: boolean): void {
+  showArchivedMembers.value = archived;
+  editingMember.value = null;
+  page.value = 1;
+  statusMessage.value = '';
   void loadView();
 }
 
@@ -153,6 +173,8 @@ function clearPrivateState(): void {
   books.value = null;
   members.value = null;
   loans.value = null;
+  showArchivedBooks.value = false;
+  showArchivedMembers.value = false;
   issueTarget.value = null;
   returnTarget.value = null;
   selectedMember.value = '';
@@ -266,6 +288,26 @@ async function archiveMember(member: Member): Promise<void> {
     await loadView();
   } catch (reason) {
     error.value = reason instanceof Error ? reason.message : 'Unable to archive member.';
+  }
+}
+
+async function restoreBookRecord(book: Book): Promise<void> {
+  try {
+    await restoreBook(book._id);
+    statusMessage.value = 'Book restored to the active catalog.';
+    await loadView();
+  } catch (reason) {
+    error.value = reason instanceof Error ? reason.message : 'Unable to restore book.';
+  }
+}
+
+async function restoreMemberRecord(member: Member): Promise<void> {
+  try {
+    await restoreMember(member._id);
+    statusMessage.value = 'Member restored to the active list.';
+    await loadView();
+  } catch (reason) {
+    error.value = reason instanceof Error ? reason.message : 'Unable to restore member.';
   }
 }
 
@@ -394,6 +436,20 @@ onBeforeUnmount(() => {
         <p class="eyebrow">{{ view === 'catalog' ? 'Browse the collection' : 'Librarian workspace' }}</p>
         <h1>{{ view === 'catalog' ? 'Find your next read' : 'Book inventory' }}</h1>
       </section>
+      <div v-if="view === 'books'" class="view-toggle" role="group" aria-label="Book records">
+        <button
+          type="button"
+          aria-label="Active books"
+          :aria-pressed="!showArchivedBooks"
+          @click="setBookArchiveMode(false)"
+        >Active books</button>
+        <button
+          type="button"
+          aria-label="Archived books"
+          :aria-pressed="showArchivedBooks"
+          @click="setBookArchiveMode(true)"
+        >Archived books</button>
+      </div>
       <section class="filters" aria-label="Catalog search and filters">
         <label>Search title or author
           <input v-model="search" type="search" placeholder="Search the catalog" @input="page = 1; loadView()" />
@@ -423,7 +479,7 @@ onBeforeUnmount(() => {
           </select>
         </label>
       </section>
-      <section v-if="view === 'books' && authenticated" class="form-panel">
+      <section v-if="view === 'books' && authenticated && !showArchivedBooks" class="form-panel">
         <h2>Add a book</h2>
         <form class="inline-form" @submit.prevent="saveBook">
           <label>Title <input v-model="bookForm.title" required /></label>
@@ -433,7 +489,7 @@ onBeforeUnmount(() => {
           <button type="submit" :disabled="savingBook">{{ savingBook ? 'Saving…' : 'Add book' }}</button>
         </form>
       </section>
-      <section v-if="editingBook && view === 'books'" class="form-panel" aria-labelledby="edit-book-heading">
+      <section v-if="editingBook && view === 'books' && !showArchivedBooks" class="form-panel" aria-labelledby="edit-book-heading">
         <h2 id="edit-book-heading">Edit {{ editingBook.title }}</h2>
         <form class="inline-form" @submit.prevent="saveBookEdit">
           <label>Title <input v-model="bookEditForm.title" required /></label>
@@ -448,10 +504,10 @@ onBeforeUnmount(() => {
       <p v-if="statusMessage" role="status" aria-live="polite">{{ statusMessage }}</p>
       <p v-if="busy" role="status">Loading books…</p>
       <p v-else-if="books && books.items.length === 0" class="empty" role="status" aria-live="polite">
-        No books match these filters. Try changing your search.
+        {{ showArchivedBooks && view === 'books' ? 'No archived books.' : 'No books match these filters. Try changing your search.' }}
       </p>
       <table v-else-if="books" class="data-table">
-        <caption>Library catalog</caption>
+        <caption>{{ showArchivedBooks && view === 'books' ? 'Archived books' : 'Library catalog' }}</caption>
         <thead><tr><th scope="col">Title</th><th scope="col">Author</th><th scope="col">Category</th><th scope="col">Status</th><th v-if="authenticated" scope="col">Actions</th></tr></thead>
         <tbody>
           <tr v-for="book in books.items" :key="book._id">
@@ -459,15 +515,16 @@ onBeforeUnmount(() => {
             <td>{{ book.author }}</td><td>{{ book.category }}</td><td>{{ book.status }}</td>
             <td v-if="authenticated" class="actions">
               <button
-                v-if="book.status === 'available'"
+                v-if="!(view === 'books' && showArchivedBooks) && book.status === 'available'"
                 type="button"
                 @click="startIssue(book, $event)"
               >Issue</button>
-              <button v-if="book.status !== 'issued'" type="button" @click="setMaintenance(book)">
+              <button v-if="!(view === 'books' && showArchivedBooks) && book.status !== 'issued'" type="button" @click="setMaintenance(book)">
                 {{ book.status === 'maintenance' ? 'Mark available' : 'Maintenance' }}
               </button>
-              <button v-if="view === 'books'" type="button" @click="startBookEdit(book)">Edit</button>
-              <button type="button" @click="archiveBook(book)">Archive</button>
+              <button v-if="view === 'books' && !showArchivedBooks" type="button" @click="startBookEdit(book)">Edit</button>
+              <button v-if="!(view === 'books' && showArchivedBooks)" type="button" @click="archiveBook(book)">Archive</button>
+              <button v-else type="button" @click="restoreBookRecord(book)">Restore</button>
             </td>
           </tr>
         </tbody>
@@ -481,28 +538,46 @@ onBeforeUnmount(() => {
 
     <section v-if="view === 'members' && authenticated" class="workspace">
       <h1>Members</h1>
-      <form class="inline-form form-panel" @submit.prevent="saveMember">
+      <div class="view-toggle" role="group" aria-label="Member records">
+        <button
+          type="button"
+          aria-label="Active members"
+          :aria-pressed="!showArchivedMembers"
+          @click="setMemberArchiveMode(false)"
+        >Active members</button>
+        <button
+          type="button"
+          aria-label="Archived members"
+          :aria-pressed="showArchivedMembers"
+          @click="setMemberArchiveMode(true)"
+        >Archived members</button>
+      </div>
+      <form v-if="!showArchivedMembers" class="inline-form form-panel" @submit.prevent="saveMember">
         <label>Name <input v-model="memberForm.name" required /></label>
         <label>Email <input v-model="memberForm.email" type="email" required /></label>
         <button type="submit" :disabled="savingMember">{{ savingMember ? 'Saving…' : 'Register member' }}</button>
       </form>
-      <form v-if="editingMember" class="inline-form form-panel" aria-label="Edit member" @submit.prevent="saveMemberEdit">
+      <form v-if="editingMember && !showArchivedMembers" class="inline-form form-panel" aria-label="Edit member" @submit.prevent="saveMemberEdit">
         <label>Name <input v-model="memberEditForm.name" required /></label>
         <label>Email <input v-model="memberEditForm.email" type="email" required /></label>
         <button type="submit" :disabled="savingMember">{{ savingMember ? 'Saving…' : 'Save changes' }}</button>
         <button type="button" @click="editingMember = null">Cancel edit</button>
       </form>
       <p v-if="error" class="notice" role="alert">{{ error }}</p>
+      <p v-if="statusMessage" role="status" aria-live="polite">{{ statusMessage }}</p>
       <p v-if="busy" role="status">Loading members…</p>
-      <p v-else-if="members?.items.length === 0" class="empty" role="status" aria-live="polite">No members registered yet.</p>
+      <p v-else-if="members?.items.length === 0" class="empty" role="status" aria-live="polite">
+        {{ showArchivedMembers ? 'No archived members.' : 'No members registered yet.' }}
+      </p>
       <table v-else-if="members" class="data-table">
-        <caption>Library members</caption>
+        <caption>{{ showArchivedMembers ? 'Archived members' : 'Library members' }}</caption>
         <thead><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Active loans</th><th scope="col">Actions</th></tr></thead>
         <tbody><tr v-for="member in members.items" :key="member._id">
           <td>{{ member.name }}</td><td>{{ member.email }}</td><td>{{ member.active_loans_count }}</td>
           <td class="actions">
-            <button type="button" @click="startMemberEdit(member)">Edit</button>
-            <button type="button" @click="archiveMember(member)">Archive</button>
+            <button v-if="!showArchivedMembers" type="button" @click="startMemberEdit(member)">Edit</button>
+            <button v-if="!showArchivedMembers" type="button" @click="archiveMember(member)">Archive</button>
+            <button v-else type="button" @click="restoreMemberRecord(member)">Restore</button>
           </td>
         </tr></tbody>
       </table>

@@ -1,0 +1,220 @@
+{
+  "FR-001": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "supports book and member CRUD with normalized unique values"
+    },
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "adds a book after sign-in and refreshes the inventory"
+    }
+  ],
+  "FR-002": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "supports book and member CRUD with normalized unique values"
+    },
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "validates member registration and shows duplicate-email errors"
+    }
+  ],
+  "FR-003": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "lists only outstanding loans past their due date as overdue"
+    },
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "requires return confirmation before calling the API"
+    }
+  ],
+  "FR-004": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "supports book and member CRUD with normalized unique values"
+    },
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "shows duplicate book errors in the management form"
+    }
+  ],
+  "FR-005": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "rejects an unavailable book and does not create an extra loan"
+    }
+  ],
+  "FR-006": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "issues and returns a book with consistent inventory and member counts"
+    }
+  ],
+  "FR-007": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "rolls back book status when the selected member does not exist"
+    },
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "rolls back every return mutation if a related record cannot be updated"
+    }
+  ],
+  "FR-008": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "rolls back unavailable issue references and rejects repeated returns"
+    }
+  ],
+  "FR-009": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "issues and returns a book with consistent inventory and member counts"
+    },
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "lists archived books separately and restores them without changing identity"
+    },
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "lists archived members separately and restores them without changing identity"
+    }
+  ],
+  "FR-010": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "lists only outstanding loans past their due date as overdue"
+    },
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "shows overdue loan summaries and a friendly empty state"
+    }
+  ],
+  "FR-011": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "searches and filters books case-insensitively"
+    },
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "applies search and status filters and announces an empty result"
+    }
+  ],
+  "FR-012": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "searches and filters books case-insensitively"
+    }
+  ],
+  "FR-013": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "searches and filters books case-insensitively"
+    },
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "pages and sorts catalog results deterministically"
+    }
+  ],
+  "FR-014": [
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "applies search and status filters and announces an empty result"
+    },
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "shows an accessible empty state when there are no overdue loans"
+    }
+  ],
+  "FR-015": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "rejects state changes without a valid CSRF token"
+    },
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "shows duplicate book errors in the management form"
+    }
+  ],
+  "FR-016": [
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "provides named tables, dialog relationships, and visible keyboard focus"
+    }
+  ],
+  "FR-017": [
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "lets a librarian edit an existing book"
+    },
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "lets a librarian edit a member profile"
+    },
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "confirms book issue and displays the due date"
+    }
+  ],
+  "FR-018": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "rejects invalid credentials and regenerates the session"
+    },
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "does not request or render catalog data before authentication"
+    }
+  ],
+  "FR-019": [
+    {
+      "path": "frontend/tests/components/accessibility.test.ts",
+      "test": "audits the sign-in screen and authenticated catalog"
+    },
+    {
+      "path": "frontend/tests/components/accessibility.test.ts",
+      "test": "keeps the interface palette above WCAG AA text and focus contrast thresholds"
+    }
+  ],
+  "FR-020": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "records sign-in and lending outcomes without logging credentials and reports health"
+    }
+  ],
+  "FR-021": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "provisions an account once and leaves existing credentials unchanged on repeat"
+    },
+    {
+      "path": "backend/tests/unit/development-database.test.ts",
+      "test": "rejects incomplete or weak credentials and production development credentials"
+    }
+  ],
+  "FR-022": [
+    {
+      "path": "backend/tests/integration/seed-safety.test.ts",
+      "test": "refuses unsafe target before connecting or writing"
+    }
+  ],
+  "FR-023": [
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "lists archived books separately and restores them without changing identity"
+    },
+    {
+      "path": "backend/tests/integration/library-api.test.ts",
+      "test": "lists archived members separately and restores them without changing identity"
+    },
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "lets a librarian browse archived books and restore one"
+    },
+    {
+      "path": "frontend/tests/components/CatalogView.test.ts",
+      "test": "lets a librarian browse archived members and restore one"
+    }
+  ]
+}

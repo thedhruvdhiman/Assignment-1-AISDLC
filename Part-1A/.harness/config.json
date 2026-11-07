@@ -1,0 +1,16 @@
+{
+  "source_paths": [
+    "backend/src",
+    "frontend/src"
+  ],
+  "spec": "specs/001-book-library-management/spec.md",
+  "traceability": ".harness/traceability.json",
+  "test_lock": ".harness/test-lock.json",
+  "test_globs": [
+    "backend/tests/**/*.test.ts",
+    "frontend/tests/**/*.test.ts"
+  ],
+  "secrets_scan_excludes": [
+    "evidence/"
+  ]
+}

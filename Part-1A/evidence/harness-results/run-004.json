@@ -1,0 +1,157 @@
+{
+  "command": "python3 .harness/run.py",
+  "completed_at": "2026-11-07T17:52:35+00:00",
+  "gates": {
+    "Integrity": {
+      "command": [
+        "python3",
+        ".harness/run.py",
+        "--integrity-check"
+      ],
+      "completed_at": null,
+      "exit_code": 0,
+      "output": "Test hashes and prior run-history chain verified.",
+      "started_at": null,
+      "status": "PASS"
+    },
+    "Lint": {
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "completed_at": null,
+      "exit_code": 0,
+      "output": "npm notice run lint\nnpm notice run eslint backend frontend\n",
+      "started_at": null,
+      "status": "PASS"
+    },
+    "Secrets scan": {
+      "command": [
+        "python3",
+        ".harness/run.py",
+        "--secrets-scan"
+      ],
+      "completed_at": null,
+      "exit_code": 0,
+      "output": "No configured secret patterns found in non-ignored project files.",
+      "started_at": null,
+      "status": "PASS"
+    },
+    "Security": {
+      "command": [
+        "npm",
+        "audit",
+        "--omit=dev",
+        "--json"
+      ],
+      "completed_at": null,
+      "exit_code": 0,
+      "output": "{\n  \"auditReportVersion\": 2,\n  \"vulnerabilities\": {},\n  \"metadata\": {\n    \"vulnerabilities\": {\n      \"info\": 0,\n      \"low\": 0,\n      \"moderate\": 0,\n      \"high\": 0,\n      \"critical\": 0,\n      \"total\": 0\n    },\n    \"dependencies\": {\n      \"prod\": 139,\n      \"dev\": 619,\n      \"optional\": 88,\n      \"peer\": 2,\n      \"peerOptional\": 0,\n      \"total\": 757\n    }\n  }\n}\n",
+      "started_at": null,
+      "status": "PASS"
+    },
+    "Traceability": {
+      "command": [
+        "python3",
+        ".harness/run.py",
+        "--traceability-check"
+      ],
+      "completed_at": null,
+      "exit_code": 0,
+      "output": "Every functional requirement ID maps to an existing named test.",
+      "started_at": null,
+      "status": "PASS"
+    },
+    "Unit and contract tests": {
+      "command": [
+        "npm",
+        "run",
+        "test",
+        "-w",
+        "backend",
+        "--",
+        "--json",
+        "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-_l4b4x1m/jest-results.json",
+        "&&",
+        "npm",
+        "run",
+        "test",
+        "-w",
+        "frontend",
+        "--",
+        "--reporter=junit",
+        "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-_l4b4x1m/vitest-junit.xml"
+      ],
+      "completed_at": null,
+      "exit_code": 0,
+      "junit_report": "evidence/pytest-junit.xml",
+      "output": "=== Backend Jest (exit 0) ===\nnpm notice run test\nnpm notice run jest --runInBand --json --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-_l4b4x1m/jest-results.json\n\nTest Suites: 6 passed, 6 total\nTests:       40 passed, 40 total\nSnapshots:   0 total\nTime:        5.711 s, estimated 6 s\nRan all test suites.\nTest results written to: ../../../../../../../../../var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-_l4b4x1m/jest-results.json\n\n=== Frontend Vitest (exit 0) ===\nJUNIT report written to /var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-_l4b4x1m/vitest-junit.xml\n\nnpm notice run test\nnpm notice run vitest run --reporter=junit --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-_l4b4x1m/vitest-junit.xml\n\nJUnit report: evidence/pytest-junit.xml",
+      "started_at": null,
+      "status": "PASS",
+      "subcommands": {
+        "backend": {
+          "command": [
+            "npm",
+            "run",
+            "test",
+            "-w",
+            "backend",
+            "--",
+            "--json",
+            "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-_l4b4x1m/jest-results.json"
+          ],
+          "completed_at": null,
+          "exit_code": 0,
+          "output": "npm notice run test\nnpm notice run jest --runInBand --json --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-_l4b4x1m/jest-results.json\n\nTest Suites: 6 passed, 6 total\nTests:       40 passed, 40 total\nSnapshots:   0 total\nTime:        5.711 s, estimated 6 s\nRan all test suites.\nTest results written to: ../../../../../../../../../var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-_l4b4x1m/jest-results.json\n",
+          "started_at": null,
+          "status": "PASS"
+        },
+        "frontend": {
+          "command": [
+            "npm",
+            "run",
+            "test",
+            "-w",
+            "frontend",
+            "--",
+            "--reporter=junit",
+            "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-_l4b4x1m/vitest-junit.xml"
+          ],
+          "completed_at": null,
+          "exit_code": 0,
+          "output": "JUNIT report written to /var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-_l4b4x1m/vitest-junit.xml\n\nnpm notice run test\nnpm notice run vitest run --reporter=junit --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-_l4b4x1m/vitest-junit.xml\n",
+          "started_at": null,
+          "status": "PASS"
+        }
+      }
+    }
+  },
+  "history": {
+    "gates": {
+      "Integrity": "PASS",
+      "Lint": "PASS",
+      "Secrets scan": "PASS",
+      "Security": "PASS",
+      "Traceability": "PASS",
+      "Unit and contract tests": "PASS"
+    },
+    "hash": "da19d85f16630bd83a08e03486826e50e5fe5867cba8b0f642e71d93392fed11",
+    "overall": "PASS",
+    "previous_hash": "690daaf7744a5cd7300504300bcd6b11eaf0a05e6a2055658474465849737e3e",
+    "run": "run-004",
+    "timestamp": "2026-11-07T17:52:26+00:00"
+  },
+  "notes": [
+    "Lint uses ESLint for the repository's TypeScript/Vue code.",
+    "Security gate audits production dependencies; full npm audit also covers development/test tools and was recorded in run-003.",
+    "The compatibility-named pytest-junit.xml is a merged report generated from Jest and Vitest machine reports."
+  ],
+  "overall": "PASS",
+  "run": "run-004",
+  "started_at": "2026-11-07T17:52:26+00:00",
+  "timestamp_recovery": {
+    "gate_intervals": "Original per-gate timestamps were not recoverable; timestamp fields below are null rather than guessed.",
+    "run_interval_source": "Restored from contemporaneous harness command output retained in the session transcript."
+  }
+}

@@ -62,16 +62,33 @@ export async function archiveBook(id: string): Promise<void> {
   await book.save();
 }
 
+export async function restoreBook(id: string): Promise<Record<string, unknown>> {
+  const book = await Book.findOneAndUpdate(
+    { _id: id, archived_at: { $ne: null } },
+    { $set: { archived_at: null } },
+    { new: true, runValidators: true },
+  ).lean();
+  if (book) return publicBook(book as unknown as Record<string, unknown>);
+
+  if (!await Book.exists({ _id: id })) {
+    throw new HttpError(404, 'BOOK_NOT_FOUND', 'Book not found.');
+  }
+  throw new HttpError(409, 'BOOK_NOT_ARCHIVED', 'The book is already active.');
+}
+
 export async function listBooks(query: {
   q?: string;
   category?: string;
   status?: string;
   sort?: string;
   direction?: string;
+  archived?: boolean;
   page: number;
   pageSize: number;
 }): Promise<{ items: Record<string, unknown>[]; page: number; pageSize: number; total: number; totalPages: number }> {
-  const match: Record<string, unknown> = { archived_at: null };
+  const match: Record<string, unknown> = {
+    archived_at: query.archived ? { $ne: null } : null,
+  };
   if (query.category) match.category = query.category;
   if (query.status) match.status = query.status;
   if (query.q) {

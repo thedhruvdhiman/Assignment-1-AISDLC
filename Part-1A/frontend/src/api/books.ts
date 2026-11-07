@@ -7,6 +7,7 @@ export type BookQuery = {
   status?: string;
   sort?: string;
   direction?: string;
+  archived?: boolean;
   page?: number;
   pageSize?: number;
 };
@@ -25,3 +26,5 @@ export const createBook = (input: Omit<Book, '_id' | 'created_at' | 'updated_at'
 export const updateBook = (id: string, input: Partial<Book>) =>
   api<Book>(`/books/${id}`, { method: 'PATCH', body: JSON.stringify(input) });
 export const deleteBook = (id: string) => api<void>(`/books/${id}`, { method: 'DELETE' });
+export const restoreBook = (id: string) =>
+  api<Book>(`/books/${id}/restore`, { method: 'POST' });

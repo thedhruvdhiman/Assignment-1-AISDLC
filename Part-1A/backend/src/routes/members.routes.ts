@@ -8,6 +8,7 @@ import {
   createMember,
   getMember,
   listMembers,
+  restoreMember,
   updateMember,
   validObjectId,
 } from '../services/member.service';
@@ -30,8 +31,12 @@ function pagination(query: Record<string, unknown>) {
 }
 
 membersRouter.get('/', async (req, res) => {
+  const parsed = z.object({
+    archived: z.enum(['true', 'false']).transform((value) => value === 'true').optional(),
+  }).safeParse(req.query);
+  if (!parsed.success) throw new HttpError(400, 'INVALID_QUERY', 'One or more member query parameters are invalid.');
   const { page, pageSize } = pagination(req.query as Record<string, unknown>);
-  res.json(await listMembers(page, pageSize));
+  res.json(await listMembers(page, pageSize, parsed.data.archived));
 });
 
 membersRouter.post('/', requireCsrf, async (req, res) => {
@@ -44,6 +49,12 @@ membersRouter.get('/:memberId', async (req, res) => {
   const memberId = String(req.params.memberId);
   if (!validObjectId(memberId)) throw new HttpError(400, 'INVALID_ID', 'Member ID is invalid.');
   res.json(await getMember(memberId));
+});
+
+membersRouter.post('/:memberId/restore', requireCsrf, async (req, res) => {
+  const memberId = String(req.params.memberId);
+  if (!validObjectId(memberId)) throw new HttpError(400, 'INVALID_ID', 'Member ID is invalid.');
+  res.json(await restoreMember(memberId));
 });
 
 membersRouter.patch('/:memberId', requireCsrf, async (req, res) => {

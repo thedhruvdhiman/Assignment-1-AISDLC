@@ -221,6 +221,62 @@ and end-to-end quickstart validation.
 
 ---
 
+## Phase 10: User Story 2 - Browse and Restore Archived Books (Priority: P1)
+
+**Goal**: Let a signed-in librarian find archived books in a clearly labeled archived
+view and restore them to the active catalog without losing book state or loan history.
+
+**Independent Test**: Archive a book without an active loan, find it in archived mode,
+restore it, and confirm it returns to the active catalog with the same ID, status, and
+historical loan references. Verify active records cannot be restored again, unknown IDs
+return not found, and unauthenticated or CSRF-invalid requests are rejected.
+
+### Tests for User Story 2
+
+- [X] T055 [P] [US2] Add integration tests for active-versus-archived book filtering, pagination, restore persistence, preserved status and identity, active-record conflicts, unknown IDs, and authorization/CSRF in `backend/tests/integration/library-api.test.ts`
+- [X] T056 [P] [US2] Add OpenAPI contract assertions for the archived book list parameter and `POST /books/{bookId}/restore` responses in `backend/tests/contract/openapi.test.ts`
+- [X] T057 [US2] Add component tests for switching between active and archived book views, restoring a book, refreshing the active list, and accessible status feedback in `frontend/tests/components/CatalogView.test.ts`
+
+### Implementation for User Story 2
+
+- [X] T058 [US2] Extend `listBooks` to select active records by default and archived records when requested, and implement an atomic archived-only restore that preserves book status and loan history in `backend/src/services/book.service.ts`
+- [X] T059 [US2] Validate the `archived` query parameter and ObjectId, add the CSRF-protected `POST /:bookId/restore` route, and return explicit not-found/conflict errors in `backend/src/routes/books.routes.ts`
+- [X] T060 [US2] Add typed archived-list and restore requests while preserving existing query parameters in `frontend/src/api/books.ts`
+- [X] T061 [US2] Add clearly labeled Active and Archived modes to book management, show restore instead of edit/archive actions for archived rows, and announce successful restore in `frontend/src/App.vue`
+
+**Checkpoint**: Librarians can find, restore, and verify archived books from the interface;
+ordinary catalog listings remain active-only.
+
+---
+
+## Phase 11: User Story 4 - Browse and Restore Archived Members (Priority: P2)
+
+**Goal**: Let a signed-in librarian find archived members in a clearly labeled archived
+view and restore them to the active member list without losing identity, counts, or loan
+history.
+
+**Independent Test**: Archive a member with no active loans, find it in archived mode,
+restore it, and confirm it returns to the active member list with the same ID and
+active-loan count. Verify active records cannot be restored again, unknown IDs return
+not found, and unauthenticated or CSRF-invalid requests are rejected.
+
+### Tests for User Story 4
+
+- [X] T062 [P] [US4] Add integration tests for active-versus-archived member filtering, pagination, restore persistence, preserved member count and identity, active-record conflicts, unknown IDs, and authorization/CSRF in `backend/tests/integration/library-api.test.ts`
+- [X] T063 [P] [US4] Add component tests for switching between active and archived member views, restoring a member, refreshing the active list, and accessible status feedback in `frontend/tests/components/CatalogView.test.ts`
+
+### Implementation for User Story 4
+
+- [X] T064 [US4] Extend `listMembers` to select active records by default and archived records when requested, and implement an atomic archived-only restore that preserves active-loan count and loan history in `backend/src/services/member.service.ts`
+- [X] T065 [US4] Validate the `archived` query parameter and ObjectId, add the CSRF-protected `POST /:memberId/restore` route, and return explicit not-found/conflict errors in `backend/src/routes/members.routes.ts`
+- [X] T066 [US4] Add typed archived-list and restore requests while preserving existing pagination arguments in `frontend/src/api/members.ts`
+- [X] T067 [US4] Add clearly labeled Active and Archived modes to member management, show restore instead of edit/archive actions for archived rows, and announce successful restore in `frontend/src/App.vue`
+
+**Checkpoint**: Librarians can find and restore archived members; normal member lists
+remain active-only and historical loans keep their original member reference.
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -233,6 +289,11 @@ and end-to-end quickstart validation.
 - **Development Bootstrap, Sample Data, and Polish (Phase 9)**: Core seed implementation
   can proceed after foundational configuration; final validation depends on all desired
   stories.
+- **Book restoration (Phase 10)**: Depends on the Phase 2 authentication foundation and
+  the existing catalog listing/archive behavior from US2.
+- **Member restoration (Phase 11)**: Depends on the Phase 2 authentication foundation
+  and existing member listing/archive behavior from US4. It does not depend on book
+  restoration.
 
 ### User Story Dependencies
 
@@ -250,6 +311,10 @@ and end-to-end quickstart validation.
   workflow.
 - **Development seeding**: Depends on models and development database guards; independent
   of the dashboard implementation and never run automatically.
+- **US2 book restoration**: Extends existing book archive/list behavior; it is
+  independently testable after authenticated catalog management.
+- **US4 member restoration**: Extends existing member archive/list behavior; it is
+  independently testable after authenticated member management.
 
 ### Within Each User Story
 
@@ -272,6 +337,11 @@ and end-to-end quickstart validation.
   when their shared API contract is stable.
 - T048 seed safety tests can be written alongside T051 accessibility tests; implement
   seed behavior only after its safety tests exist.
+- In US2 restoration, T055 and T056 can run in parallel; T057 uses a separate frontend
+  test file from backend tasks. Implement service, route, client, and UI tasks in order.
+- In US4 restoration, T062 and T063 target backend and frontend test files respectively;
+  write both before their story's implementation, then complete service, route, client,
+  and UI tasks in order.
 
 ## Parallel Example: Login-First Dashboard
 
@@ -289,8 +359,11 @@ and end-to-end quickstart validation.
    lending, then complete discovery and overdue tracking.
 4. Add explicit local provisioning and sample seeding only with fail-closed database
    guards; never run either implicitly from `npm run dev`.
-5. Run all validation commands and the quickstart against a safe development database.
+5. Add US2 and US4 archived-record discovery and restoration, verifying that history and
+   domain state remain intact.
+6. Run all validation commands and the quickstart against a safe development database.
 
 **Suggested MVP**: Phase 1, Phase 2, and US1 provide the login-first dashboard shell.
 For a usable library MVP, add US2, US3, and US4 so authenticated librarians can create
 members/books and issue/return books. US5 and US6 complete discovery and overdue tracking.
+Phases 10 and 11 complete the reversible archive workflow for books and members.

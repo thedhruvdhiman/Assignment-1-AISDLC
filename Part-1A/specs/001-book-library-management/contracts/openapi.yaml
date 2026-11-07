@@ -94,6 +94,7 @@ paths:
         - { $ref: "#/components/parameters/Search" }
         - { $ref: "#/components/parameters/Category" }
         - { $ref: "#/components/parameters/BookStatus" }
+        - { $ref: "#/components/parameters/Archived" }
         - name: sort
           in: query
           schema: { type: string, enum: [title, created_at, status_priority], default: title }
@@ -201,6 +202,30 @@ paths:
           $ref: "#/components/responses/NotFound"
         "409":
           $ref: "#/components/responses/Conflict"
+  /books/{bookId}/restore:
+    post:
+      tags: [Books]
+      summary: Restore an archived book to the active catalog
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      parameters:
+        - { $ref: "#/components/parameters/BookId" }
+      responses:
+        "200":
+          description: Restored book; all other book fields and loan history are preserved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
   /members:
     get:
       tags: [Members]
@@ -208,6 +233,7 @@ paths:
       security:
         - sessionCookie: []
       parameters:
+        - { $ref: "#/components/parameters/Archived" }
         - { $ref: "#/components/parameters/Page" }
         - { $ref: "#/components/parameters/PageSize" }
       responses:
@@ -242,6 +268,30 @@ paths:
           $ref: "#/components/responses/BadRequest"
         "401":
           $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /members/{memberId}/restore:
+    post:
+      tags: [Members]
+      summary: Restore an archived member to the active member list
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      parameters:
+        - { $ref: "#/components/parameters/MemberId" }
+      responses:
+        "200":
+          description: Restored member; loan counts and history are preserved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Member"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
         "409":
           $ref: "#/components/responses/Conflict"
   /members/{memberId}:
@@ -453,6 +503,11 @@ components:
       name: status
       in: query
       schema: { type: string, enum: [available, issued, maintenance] }
+    Archived:
+      name: archived
+      in: query
+      description: Select archived records when true; active records are returned by default.
+      schema: { type: boolean, default: false }
     Page:
       name: page
       in: query

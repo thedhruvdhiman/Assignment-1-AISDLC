@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "dev": "concurrently -k -n api,web \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "lint": "eslint backend frontend",
     "build": "npm run build -w backend && npm run build -w frontend",
     "typecheck": "npm run typecheck -w backend && npm run typecheck -w frontend",
     "test": "npm run test -w backend && npm run test -w frontend",
@@ -14,8 +15,12 @@
     "seed:dev": "npm run seed:dev -w backend"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "concurrently": "^9.2.1",
-    "typescript": "^5.9.3"
+    "eslint": "^10.14.0",
+    "eslint-plugin-vue": "^10.12.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.72.1"
   },
   "allowScripts": {
     "argon2@0.44.0": true,

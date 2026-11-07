@@ -50,8 +50,22 @@ export async function archiveMember(id: string): Promise<void> {
   await member.save();
 }
 
-export async function listMembers(page: number, pageSize: number) {
-  const filter = { archived_at: null };
+export async function restoreMember(id: string): Promise<Record<string, unknown>> {
+  const member = await Member.findOneAndUpdate(
+    { _id: id, archived_at: { $ne: null } },
+    { $set: { archived_at: null } },
+    { new: true, runValidators: true },
+  ).lean();
+  if (member) return publicMember(member as unknown as Record<string, unknown>);
+
+  if (!await Member.exists({ _id: id })) {
+    throw new HttpError(404, 'MEMBER_NOT_FOUND', 'Member not found.');
+  }
+  throw new HttpError(409, 'MEMBER_NOT_ARCHIVED', 'The member is already active.');
+}
+
+export async function listMembers(page: number, pageSize: number, archived = false) {
+  const filter = { archived_at: archived ? { $ne: null } : null };
   const [items, total] = await Promise.all([
     Member.find(filter).sort({ name: 1, _id: 1 }).skip((page - 1) * pageSize).limit(pageSize).lean(),
     Member.countDocuments(filter),

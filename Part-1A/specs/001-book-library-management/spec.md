@@ -100,11 +100,14 @@ remove it when it has no active loan.
    that ISBN, **Then** the change is rejected with a clear explanation and the existing
    record remains unchanged.
 3. **Given** a book without an active loan, **When** a librarian updates or deletes it,
-   **Then** the catalog reflects the successful change.
+   **Then** the catalog reflects the successful change; a deleted book is archived,
+   removed from the active catalog, and available in the Archived books view.
 4. **Given** a book with an active loan, **When** a librarian attempts to delete it,
    **Then** deletion is rejected and the loan and book remain intact.
 5. **Given** a book record, **When** a librarian changes its status to maintenance,
    **Then** it cannot be issued until it is returned to available status.
+6. **Given** an archived book, **When** a librarian opens Archived books and restores it,
+   **Then** it returns to the active catalog with its loan history and status preserved.
 
 ---
 
@@ -126,9 +129,13 @@ the member when there are no active loans.
    to register or update a member with that email, **Then** the change is rejected and
    the existing member record remains unchanged.
 3. **Given** a member with no active loans, **When** a librarian updates or deletes the
-   member, **Then** the member list reflects the successful change.
+   member, **Then** the member list reflects the successful change; a deleted member is
+   archived, removed from the active list, and available in the Archived members view.
 4. **Given** a member with an active loan, **When** a librarian attempts to delete that
    member, **Then** deletion is rejected and the loan remains associated with the member.
+5. **Given** an archived member, **When** a librarian opens Archived members and restores
+   the member, **Then** it returns to the active member list with its loan history and
+   active-loan count preserved.
 
 ---
 
@@ -263,6 +270,13 @@ only past-due, unreturned loans appear as overdue.
   for local development. The command MUST refuse production mode and non-local MongoDB
   hosts or unapproved database names, avoid duplicate sample records, and MUST NOT run
   automatically against a remote database.
+- **FR-023**: Deleting a book or member MUST archive it rather than permanently remove
+  the record, preserving its identifier and loan history. The librarian interface MUST
+  provide clearly accessible Archived books and Archived members views, separate from
+  the active catalog and member list, and a restore action for archived records.
+  Restoring MUST return a record to its active list without changing its book status,
+  member loan count, or loan history. Deletion of a record with an active loan MUST
+  remain rejected.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -302,6 +316,9 @@ only past-due, unreturned loans appear as overdue.
 - **SC-010**: The development seed command can be run repeatedly without creating
   duplicate sample records and refuses a production, non-local, or unapproved database
   target.
+- **SC-011**: Every archived book and member can be found in its corresponding
+  librarian-only Archived view and restored to the active list with its identifier,
+  loan history, and other domain state preserved.
 
 ## Assumptions
 

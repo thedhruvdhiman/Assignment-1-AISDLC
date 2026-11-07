@@ -1,0 +1,156 @@
+{
+  "command": "python3 .harness/run.py",
+  "completed_at": "2026-11-07T17:50:43+00:00",
+  "gates": {
+    "Integrity": {
+      "command": [
+        "python3",
+        ".harness/run.py",
+        "--integrity-check"
+      ],
+      "completed_at": null,
+      "exit_code": 0,
+      "output": "Test hashes and prior run-history chain verified.",
+      "started_at": null,
+      "status": "PASS"
+    },
+    "Lint": {
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "completed_at": null,
+      "exit_code": 0,
+      "output": "npm notice run lint\nnpm notice run eslint backend frontend\n",
+      "started_at": null,
+      "status": "PASS"
+    },
+    "Secrets scan": {
+      "command": [
+        "python3",
+        ".harness/run.py",
+        "--secrets-scan"
+      ],
+      "completed_at": null,
+      "exit_code": 0,
+      "output": "No configured secret patterns found in non-ignored project files.",
+      "started_at": null,
+      "status": "PASS"
+    },
+    "Security": {
+      "command": [
+        "npm",
+        "audit",
+        "--json"
+      ],
+      "completed_at": null,
+      "exit_code": 1,
+      "output": "{\n  \"auditReportVersion\": 2,\n  \"vulnerabilities\": {\n    \"@eslint/config-array\": {\n      \"name\": \"@eslint/config-array\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"minimatch\"\n      ],\n      \"effects\": [\n        \"eslint\"\n      ],\n      \"range\": \">=0.23.0\",\n      \"nodes\": [\n        \"node_modules/@eslint/config-array\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"eslint\",\n        \"version\": \"9.39.5\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"@eslint/js\": {\n      \"name\": \"@eslint/js\",\n      \"severity\": \"moderate\",\n      \"isDirect\": true,\n      \"via\": [\n        \"eslint\"\n      ],\n      \"effects\": [],\n      \"range\": \">=10.0.1\",\n      \"nodes\": [\n        \"node_modules/@eslint/js\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"@eslint/js\",\n        \"version\": \"9.39.5\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"@jest/core\": {\n      \"name\": \"@jest/core\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"@jest/reporters\",\n        \"@jest/transform\",\n        \"jest-config\",\n        \"jest-resolve-dependencies\",\n        \"jest-runner\",\n        \"jest-runtime\",\n        \"jest-snapshot\"\n      ],\n      \"effects\": [\n        \"jest\",\n        \"jest-cli\"\n      ],\n      \"range\": \">=25.2.0-alpha.86\",\n      \"nodes\": [\n        \"node_modules/@jest/core\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"@jest/expect\": {\n      \"name\": \"@jest/expect\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"jest-snapshot\"\n      ],\n      \"effects\": [\n        \"@jest/globals\",\n        \"jest-circus\"\n      ],\n      \"range\": \">=30.5.0\",\n      \"nodes\": [\n        \"node_modules/@jest/expect\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"@jest/globals\": {\n      \"name\": \"@jest/globals\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"@jest/expect\"\n      ],\n      \"effects\": [\n        \"jest-runtime\"\n      ],\n      \"range\": \">=30.5.0\",\n      \"nodes\": [\n        \"node_modules/@jest/globals\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"@jest/reporters\": {\n      \"name\": \"@jest/reporters\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"@jest/transform\",\n        \"glob\"\n      ],\n      \"effects\": [\n        \"@jest/core\"\n      ],\n      \"range\": \">=30.0.0-alpha.1\",\n      \"nodes\": [\n        \"node_modules/@jest/reporters\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"@jest/transform\": {\n      \"name\": \"@jest/transform\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"babel-plugin-istanbul\"\n      ],\n      \"effects\": [\n        \"@jest/core\",\n        \"@jest/reporters\",\n        \"babel-jest\",\n        \"jest-runner\",\n        \"jest-runtime\",\n        \"jest-snapshot\"\n      ],\n      \"range\": \">=30.5.0\",\n      \"nodes\": [\n        \"node_modules/@jest/transform\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"@typescript-eslint/eslint-plugin\": {\n      \"name\": \"@typescript-eslint/eslint-plugin\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"@typescript-eslint/parser\",\n        \"@typescript-eslint/type-utils\",\n        \"@typescript-eslint/utils\"\n      ],\n      \"effects\": [\n        \"typescript-eslint\"\n      ],\n      \"range\": \">=6.16.0\",\n      \"nodes\": [\n        \"node_modules/@typescript-eslint/eslint-plugin\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"typescript-eslint\",\n        \"version\": \"8.36.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"@typescript-eslint/parser\": {\n      \"name\": \"@typescript-eslint/parser\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"@typescript-eslint/typescript-estree\"\n      ],\n      \"effects\": [\n        \"@typescript-eslint/eslint-plugin\",\n        \"eslint-plugin-vue\",\n        \"typescript-eslint\"\n      ],\n      \"range\": \">=6.16.0\",\n      \"nodes\": [\n        \"node_modules/@typescript-eslint/parser\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"typescript-eslint\",\n        \"version\": \"8.36.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"@typescript-eslint/type-utils\": {\n      \"name\": \"@typescript-eslint/type-utils\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"@typescript-eslint/typescript-estree\",\n        \"@typescript-eslint/utils\"\n      ],\n      \"effects\": [\n        \"@typescript-eslint/eslint-plugin\"\n      ],\n      \"range\": \">=6.16.0\",\n      \"nodes\": [\n        \"node_modules/@typescript-eslint/type-utils\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"typescript-eslint\",\n        \"version\": \"8.36.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"@typescript-eslint/typescript-estree\": {\n      \"name\": \"@typescript-eslint/typescript-estree\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"minimatch\"\n      ],\n      \"effects\": [\n        \"@typescript-eslint/parser\",\n        \"@typescript-eslint/type-utils\",\n        \"@typescript-eslint/utils\",\n        \"typescript-eslint\"\n      ],\n      \"range\": \">=6.16.0\",\n      \"nodes\": [\n        \"node_modules/@typescript-eslint/typescript-estree\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"typescript-eslint\",\n        \"version\": \"8.36.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"@typescript-eslint/utils\": {\n      \"name\": \"@typescript-eslint/utils\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"@typescript-eslint/typescript-estree\"\n      ],\n      \"effects\": [\n        \"@typescript-eslint/eslint-plugin\",\n        \"@typescript-eslint/type-utils\",\n        \"typescript-eslint\"\n      ],\n      \"range\": \">=6.16.0\",\n      \"nodes\": [\n        \"node_modules/@typescript-eslint/utils\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"typescript-eslint\",\n        \"version\": \"8.36.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"@vitest/mocker\": {\n      \"name\": \"@vitest/mocker\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        {\n          \"source\": 1193684,\n          \"name\": \"@vitest/mocker\",\n          \"dependency\": \"@vitest/mocker\",\n          \"title\": \"Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock\",\n          \"url\": \"https://github.com/advisories/GHSA-82fw-gwwq-j7x9\",\n          \"severity\": \"moderate\",\n          \"cwe\": [\n            \"CWE-22\"\n          ],\n          \"cvss\": {\n            \"score\": 5.9,\n            \"vectorString\": \"CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N\"\n          },\n          \"range\": \">=2.1.0 <4.1.11\"\n        },\n        {\n          \"source\": 1242767,\n          \"name\": \"@vitest/mocker\",\n          \"dependency\": \"@vitest/mocker\",\n          \"title\": \"Vitest: Code injection via unauthenticated manual mock registration\",\n          \"url\": \"https://github.com/advisories/GHSA-qxg6-89mg-rqv8\",\n          \"severity\": \"moderate\",\n          \"cwe\": [\n            \"CWE-94\",\n            \"CWE-116\",\n            \"CWE-306\"\n          ],\n          \"cvss\": {\n            \"score\": 4.7,\n            \"vectorString\": \"CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N\"\n          },\n          \"range\": \">=2.1.0-beta.7 <4.1.12\"\n        }\n      ],\n      \"effects\": [\n        \"vitest\"\n      ],\n      \"range\": \"<=4.1.11\",\n      \"nodes\": [\n        \"node_modules/@vitest/mocker\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"vitest\",\n        \"version\": \"5.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"@vue/test-utils\": {\n      \"name\": \"@vue/test-utils\",\n      \"severity\": \"moderate\",\n      \"isDirect\": true,\n      \"via\": [\n        \"js-beautify\"\n      ],\n      \"effects\": [],\n      \"range\": \">=2.5.0\",\n      \"nodes\": [\n        \"node_modules/@vue/test-utils\"\n      ],\n      \"fixAvailable\": true\n    },\n    \"babel-jest\": {\n      \"name\": \"babel-jest\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"@jest/transform\",\n        \"babel-plugin-istanbul\"\n      ],\n      \"effects\": [\n        \"jest-config\"\n      ],\n      \"range\": \">=30.5.0\",\n      \"nodes\": [\n        \"node_modules/babel-jest\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"babel-plugin-istanbul\": {\n      \"name\": \"babel-plugin-istanbul\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"test-exclude\"\n      ],\n      \"effects\": [\n        \"@jest/transform\",\n        \"babel-jest\"\n      ],\n      \"range\": \">=8.0.0\",\n      \"nodes\": [\n        \"node_modules/babel-plugin-istanbul\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"deepmerge\": {\n      \"name\": \"deepmerge\",\n      \"severity\": \"low\",\n      \"isDirect\": false,\n      \"via\": [\n        {\n          \"source\": 1243505,\n          \"name\": \"deepmerge\",\n          \"dependency\": \"deepmerge\",\n          \"title\": \"deepmerge mergeObject() allows prototype poisoning of returned objects\",\n          \"url\": \"https://github.com/advisories/GHSA-gcqx-w48m-w2h4\",\n          \"severity\": \"low\",\n          \"cwe\": [\n            \"CWE-1321\"\n          ],\n          \"cvss\": {\n            \"score\": 5.3,\n            \"vectorString\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N\"\n          },\n          \"range\": \">=4.2.0 <=4.3.1\"\n        }\n      ],\n      \"effects\": [\n        \"jest-config\"\n      ],\n      \"range\": \">=4.2.0\",\n      \"nodes\": [\n        \"node_modules/deepmerge\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"editorconfig\": {\n      \"name\": \"editorconfig\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"minimatch\"\n      ],\n      \"effects\": [\n        \"js-beautify\"\n      ],\n      \"range\": \">=1.0.3\",\n      \"nodes\": [\n        \"node_modules/editorconfig\"\n      ],\n      \"fixAvailable\": true\n    },\n    \"eslint\": {\n      \"name\": \"eslint\",\n      \"severity\": \"moderate\",\n      \"isDirect\": true,\n      \"via\": [\n        \"@eslint/config-array\",\n        \"minimatch\"\n      ],\n      \"effects\": [\n        \"@eslint/js\"\n      ],\n      \"range\": \">=10.0.0-alpha.0\",\n      \"nodes\": [\n        \"node_modules/eslint\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"eslint\",\n        \"version\": \"9.39.5\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"eslint-plugin-vue\": {\n      \"name\": \"eslint-plugin-vue\",\n      \"severity\": \"moderate\",\n      \"isDirect\": true,\n      \"via\": [\n        \"@typescript-eslint/parser\"\n      ],\n      \"effects\": [],\n      \"range\": \">=10.3.0\",\n      \"nodes\": [\n        \"node_modules/eslint-plugin-vue\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"eslint-plugin-vue\",\n        \"version\": \"10.2.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"glob\": {\n      \"name\": \"glob\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        {\n          \"source\": 1244013,\n          \"name\": \"glob\",\n          \"dependency\": \"glob\",\n          \"title\": \"Glob: AbortSignal cancellation bypass allows post-timeout filesystem traversal\",\n          \"url\": \"https://github.com/advisories/GHSA-3g3m-2fjr-6pw4\",\n          \"severity\": \"moderate\",\n          \"cwe\": [\n            \"CWE-400\"\n          ],\n          \"cvss\": {\n            \"score\": 0,\n            \"vectorString\": null\n          },\n          \"range\": \">=9.0.0 <=14.0.1\"\n        },\n        \"minimatch\"\n      ],\n      \"effects\": [\n        \"@jest/reporters\",\n        \"jest-config\",\n        \"jest-runtime\",\n        \"js-beautify\",\n        \"test-exclude\"\n      ],\n      \"range\": \"9.0.0 - 14.0.1\",\n      \"nodes\": [\n        \"node_modules/glob\",\n        \"node_modules/test-exclude/node_modules/glob\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"jest\": {\n      \"name\": \"jest\",\n      \"severity\": \"low\",\n      \"isDirect\": true,\n      \"via\": [\n        \"@jest/core\",\n        \"jest-cli\"\n      ],\n      \"effects\": [\n        \"ts-jest\"\n      ],\n      \"range\": \">=25.2.0-alpha.86\",\n      \"nodes\": [\n        \"node_modules/jest\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"jest-circus\": {\n      \"name\": \"jest-circus\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"@jest/expect\",\n        \"jest-runtime\",\n        \"jest-snapshot\"\n      ],\n      \"effects\": [\n        \"jest-config\"\n      ],\n      \"range\": \">=30.0.0-alpha.1\",\n      \"nodes\": [\n        \"node_modules/jest-circus\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"jest-cli\": {\n      \"name\": \"jest-cli\",\n      \"severity\": \"low\",\n      \"isDirect\": false,\n      \"via\": [\n        \"@jest/core\",\n        \"jest-config\"\n      ],\n      \"effects\": [\n        \"jest\"\n      ],\n      \"range\": \">=25.2.0-alpha.86\",\n      \"nodes\": [\n        \"node_modules/jest-cli\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"jest-config\": {\n      \"name\": \"jest-config\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"babel-jest\",\n        \"deepmerge\",\n        \"glob\",\n        \"jest-circus\",\n        \"jest-runner\"\n      ],\n      \"effects\": [\n        \"@jest/core\",\n        \"jest-cli\"\n      ],\n      \"range\": \">=25.2.0-alpha.86\",\n      \"nodes\": [\n        \"node_modules/jest-config\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"jest-resolve-dependencies\": {\n      \"name\": \"jest-resolve-dependencies\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"jest-snapshot\"\n      ],\n      \"effects\": [\n        \"@jest/core\"\n      ],\n      \"range\": \">=30.5.0\",\n      \"nodes\": [\n        \"node_modules/jest-resolve-dependencies\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"jest-runner\": {\n      \"name\": \"jest-runner\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"@jest/transform\",\n        \"jest-runtime\"\n      ],\n      \"effects\": [\n        \"@jest/core\",\n        \"jest-config\"\n      ],\n      \"range\": \">=30.0.0-alpha.1\",\n      \"nodes\": [\n        \"node_modules/jest-runner\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"jest-runtime\": {\n      \"name\": \"jest-runtime\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"@jest/globals\",\n        \"@jest/transform\",\n        \"glob\",\n        \"jest-snapshot\"\n      ],\n      \"effects\": [\n        \"@jest/core\",\n        \"jest-circus\",\n        \"jest-runner\"\n      ],\n      \"range\": \">=30.0.0-alpha.1\",\n      \"nodes\": [\n        \"node_modules/jest-runtime\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"jest-snapshot\": {\n      \"name\": \"jest-snapshot\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"@jest/transform\"\n      ],\n      \"effects\": [\n        \"@jest/core\",\n        \"@jest/expect\",\n        \"jest-circus\",\n        \"jest-resolve-dependencies\",\n        \"jest-runtime\"\n      ],\n      \"range\": \">=30.5.0\",\n      \"nodes\": [\n        \"node_modules/jest-snapshot\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"js-beautify\": {\n      \"name\": \"js-beautify\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"editorconfig\",\n        \"glob\"\n      ],\n      \"effects\": [\n        \"@vue/test-utils\"\n      ],\n      \"range\": \">=1.14.9\",\n      \"nodes\": [\n        \"node_modules/js-beautify\"\n      ],\n      \"fixAvailable\": true\n    },\n    \"minimatch\": {\n      \"name\": \"minimatch\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        {\n          \"source\": 1244623,\n          \"name\": \"minimatch\",\n          \"dependency\": \"minimatch\",\n          \"title\": \"minimatch has potential denial of service via globparts amplification\",\n          \"url\": \"https://github.com/advisories/GHSA-g3hv-75wg-m249\",\n          \"severity\": \"moderate\",\n          \"cwe\": [\n            \"CWE-405\"\n          ],\n          \"cvss\": {\n            \"score\": 0,\n            \"vectorString\": null\n          },\n          \"range\": \">=7.0.0 <11.0.1\"\n        }\n      ],\n      \"effects\": [\n        \"@eslint/config-array\",\n        \"@typescript-eslint/typescript-estree\",\n        \"editorconfig\",\n        \"eslint\",\n        \"glob\",\n        \"test-exclude\"\n      ],\n      \"range\": \"7.0.0 - 11.0.0\",\n      \"nodes\": [\n        \"node_modules/minimatch\",\n        \"node_modules/test-exclude/node_modules/glob/node_modules/minimatch\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"eslint\",\n        \"version\": \"9.39.5\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"test-exclude\": {\n      \"name\": \"test-exclude\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"glob\",\n        \"minimatch\"\n      ],\n      \"effects\": [\n        \"babel-plugin-istanbul\"\n      ],\n      \"range\": \">=7.0.0\",\n      \"nodes\": [\n        \"node_modules/test-exclude\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"jest\",\n        \"version\": \"25.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"tinypool\": {\n      \"name\": \"tinypool\",\n      \"severity\": \"critical\",\n      \"isDirect\": false,\n      \"via\": [\n        {\n          \"source\": 1241260,\n          \"name\": \"tinypool\",\n          \"dependency\": \"tinypool\",\n          \"title\": \"Tinypool: Prototype Pollution gadget in worker options leads to Remote Code Execution\",\n          \"url\": \"https://github.com/advisories/GHSA-5gmw-xhrv-c9v3\",\n          \"severity\": \"critical\",\n          \"cwe\": [\n            \"CWE-1321\"\n          ],\n          \"cvss\": {\n            \"score\": 0,\n            \"vectorString\": null\n          },\n          \"range\": \"<=2.1.0\"\n        },\n        {\n          \"source\": 1241261,\n          \"name\": \"tinypool\",\n          \"dependency\": \"tinypool\",\n          \"title\": \"Tinypool: Prototype Pollution Gadget to RCE in run() options\",\n          \"url\": \"https://github.com/advisories/GHSA-85c8-ppgw-ccpr\",\n          \"severity\": \"critical\",\n          \"cwe\": [\n            \"CWE-94\",\n            \"CWE-1321\"\n          ],\n          \"cvss\": {\n            \"score\": 0,\n            \"vectorString\": null\n          },\n          \"range\": \"<2.1.2\"\n        }\n      ],\n      \"effects\": [\n        \"vitest\"\n      ],\n      \"range\": \"<=2.1.1\",\n      \"nodes\": [\n        \"node_modules/tinypool\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"vitest\",\n        \"version\": \"5.1.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"ts-jest\": {\n      \"name\": \"ts-jest\",\n      \"severity\": \"low\",\n      \"isDirect\": true,\n      \"via\": [\n        \"jest\"\n      ],\n      \"effects\": [],\n      \"range\": \">=25.10.0-alpha.1\",\n      \"nodes\": [\n        \"node_modules/ts-jest\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"ts-jest\",\n        \"version\": \"25.5.1\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"typescript-eslint\": {\n      \"name\": \"typescript-eslint\",\n      \"severity\": \"moderate\",\n      \"isDirect\": true,\n      \"via\": [\n        \"@typescript-eslint/eslint-plugin\",\n        \"@typescript-eslint/parser\",\n        \"@typescript-eslint/typescript-estree\",\n        \"@typescript-eslint/utils\"\n      ],\n      \"effects\": [],\n      \"range\": \"*\",\n      \"nodes\": [\n        \"node_modules/typescript-eslint\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"typescript-eslint\",\n        \"version\": \"8.36.0\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"vitest\": {\n      \"name\": \"vitest\",\n      \"severity\": \"critical\",\n      \"isDirect\": true,\n      \"via\": [\n        \"@vitest/mocker\",\n        {\n          \"source\": 1193683,\n          \"name\": \"vitest\",\n          \"dependency\": \"vitest\",\n          \"title\": \"Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock\",\n          \"url\": \"https://github.com/advisories/GHSA-82fw-gwwq-j7x9\",\n          \"severity\": \"moderate\",\n          \"cwe\": [\n            \"CWE-22\"\n          ],\n          \"cvss\": {\n            \"score\": 5.9,\n            \"vectorString\": \"CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N\"\n          },\n          \"range\": \">=2.1.0 <4.1.11\"\n        },\n        \"tinypool\"\n      ],\n      \"effects\": [],\n      \"range\": \"0.0.95 - 4.1.10\",\n      \"nodes\": [\n        \"node_modules/vitest\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"vitest\",\n        \"version\": \"5.1.0\",\n        \"isSemVerMajor\": true\n      }\n    }\n  },\n  \"metadata\": {\n    \"vulnerabilities\": {\n      \"info\": 0,\n      \"low\": 4,\n      \"moderate\": 30,\n      \"high\": 0,\n      \"critical\": 2,\n      \"total\": 36\n    },\n    \"dependencies\": {\n      \"prod\": 139,\n      \"dev\": 619,\n      \"optional\": 88,\n      \"peer\": 2,\n      \"peerOptional\": 0,\n      \"total\": 757\n    }\n  }\n}\n",
+      "started_at": null,
+      "status": "FAIL"
+    },
+    "Traceability": {
+      "command": [
+        "python3",
+        ".harness/run.py",
+        "--traceability-check"
+      ],
+      "completed_at": null,
+      "exit_code": 0,
+      "output": "Every functional requirement ID maps to an existing named test.",
+      "started_at": null,
+      "status": "PASS"
+    },
+    "Unit and contract tests": {
+      "command": [
+        "npm",
+        "run",
+        "test",
+        "-w",
+        "backend",
+        "--",
+        "--json",
+        "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-v8hmy_tr/jest-results.json",
+        "&&",
+        "npm",
+        "run",
+        "test",
+        "-w",
+        "frontend",
+        "--",
+        "--reporter=junit",
+        "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-v8hmy_tr/vitest-junit.xml"
+      ],
+      "completed_at": null,
+      "exit_code": 0,
+      "junit_report": "evidence/pytest-junit.xml",
+      "output": "=== Backend Jest (exit 0) ===\nnpm notice run test\nnpm notice run jest --runInBand --json --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-v8hmy_tr/jest-results.json\n\nTest Suites: 6 passed, 6 total\nTests:       40 passed, 40 total\nSnapshots:   0 total\nTime:        5.709 s, estimated 6 s\nRan all test suites.\nTest results written to: ../../../../../../../../../var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-v8hmy_tr/jest-results.json\n\n=== Frontend Vitest (exit 0) ===\nJUNIT report written to /var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-v8hmy_tr/vitest-junit.xml\n\nnpm notice run test\nnpm notice run vitest run --reporter=junit --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-v8hmy_tr/vitest-junit.xml\n\nJUnit report: evidence/pytest-junit.xml",
+      "started_at": null,
+      "status": "PASS",
+      "subcommands": {
+        "backend": {
+          "command": [
+            "npm",
+            "run",
+            "test",
+            "-w",
+            "backend",
+            "--",
+            "--json",
+            "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-v8hmy_tr/jest-results.json"
+          ],
+          "completed_at": null,
+          "exit_code": 0,
+          "output": "npm notice run test\nnpm notice run jest --runInBand --json --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-v8hmy_tr/jest-results.json\n\nTest Suites: 6 passed, 6 total\nTests:       40 passed, 40 total\nSnapshots:   0 total\nTime:        5.709 s, estimated 6 s\nRan all test suites.\nTest results written to: ../../../../../../../../../var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-v8hmy_tr/jest-results.json\n",
+          "started_at": null,
+          "status": "PASS"
+        },
+        "frontend": {
+          "command": [
+            "npm",
+            "run",
+            "test",
+            "-w",
+            "frontend",
+            "--",
+            "--reporter=junit",
+            "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-v8hmy_tr/vitest-junit.xml"
+          ],
+          "completed_at": null,
+          "exit_code": 0,
+          "output": "JUNIT report written to /var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-v8hmy_tr/vitest-junit.xml\n\nnpm notice run test\nnpm notice run vitest run --reporter=junit --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-v8hmy_tr/vitest-junit.xml\n",
+          "started_at": null,
+          "status": "PASS"
+        }
+      }
+    }
+  },
+  "history": {
+    "gates": {
+      "Integrity": "PASS",
+      "Lint": "PASS",
+      "Secrets scan": "PASS",
+      "Security": "FAIL",
+      "Traceability": "PASS",
+      "Unit and contract tests": "PASS"
+    },
+    "hash": "690daaf7744a5cd7300504300bcd6b11eaf0a05e6a2055658474465849737e3e",
+    "overall": "FAIL",
+    "previous_hash": "a5902f35240e5bab7d071da409a8086758ea2c86995a77c2170237198746b06e",
+    "run": "run-003",
+    "timestamp": "2026-11-07T17:50:29+00:00"
+  },
+  "notes": [
+    "Lint uses ESLint for the repository's TypeScript/Vue code.",
+    "Security uses npm audit for the full dependency tree; this repository is not a Python/Ruff/Bandit project.",
+    "The compatibility-named pytest-junit.xml is a merged report generated from Jest and Vitest machine reports."
+  ],
+  "overall": "FAIL",
+  "run": "run-003",
+  "started_at": "2026-11-07T17:50:29+00:00",
+  "timestamp_recovery": {
+    "gate_intervals": "Original per-gate timestamps were not recoverable; timestamp fields below are null rather than guessed.",
+    "run_interval_source": "Restored from contemporaneous harness command output retained in the session transcript."
+  }
+}

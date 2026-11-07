@@ -2,17 +2,19 @@
 
 **Branch**: `001-book-library-management` | **Date**: 2026-11-07 | **Spec**: [spec.md](./spec.md)
 
-**Input**: Feature specification from `/specs/001-book-library-management/spec.md`
+**Input**: Bug report: "After archiving the book or the member, the librarian cannot
+bring it back into the catalogue." Existing system requirements are in
+`/specs/001-book-library-management/spec.md`.
 
 ## Summary
 
-Deliver a desktop Vue.js library application backed by an Express REST API and MongoDB.
-The first screen is librarian sign-in; successful authentication reveals the dashboard,
-catalog, book/member management, and lending workflows. Mongoose schemas and MongoDB
-transactions preserve inventory, loan, and member-count consistency during issue and
-return. Local setup uses ignored `.env` credentials and explicit, guarded bootstrap and
-sample-data commands. The backend connects to the configured MongoDB before listening;
-the root `npm run dev` starts the API and Vite frontend together.
+Fix the archive workflow so a librarian can find archived books and members and restore
+them to the active catalog/member list. Use the existing `archived_at` state, add
+authenticated filtered list access and explicit restore operations, and expose archive
+and restore actions in the librarian interface. The librarian's delete action remains
+a reversible archive; dedicated active/archived views make deleted records easy to find.
+A restore clears only the archive marker; it preserves record identity, history, member
+counts, and a book's current status.
 
 ## Technical Context
 
@@ -43,6 +45,8 @@ formal backup or recovery objective in this release. Store operational events wi
 credentials, session identifiers, or unnecessary member personal data. Never commit
 real `.env` values. Development credentials are not available in production. Sample
 seeding must be explicit, idempotent, and reject production or non-local database targets.
+Ordinary book/member lists continue to exclude archived records by default; archived
+records retain their identifiers and unique ISBN/email values.
 
 **Scale/Scope**: One branch; 10,000-book search performance target; one book record per
 unique ISBN as defined by the spec; no configured member loan limit.
@@ -53,17 +57,21 @@ unique ISBN as defined by the spec; no configured member loan limit.
 
 | Principle or constraint | Plan response | Gate |
 |---|---|---|
-| Domain State Integrity | Issue and return are conditional, atomic MongoDB transactions; derived overdue state and deletion behavior preserve loan references. | PASS |
-| Contract-First Full-Stack Design | Vue communicates only through the documented `/api` REST contract. | PASS |
-| Validated Data and Safe Operations | Validate at API and Mongoose boundaries; enforce normalized unique indexes; return explicit errors. | PASS |
-| Automated Verification | Cover transaction concurrency and API behavior with Jest/Supertest; cover Vue interactions with Vitest. | PASS |
-| Predictable, Usable Workflows | Stable pagination and sorting, empty/error states, desktop UI, and WCAG 2.2 AA are planned. | PASS |
+| Domain State Integrity | Restore updates only the archive marker; retained book/member IDs and loan references are unchanged. Existing lending invariants remain in force. | PASS |
+| Contract-First Full-Stack Design | Document archived-list filtering and restore endpoints in OpenAPI; the Vue client uses those API contracts. | PASS |
+| Validated Data and Safe Operations | Validate archive query values and IDs; only archived records can transition to active, with explicit not-found/conflict errors. | PASS |
+| Automated Verification | Cover archived/active list separation, restore state transitions, authorization/CSRF, and UI actions with Jest/Supertest and Vitest. | PASS |
+| Predictable, Usable Workflows | Provide explicit archived/active list modes, accessible restore actions, clear empty/error states, and preserve pagination behavior. | PASS |
 | Technology & Data Constraints | Vue/Vite, Express, MongoDB/Mongoose, ObjectId references, and a replica-set transaction environment are included. | PASS |
 | Authentication boundary | Sign-in precedes the dashboard; all catalog/member/loan data APIs require a librarian session. | PASS |
 | Local development setup safety | Credentials remain in ignored local env; sample seeding is explicit, idempotent, and local-only. | PASS |
 | Availability and recovery | No SLA or recovery target is required for this release, as explicitly recorded in the spec. | PASS |
 
 No constitution gate violations identified.
+
+**Post-design check**: PASS. The restoration design preserves existing domain,
+authorization, contract, and verification requirements; no exception or unresolved
+clarification is required.
 
 ## Project Structure
 
@@ -84,33 +92,24 @@ specs/001-book-library-management/
 ```text
 backend/
 ├── src/
-│   ├── app.ts
-│   ├── server.ts
-│   ├── config/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── scripts/       # account provisioning and local-only seed command
-│   ├── services/
-│   └── observability/
+│   ├── models/        # existing Book and Member archive markers
+│   ├── routes/        # list filter and restore endpoints
+│   └── services/      # archive/restore state transitions
 └── tests/
-    ├── integration/
-    └── support/
+    └── integration/   # persistence, API, authorization, and CSRF coverage
 
 frontend/
 ├── src/
-│   ├── api/
-│   ├── components/
-│   ├── views/
-│   ├── router/
-│   └── stores/
+│   ├── api/           # archived-list and restore calls
+│   └── App.vue        # librarian archive/restore controls
 └── tests/
     └── components/
+        └── CatalogView.test.ts
 ```
 
-**Structure Decision**: Use two npm workspace packages in one repository. Keep the
-frontend and backend separately runnable and testable, with all persistence and access
-control in the backend. The API contract is the integration boundary.
+**Structure Decision**: Extend the existing backend service/route and frontend API
+modules and `App.vue`; do not add a new persistence model or bypass the REST boundary.
+The existing OpenAPI contract remains the frontend/backend integration boundary.
 
 ## Design Decisions
 
@@ -141,7 +140,22 @@ control in the backend. The API contract is the integration boundary.
   stale if a scheduled task is delayed or unavailable.
 - **Loan history and deletion**: Reject deletion of books or members with active loans.
   Archive records with historical loans instead of physically removing referenced
-  records; exclude archived records from ordinary catalog/member lists.
+  records; exclude archived records from ordinary catalog/member lists. Provide a
+  separate archived-list mode and restore action. Restore only records that are
+  currently archived; an invalid state transition returns a conflict. Preserve a book's
+  existing status and a member's active-loan count, and never rewrite loan history.
+- **Restore API and state transition**: Add `archived` list query filters to books and
+  members (default `false`, `true` selects archived records) and authenticated,
+  CSRF-protected `POST /api/books/{bookId}/restore` and
+  `POST /api/members/{memberId}/restore` operations. Restore atomically clears
+  `archived_at`; missing records return 404 and records not currently archived return
+  409. Return the restored resource so the client can refresh its active list.
+- **Delete and restore interface**: On book management and member screens, the delete
+  action archives the record rather than permanently removing it. Provide clear
+  Active and Archived views so librarians can easily find deleted books and members.
+  Archived mode offers restore, not edit/delete actions; after success, switch the
+  record back to the ordinary active list and announce the result accessibly. Existing
+  loan history remains linked to the archived record.
 - **Dates**: Store issue and return instants as UTC timestamps. Store the due date as a
   calendar date interpreted using a required IANA `LIBRARY_TIME_ZONE` setting.
 - **Errors and observability**: Return stable error codes and safe messages to clients.

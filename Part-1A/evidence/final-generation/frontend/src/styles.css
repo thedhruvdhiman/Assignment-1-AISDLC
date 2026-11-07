@@ -1,0 +1,49 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #233044;
+  background: #f5f7fa;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 900px; }
+button, input, select { font: inherit; }
+button { cursor: pointer; border: 0; border-radius: 6px; padding: 0.62rem 0.95rem; background: #145a55; color: white; }
+button:hover { background: #0e4541; }
+button:disabled { cursor: not-allowed; opacity: 0.55; }
+button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid #8a4b00; outline-offset: 2px; }
+label { display: grid; gap: 0.4rem; font-size: 0.88rem; font-weight: 600; }
+input, select { min-height: 42px; padding: 0.55rem 0.65rem; border: 1px solid #667085; border-radius: 5px; background: white; }
+.shell { max-width: 1440px; margin: auto; padding: 0 2.5rem 4rem; }
+.topbar { display: flex; align-items: center; gap: 2rem; min-height: 78px; border-bottom: 1px solid #d8dee8; }
+.brand { color: #145a55; font-size: 1.15rem; font-weight: 750; text-decoration: none; }
+nav { display: flex; gap: 0.5rem; flex: 1; }
+nav button { background: transparent; color: #35455a; }
+nav button[aria-current="page"] { color: #145a55; background: #e4efed; }
+.topbar > button:last-child { background: #35455a; }
+.page-heading { padding: 2.5rem 0 1.4rem; }
+h1 { margin: 0.25rem 0 0; font-size: 2rem; }
+h2 { margin-top: 0; }
+.eyebrow { color: #55706e; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.75rem; font-weight: 700; }
+.filters { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1rem; padding: 1.2rem; background: white; border: 1px solid #e1e6ed; border-radius: 10px; }
+.form-panel, .workspace { margin: 1.5rem 0; padding: 1.35rem; background: white; border: 1px solid #e1e6ed; border-radius: 10px; }
+.inline-form { display: flex; align-items: end; gap: 1rem; }
+.inline-form label { flex: 1; }
+.data-table { width: 100%; margin-top: 1.5rem; border-collapse: collapse; background: white; text-align: left; }
+.data-table caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+th, td { padding: 0.9rem 0.8rem; border-bottom: 1px solid #e6eaf0; }
+th { color: #4a5b70; background: #edf1f5; font-size: 0.82rem; }
+td small { display: block; margin-top: 0.25rem; color: #6b7787; }
+.actions { display: flex; gap: 0.5rem; }
+.actions button { padding: 0.45rem 0.65rem; }
+.empty, .notice { margin-top: 1.5rem; padding: 1rem; border-radius: 7px; background: #fff; }
+.notice { border-left: 4px solid #bd4c39; color: #743529; }
+.pager { display: flex; align-items: center; justify-content: center; gap: 1.25rem; margin-top: 1.5rem; }
+.session-loading { margin: 20vh auto 0; width: fit-content; }
+.signin { width: min(440px, 100%); margin: 12vh auto 0; padding: 2rem; background: white; border: 1px solid #d8dee8; border-radius: 9px; box-shadow: 0 8px 26px #23304420; }
+.signin form { display: grid; gap: 0.8rem; }
+.signin h1 { margin: 0 0 1.25rem; }
+.modal { position: fixed; top: 30%; left: 50%; transform: translateX(-50%); width: 440px; padding: 1.5rem; border: 1px solid #d8dee8; border-radius: 10px; box-shadow: 0 12px 40px #17253330; }
+.modal::backdrop { background: #17253355; }
+.modal label { margin: 1rem 0; }

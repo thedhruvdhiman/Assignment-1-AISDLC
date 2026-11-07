@@ -1,0 +1,13 @@
+{
+  "created_at": "2026-11-07T17:47:50+00:00",
+  "files": {
+    "backend/tests/contract/openapi.test.ts": "e6e221092a701fc2e8ea5751c35c883ff861547be34b029a117b3022430cc979",
+    "backend/tests/integration/library-api.test.ts": "70c8d626d2146a8183b9cb2272ecc027db1dffbd9ba2f75a260b75b1a5393a65",
+    "backend/tests/integration/seed-safety.test.ts": "bd5e84b2793ad1a9a43295cbb60931219767f8a7f378b173ce2ae86ce07988bb",
+    "backend/tests/integration/startup.test.ts": "c37ebfc408b561396a5d9ecd7e86632e373a876d167e55d42e184d275fae4a2b",
+    "backend/tests/unit/development-database.test.ts": "d1226f8ae566598ec68bab9889d85c7f17ac3e01d62a782599b0709257b284e9",
+    "backend/tests/unit/due-date.test.ts": "1d7aac6de46d7406e6d857d236d24ed845ecde7e4c21e9af2fad729087f2b2d6",
+    "frontend/tests/components/CatalogView.test.ts": "11a2c44663b0d669d2c311f3c5960a806fa82d17ed11393eaf66a1f42187e5f6",
+    "frontend/tests/components/accessibility.test.ts": "ca18c9fb5d88f7a6192de3a651c8dbfca87af3c02e58b7ed1e40d86568cb8d2a"
+  }
+}

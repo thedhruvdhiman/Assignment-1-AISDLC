@@ -19,7 +19,7 @@ Represents one lendable inventory record with a unique ISBN.
 | `status` | enum | `available`, `issued`, or `maintenance`; defaults to `available`. |
 | `created_at` | UTC datetime | Set on creation. |
 | `updated_at` | UTC datetime | Updated on every change. |
-| `archived_at` | UTC datetime or null | Set on deletion when historical loans exist; omitted from normal listings. |
+| `archived_at` | UTC datetime or null | Set on archive; cleared on restore. Archived books are omitted from ordinary listings and exposed only in archived-list mode. |
 
 **Indexes and invariants**
 
@@ -31,6 +31,11 @@ Represents one lendable inventory record with a unique ISBN.
 - `status=issued` corresponds to one active/overdue loan. An issued book cannot be
   changed to available or maintenance while its loan is active.
 - `archived_at` records a logical deletion so historical loans retain a resolvable book.
+- Restore clears `archived_at` and updates `updated_at` through the existing model
+  timestamp behavior; preserve the book's ObjectId, status, ISBN, `created_at`, and
+  historical loan references.
+- The normalized ISBN remains unique while archived; creating a duplicate book does
+  not provide a substitute for restoring the original record.
 
 ## Member
 
@@ -44,7 +49,7 @@ Represents a borrower record.
 | `email_normalized` | string | Required; trimmed and case-folded for unique index. |
 | `active_loans_count` | integer | Non-negative; maintained in the same transaction as issue/return. |
 | `created_at` | UTC datetime | Set on creation. |
-| `archived_at` | UTC datetime or null | Set on deletion when historical loans exist; omitted from normal listings. |
+| `archived_at` | UTC datetime or null | Set on archive; cleared on restore. Archived members are omitted from ordinary listings and exposed only in archived-list mode. |
 
 **Indexes and invariants**
 
@@ -52,6 +57,10 @@ Represents a borrower record.
 - Cannot be archived while an active or overdue loan exists.
 - The stored active-loan count must equal the number of active/overdue loans. It is
   changed only in the associated issue/return transaction.
+- Restore clears `archived_at`; preserve the member's ObjectId, active-loan count,
+  email, `created_at`, and historical loan references.
+- The normalized email remains unique while archived; creating a duplicate member does
+  not provide a substitute for restoring the original record.
 
 ## Loan
 
@@ -106,6 +115,23 @@ values are not exposed in logs. The browser receives only the configured secure,
 HttpOnly session cookie.
 
 ## Transactional Workflows
+
+### Archive and restore
+
+- Archive remains a soft-delete operation. Books with active loans and members with
+  active loans cannot be archived.
+- List endpoints return active records by default and return archived records only
+  when the librarian explicitly selects archived mode. Both result sets retain the
+  existing pagination and deterministic book sorting behavior.
+- Restore uses a single-document conditional update from archived to active. It clears
+  `archived_at` only when that field is set; an unknown ID returns not found and an
+  already-active record returns a conflict.
+- Restore does not change book status, member loan counts, unique identifiers, creation
+  timestamps, or loan history. The book's `updated_at` follows the existing model
+  timestamp behavior. Restored records become visible to ordinary catalog/member lists
+  and eligible for subsequent workflows under the existing status and lending rules.
+- Archive and restore mutations require an authenticated librarian session and CSRF
+  validation.
 
 ### Issue
 
