@@ -1,0 +1,453 @@
+{
+  "timestamp": "2026-11-10T19:59:32.446Z",
+  "passed": true,
+  "metrics": {
+    "structuralPassRate": 1,
+    "invariantPassRate": 1,
+    "meanSemanticScore": 1,
+    "microPrecision": 1,
+    "microRecall": 1
+  },
+  "cases": [
+    {
+      "id": "MA-01",
+      "category": "normal",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-02",
+      "category": "normal",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 2,
+      "expected_count": 2,
+      "matched_count": 2
+    },
+    {
+      "id": "MA-03",
+      "category": "normal",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 2,
+      "expected_count": 2,
+      "matched_count": 2
+    },
+    {
+      "id": "MA-04",
+      "category": "normal",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 0,
+      "expected_count": 0,
+      "matched_count": 0
+    },
+    {
+      "id": "MA-05",
+      "category": "missing",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-06",
+      "category": "missing",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-07",
+      "category": "ambiguous",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-08",
+      "category": "ambiguous",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-09",
+      "category": "ambiguous",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-10",
+      "category": "ambiguous",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-11",
+      "category": "ambiguous",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-12",
+      "category": "ambiguous",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-13",
+      "category": "boundary",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 0,
+      "expected_count": 0,
+      "matched_count": 0
+    },
+    {
+      "id": "MA-14",
+      "category": "malformed",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 0,
+      "expected_count": 0,
+      "matched_count": 0
+    },
+    {
+      "id": "MA-15",
+      "category": "malformed",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 0,
+      "expected_count": 0,
+      "matched_count": 0
+    },
+    {
+      "id": "MA-16",
+      "category": "boundary",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-17",
+      "category": "boundary",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-18",
+      "category": "adversarial",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-19",
+      "category": "adversarial",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-20",
+      "category": "guardrail",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-21",
+      "category": "missing",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    },
+    {
+      "id": "MA-22",
+      "category": "boundary",
+      "structural": {
+        "valid": true,
+        "errors": []
+      },
+      "invariant": {
+        "passed": true,
+        "reason": "OK"
+      },
+      "semantic": {
+        "score": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "produced_count": 1,
+      "expected_count": 1,
+      "matched_count": 1
+    }
+  ]
+}

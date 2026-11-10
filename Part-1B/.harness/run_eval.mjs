@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { validateSchema } from './evaluators/structural.mjs';
 import { checkInvariants } from './evaluators/invariants.mjs';
 import { scoreSemantic } from './evaluators/semantic.mjs';
@@ -7,11 +8,38 @@ import { aggregateResults } from './evaluators/aggregate.mjs';
 
 const args = process.argv.slice(2);
 const outputsFlagIndex = args.indexOf('--outputs');
+const replayFlagIndex = args.indexOf('--replay');
 const isLock = args.includes('--lock');
 const snapshotFlagIndex = args.indexOf('--snapshot');
 
+// Helper to compute SHA-256 hash of a file
+function computeFileHash(filePath) {
+  try {
+    const fileBuffer = fs.readFileSync(filePath);
+    return crypto.createHash('sha256').update(fileBuffer).digest('hex');
+  } catch (e) {
+    return null;
+  }
+}
+
 if (isLock) {
-  console.log('Locking harness files...');
+  console.log('Generating .harness/input-lock.json...');
+  const lockData = {
+    timestamp: new Date().toISOString(),
+    files: {
+      dataset: computeFileHash('evals/dataset.json'),
+      schema: computeFileHash('.harness/schema/output.schema.json'),
+      threshold: computeFileHash('.harness/threshold.json'),
+      runner: computeFileHash('.harness/run_eval.mjs'),
+      structuralEvaluator: computeFileHash('.harness/evaluators/structural.mjs'),
+      invariantEvaluator: computeFileHash('.harness/evaluators/invariants.mjs'),
+      semanticEvaluator: computeFileHash('.harness/evaluators/semantic.mjs'),
+      matchingModule: computeFileHash('.harness/evaluators/matching.mjs'),
+      aggregateModule: computeFileHash('.harness/evaluators/aggregate.mjs')
+    }
+  };
+  fs.writeFileSync('.harness/input-lock.json', JSON.stringify(lockData, null, 2));
+  console.log('.harness/input-lock.json created successfully.');
   process.exit(0);
 }
 
@@ -30,6 +58,9 @@ let outputs = {};
 if (outputsFlagIndex !== -1) {
   const outFilePath = path.resolve(args[outputsFlagIndex + 1]);
   outputs = JSON.parse(fs.readFileSync(outFilePath, 'utf-8'));
+} else if (replayFlagIndex !== -1) {
+  const replayPath = path.resolve(args[replayFlagIndex + 1]);
+  outputs = JSON.parse(fs.readFileSync(replayPath, 'utf-8'));
 }
 
 let caseResults = [];
@@ -52,8 +83,7 @@ for (const testCase of dataset) {
   const expectedActions = idealOut.action_items || [];
   const expectedCount = expectedActions.length;
   const producedCount = out.action_items?.length || 0;
-  
-  const matchedCount = expectedCount > 0 ? Math.round(semantic.recall * expectedCount) : (producedCount === 0 ? 0 : 0);
+  const matchedCount = expectedCount > 0 ? Math.round(semantic.recall * expectedCount) : 0;
 
   caseResults.push({
     id: testCase.id,
