@@ -5,6 +5,8 @@ description: "Two-phase harness-first task list for the Meeting Action Extractor
 
 # Tasks: Meeting Action Extractor
 
+**Status**: Approved
+
 **Input**: Approved design documents from `specs/001-meeting-action-extractor/`
 
 **Prerequisites**: `spec.md`, `plan.md`, `research.md`, `data-model.md`, `quickstart.md`, and `contracts/`

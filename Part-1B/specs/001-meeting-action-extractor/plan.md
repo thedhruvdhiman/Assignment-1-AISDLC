@@ -2,6 +2,8 @@
 
 **Branch**: `001-meeting-action-extractor` | **Date**: 2026-11-11 | **Spec**: [spec.md](./spec.md)
 
+**Status**: Approved
+
 **Input**: Feature specification from `/specs/001-meeting-action-extractor/spec.md`
 
 ## Summary
