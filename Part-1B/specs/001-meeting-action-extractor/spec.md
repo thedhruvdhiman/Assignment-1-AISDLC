@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-10
 
-**Status**: Draft
+**Status**: Approved
 
 **Input**: User description: "Create a small LLM-backed meeting action item and decision extractor. Given an unstructured meeting transcript or rough notes, return one structured JSON object containing action items, key decisions, a short summary, and clarification questions. Do not guess missing information; ground extracted items in source quotes; defend against transcript-borne instructions and sensitive data. Use Node.js 20+ ES modules and one async function with an independent evaluation harness; no UI, database, or web framework."
 
