@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "outcome": { "type": "string", "enum": ["extracted", "no_content"] },
+    "action_items": {
+      "type": "array",
+      "maxItems": 25,
+      "items": {
+        "type": "object",
+        "properties": {
+          "task": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "assignee": { "type": ["string", "null"], "maxLength": 60 },
+          "deadline": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+          "source_quote": { "type": "string", "minLength": 1, "maxLength": 300 }
+        },
+        "required": ["task", "assignee", "deadline", "source_quote"],
+        "additionalProperties": false
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "maxItems": 25,
+      "items": {
+        "type": "object",
+        "properties": {
+          "decision": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "source_quote": { "type": "string", "minLength": 1, "maxLength": 300 }
+        },
+        "required": ["decision", "source_quote"],
+        "additionalProperties": false
+      }
+    },
+    "clarifications": {
+      "type": "array",
+      "maxItems": 25,
+      "items": {
+        "type": "object",
+        "properties": {
+          "about": { "type": "string", "enum": ["assignee", "deadline", "task", "decision", "other"] },
+          "item_index": { "type": ["integer", "null"], "minimum": 0 },
+          "question": { "type": "string", "minLength": 1, "maxLength": 200 }
+        },
+        "required": ["about", "item_index", "question"],
+        "additionalProperties": false
+      }
+    },
+    "needs_clarification": { "type": "boolean" },
+    "summary": { "type": ["string", "null"], "maxLength": 400 }
+  },
+  "required": ["outcome", "action_items", "decisions", "clarifications", "needs_clarification", "summary"],
+  "additionalProperties": false
+}

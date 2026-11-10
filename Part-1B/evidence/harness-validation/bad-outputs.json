@@ -1,0 +1,1 @@
+{"MA-01": {"outcome": "extracted", "action_items": [{"task": "send budget", "assignee": "GhostUser", "deadline": "2026-11-13", "source_quote": "I'll send the revised budget to finance by Friday."}], "decisions": [], "clarifications": [], "needs_clarification": false, "summary": "Bad assignee test"}}
