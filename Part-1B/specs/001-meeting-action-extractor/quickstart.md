@@ -8,7 +8,9 @@ not implement the application or change protected evaluator artifacts.
 - Node.js 20 or later.
 - The approved feature spec, plan, and tasks.
 - Evaluator-owner-provided `evals/dataset.json` (exactly 22 cases), `.harness/`
-  files, `tests/harness.selfcheck.test.js`, and `package.json`/lock file.
+  files including `.harness/fixtures/ideal-output.json` and
+  `.harness/input-lock.json`, `tests/harness.selfcheck.test.js`, and
+  `package.json`/lock file.
 - `package.json` declares `"type": "module"` and the Ajv dependency required
   for JSON Schema 2020-12 validation.
 - `MEETING_PROVIDER=openai`, a supported `MEETING_MODEL`,
@@ -24,6 +26,18 @@ node --test tests/harness.selfcheck.test.js
 
 Expected: all HR-11 tests pass. A failing self-check blocks evaluation and
 must not be skipped, weakened, or deleted.
+
+## Phase 1 Ideal-Output Replay and Lock
+
+```sh
+node .harness/run_eval.mjs --replay .harness/fixtures/ideal-output.json --repeats 1 --snapshot phase1-ideal
+node .harness/run_eval.mjs --lock
+```
+
+The independent evaluator owner runs this before Phase 2. Expected: the ideal
+fixture passes the full pipeline without provider requests; then the lock
+verifies all frozen evaluator inputs. Stop after this gate until the owner
+confirms **Phase 1 complete - lock before Phase 2**.
 
 ## Run the Frozen 22-Case Evaluation
 
@@ -46,7 +60,8 @@ node .harness/run_eval.mjs --lock --repeats 3 --snapshot repeatability --outputs
 Expected: the 22 fixed cases are repeated three times; all structural and
 invariant gates remain mandatory for every successful extraction. The output
 file and snapshot preserve first-generation results and structured failure
-evidence. The harness must report service failures separately.
+evidence in hash-chained records under `evidence/results/` and
+`evidence/feedback/`. The harness must report service failures separately.
 
 ## Manual Contract Scenarios
 

@@ -5,6 +5,26 @@ record for every functional requirement in `spec.md`. The harness validates
 case traceability against these IDs. This map additionally assigns ownership
 and identifies the prompt sections that serve the requirements.
 
+## Task Traceability IDs
+
+The following stable task-trace IDs are aliases to approved functional and
+success requirements; they add no acceptance criteria and do not replace the
+canonical FR/SC IDs in `.harness/requirements.json`.
+
+| Trace ID | Meaning | Canonical requirements |
+|---|---|---|
+| SCH-1 | Exact response schema contract | FR-002–FR-006a, FR-009, FR-026, FR-029 |
+| INV-1 | Schema shape, indexed clarifications, item-flag consistency | FR-002–FR-006a, FR-029; SC-001, SC-013 |
+| INV-2 | Source membership, date validity, list limits, and privacy properties | FR-008–FR-010, FR-024, FR-026, FR-028; SC-003, SC-009, SC-011 |
+| BP-1 | Source-grounded extraction and no-guess behavior | FR-003–FR-008, FR-011–FR-012, FR-023–FR-025; SC-004–SC-005, SC-008, SC-010, SC-012 |
+| GR-1 | Injection resistance and sensitive-data guardrails | FR-009–FR-010, FR-020; SC-003, SC-009 |
+| EVAL-1 | Fixed dataset scoring formula, weights, and threshold | FR-013–FR-016; SC-001–SC-002, SC-006 |
+| HR-1–HR-9 | Evaluator CLI, replay/lock/snapshot, run reporting, and evidence workflow | FR-013–FR-018; SC-001–SC-007 |
+| HR-11 | Protected harness self-check suite | FR-014–FR-018; SC-001–SC-007 |
+
+These aliases are used only to make task descriptions concise. Dataset cases
+and requirement catalogs continue to use the canonical FR IDs from `spec.md`.
+
 | Requirement area | Requirements | Primary owner |
 |---|---|---|
 | Input, context, and public response | FR-001–FR-006, FR-006a | `agent.js`; SCH-1 |

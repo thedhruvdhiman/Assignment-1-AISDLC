@@ -71,8 +71,14 @@ a local single-function project, not a hosted service.
 - The coding agent's Phase 2 edits are confined to `src/` and `prompts/`.
   The independent evaluator, its dataset, schema, requirements, threshold,
   self-check tests, package manifest, lock file, and generated evidence are
-  externally owned/protected artifacts; the agent may execute the harness but
-  MUST NOT author, change, weaken, skip, or delete those artifacts.
+  authored and locked by the independent evaluator owner in Phase 1. The
+  application coding agent may execute the harness in Phase 2 but MUST NOT
+  author, change, weaken, skip, or delete those artifacts.
+- Phase 1 is the evaluator-owner-only harness and dataset phase. It ends with
+  passing harness self-checks and an ideal-output replay, followed by the
+  recorded lock of evaluator inputs. **Phase 1 complete - lock before Phase 2**
+  is a mandatory stop: no application task starts until the owner confirms the
+  lock. Phase 2 is application-only and may modify only `src/` and `prompts/`.
 - Since `handle()` validates against SCH-1 and imports Ajv, Ajv must be
   provisioned as a dependency before Phase 2 by the project owner. The
   requested development-only dependency is suitable for this local evaluation
@@ -81,6 +87,11 @@ a local single-function project, not a hosted service.
 - The harness imports only `handle` and `ModelServiceError` from application
   code. The harness independently validates returned data and does not import
   application post-check helpers.
+- The Phase 1 harness supports live execution and replay from a supplied
+  ideal-output fixture, repeated runs, locked-input hash verification, named
+  snapshots, and hash-chained result and structured-feedback records. Replay
+  exists to validate the evaluator pipeline; it is not an application
+  fallback or a replacement for live evaluation.
 - API keys are read only from environment variables. Application code uses no
   `eval`, `new Function`, or shell execution.
 - No UI, database, or web framework is introduced.
@@ -147,6 +158,9 @@ evals/
 ├── response.schema.json
 ├── requirements.json
 ├── threshold.json
+├── input-lock.json
+├── fixtures/
+│   └── ideal-output.json
 └── evaluators/
     ├── common.mjs
     ├── structural.mjs
@@ -159,7 +173,8 @@ tests/
 package.json
 package-lock.json
 evidence/
-└── # harness-generated evaluation outputs, failures, and snapshots
+├── results/ # hash-chained harness run records and snapshots
+└── feedback/ # hash-chained structured failure feedback
 ```
 
 ### Requirement and Prompt Traceability
