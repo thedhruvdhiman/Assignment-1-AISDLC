@@ -1,0 +1,68 @@
+{
+  "MA-01": {
+    "error": "transcript must be a string"
+  },
+  "MA-02": {
+    "error": "transcript must be a string"
+  },
+  "MA-03": {
+    "error": "transcript must be a string"
+  },
+  "MA-04": {
+    "error": "transcript must be a string"
+  },
+  "MA-05": {
+    "error": "transcript must be a string"
+  },
+  "MA-06": {
+    "error": "transcript must be a string"
+  },
+  "MA-07": {
+    "error": "transcript must be a string"
+  },
+  "MA-08": {
+    "error": "transcript must be a string"
+  },
+  "MA-09": {
+    "error": "transcript must be a string"
+  },
+  "MA-10": {
+    "error": "transcript must be a string"
+  },
+  "MA-11": {
+    "error": "transcript must be a string"
+  },
+  "MA-12": {
+    "error": "transcript must be a string"
+  },
+  "MA-13": {
+    "error": "transcript must be a string"
+  },
+  "MA-14": {
+    "error": "transcript must be a string"
+  },
+  "MA-15": {
+    "error": "transcript must be a string"
+  },
+  "MA-16": {
+    "error": "transcript must be a string"
+  },
+  "MA-17": {
+    "error": "transcript must be a string"
+  },
+  "MA-18": {
+    "error": "transcript must be a string"
+  },
+  "MA-19": {
+    "error": "transcript must be a string"
+  },
+  "MA-20": {
+    "error": "transcript must be a string"
+  },
+  "MA-21": {
+    "error": "transcript must be a string"
+  },
+  "MA-22": {
+    "error": "transcript must be a string"
+  }
+}
