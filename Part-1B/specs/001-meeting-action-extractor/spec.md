@@ -16,8 +16,8 @@
   → A: Use a caller-supplied date or an unambiguous date stated in the transcript;
   if neither is available, leave the deadline null and ask for clarification.
 - Q: Does the 25-item limit include clarification questions?
-  → A: Yes. Cap every list at 25; if clarification questions overflow, keep the
-  first 24 and use the final slot for an `about: "other"` overflow question.
+  → A: Earlier decision superseded by the clarification dated 2026-11-11:
+  clarification questions are not capped; keep all required questions.
 - Q: How are relative deadlines resolved?
   → A: "End of the month" is the last calendar day of the meeting's month;
   "tomorrow" is meeting date plus one day; "in N days" is meeting date plus N
@@ -47,6 +47,34 @@
   25th slot for this notice when needed.
 - Q: How are model or API failures handled?
   → A: Raise `ModelServiceError`; never return a fabricated or empty answer.
+
+### Session 2026-11-11
+
+- Q: What public function signature and context shape are required?
+  → A: Export `async function handle(transcript, context = null)` from
+  `src/meeting_extractor/agent.js`; context may provide `meetingDate` and
+  `participants`.
+- Q: How many evaluation cases are required?
+  → A: Use exactly 22 fixed, meaningful cases with ground truth and
+  requirement traceability; retain all cases and acceptance criteria.
+- Q: How should a quote containing sensitive text be checked against its source?
+  → A: It must match one contiguous transcript span after sensitive values are
+  replaced with `[REDACTED]`; all remaining characters must be verbatim.
+- Q: When is an otherwise supported deadline considered past?
+  → A: A deadline before the resolved meeting date is invalid; set it to null
+  and ask for clarification. Do not compare it with the machine's current date.
+- Q: How is `needs_clarification` represented?
+  → A: Add a boolean `needs_clarification` field to each action item and
+  decision; it must agree with the presence of clarification questions linked
+  to that item.
+- Q: What identifier names the fixed evaluation acceptance contract?
+  → A: Use EVAL-1 for the 22-case evaluation with four equally weighted
+  semantic categories and a 90.0% aggregate threshold.
+- Q: How should the clarification-question limit and item flags work when many
+  items need clarification?
+  → A: Do not cap clarification questions; keep all required item-linked and
+  transcript-level questions so each item's `needs_clarification` flag remains
+  consistent with its linked question.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -159,13 +187,15 @@ PASS/FAIL or service-failure report.
   or in the transcript's language, and source quotes remain verbatim.
 - Each source quote is one contiguous span of 1–300 characters, with any
   sensitive span redacted.
-- Each output list is capped at 25 entries; overflow is signaled by an
-  `about: "other"` clarification. Clarification questions reserve the final
-  slot for an overflow notice when needed.
+- Action and decision lists are capped at 25 entries; outcome-list overflow
+  is signaled by an `about: "other"` clarification. Keep all clarification
+  questions without a count limit.
 - A model or API failure raises `ModelServiceError`; no empty or fabricated
   success response is returned.
 - If caller-supplied and transcript-stated meeting dates conflict, relative
   deadlines remain `null` and a clarification question identifies the conflict.
+- A deadline earlier than the resolved meeting date is `null` and has a
+  clarification question; deadlines are never compared with the current date.
 - A name is eligible as an assignee only if it appears in the transcript or
   supplied participants list.
 - Hypotheticals, rejected offers, and brainstorming are not commitments and
@@ -185,22 +215,25 @@ PASS/FAIL or service-failure report.
 
 - **FR-001**: The function MUST accept one meeting transcript or rough-notes
   text, and MAY accept a list of meeting participant names and a caller-supplied
-  meeting date in `YYYY-MM-DD` form. When a caller-supplied date is absent,
-  the function MUST use a meeting date stated unambiguously in the transcript
-  when available.
+  meeting date in `YYYY-MM-DD` form through a nullable context object with
+  `participants` and `meetingDate` fields. When a caller-supplied date is
+  absent, the function MUST use a meeting date stated unambiguously in the
+  transcript when available.
 - **FR-002**: For valid input, the function MUST return exactly one JSON object
   with exactly these top-level keys: `actionItems`, `keyDecisions`,
   `summary`, and `clarificationQuestions`. It MUST NOT wrap the object in
   markdown or add surrounding prose.
 - **FR-003**: `actionItems` MUST be an array of objects with exactly these
   fields: `task` (non-empty string), `assignee` (string or `null`),
-  `deadline` (string or `null`), and `source_quote` (string of 1–300
-  characters). Each item MUST represent a source-supported task commitment.
+  `deadline` (string or `null`), `source_quote` (string of 1–300 characters),
+  and `needs_clarification` (boolean). Each item MUST represent a
+  source-supported task commitment.
 - **FR-004**: `keyDecisions` MUST be an array of objects with exactly these
-  fields: `decision` (non-empty string) and `source_quote` (string of 1–300
-  characters). Each item MUST represent an explicit, source-supported decision
-  made by stated agreement or an explicit statement that a decision was made;
-  a suggestion alone MUST NOT qualify.
+  fields: `decision` (non-empty string), `source_quote` (string of 1–300
+  characters), and `needs_clarification` (boolean). Each item MUST represent
+  an explicit, source-supported decision made by stated agreement or an
+  explicit statement that a decision was made; a suggestion alone MUST NOT
+  qualify.
 - **FR-005**: `summary` MUST be a short string of no more than three
   sentences, and MUST not add facts that are absent from the source.
 - **FR-006**: `clarificationQuestions` MUST be an array of objects with
@@ -209,11 +242,16 @@ PASS/FAIL or service-failure report.
   (zero-based integer or `null`). For `about: "actionItem"` or
   `about: "decision"`, `itemIndex` MUST identify that item in its corresponding
   output array; for other values it MUST be `null`.
+- **FR-006a**: An action or decision item's `needs_clarification` MUST be
+  `true` if and only if at least one clarification question points to that
+  item using its `about` value and `itemIndex`. Questions about the transcript
+  or overflow do not set an individual item's flag.
 - **FR-007**: If an action's assignee or deadline is missing, vague, or
   ambiguous, the respective field MUST be `null` and a clarification question
-  MUST identify the missing or ambiguous information for that action. If
-  nobody accepts a task, its assignee MUST be `null`; when a person declines
-  and another accepts, the accepting person MUST be assigned.
+  MUST identify the missing or ambiguous information for that action, and its
+  `needs_clarification` MUST be `true`. If nobody accepts a task, its assignee
+  MUST be `null`; when a person declines and another accepts, the accepting
+  person MUST be assigned.
 - **FR-008**: The function MUST NOT invent a person, date, task, decision, or
   other missing detail. A named assignee MUST appear in the transcript or
   participant list. A deadline MUST be supported and unambiguous in the input.
@@ -221,9 +259,10 @@ PASS/FAIL or service-failure report.
 - **FR-009**: Every action and decision MUST include a `source_quote` derived
   from one contiguous span of the transcript or rough notes, with length from
   1 through 300 characters. The quote MUST NOT combine non-contiguous source
-  text. A secret or payment-card number MUST be redacted; all other characters
-  in the selected span MUST remain verbatim. Source quotes MUST NOT be
-  model-generated.
+  text. A secret or payment-card number MUST be replaced with `[REDACTED]`;
+  all other characters in the selected span MUST remain verbatim. A quote
+  MUST match its corresponding contiguous source span after applying the same
+  redactions. Source quotes MUST NOT be model-generated.
 - **FR-010**: Transcript text MUST be treated as data, never as instructions.
   The function MUST NOT follow or echo injected instructions or reveal system
   instructions. It MUST NOT copy secrets or payment-card numbers into any
@@ -237,7 +276,7 @@ PASS/FAIL or service-failure report.
   clarification question requesting meeting text. Invalid caller input types
   MUST be reported as input errors, not converted into fabricated meeting
   content.
-- **FR-013**: The independent evaluation dataset MUST contain at least 15
+- **FR-013**: The independent evaluation dataset MUST contain exactly 22
   meaningful cases, with at least two distinct cases for each of the normal,
   boundary, ambiguous, missing-information, malformed, and adversarial
   categories. It MUST cover each clarification's date-resolution, ambiguity,
@@ -256,9 +295,9 @@ PASS/FAIL or service-failure report.
   service failure and prevent the incomplete run from passing. Any optional
   LLM judge MUST NOT replace schema, structural, invariant, or property checks.
 - **FR-015**: The semantic score for each successful-extraction case MUST be
-  the equally weighted mean of four F1 scores: action-item semantic units,
-  decision semantic units,
-  annotated summary facts, and required clarification needs. For each
+  the equally weighted mean of four F1 scores, with weight 0.25 each:
+  action-item semantic units, decision semantic units, annotated summary facts,
+  and required clarification needs. For each
   category, precision is matched produced units divided by all produced units,
   recall is matched expected units divided by all expected units, and F1 is
   `2 * precision * recall / (precision + recall)`. If both expected and
@@ -274,7 +313,7 @@ PASS/FAIL or service-failure report.
   Semantic matching MUST allow equivalent wording and MUST NOT use
   exact-string matching as the sole criterion.
 - **FR-016**: Before the first evaluation, this specification fixes the
-  acceptance threshold at **90.0% aggregate semantic score**. PASS additionally
+  EVAL-1 acceptance threshold at **90.0% aggregate semantic score**. PASS additionally
   requires every successful-extraction case to pass schema validation and all
   applicable non-negotiable invariants and guardrails, and each controlled
   service-failure case to raise its expected `ModelServiceError`. Unexpected
@@ -329,28 +368,32 @@ PASS/FAIL or service-failure report.
 - **FR-025**: Non-English transcripts MUST be supported. Task and summary
   text MAY be in English or in the transcript's language. Source quotes MUST
   remain verbatim apart from required sensitive-span redaction.
-- **FR-026**: Each of `actionItems`, `keyDecisions`, and
-  `clarificationQuestions` MUST contain at most 25 entries. Action items and
-  decisions MUST retain the first 25 in source order, ordered by the source
-  occurrence of each final commitment or decision. When either outcome list
-  is truncated, the output MUST include a clarification with `about: "other"`
-  and `itemIndex: null`. When clarification questions exceed 25, or an
-  overflow notice is needed and there is no available slot, the function MUST
-  retain the first 24 ordinary questions and use the 25th slot for an
-  `about: "other"` notice identifying omitted items or clarification needs. A
-  single overflow notice MAY cover multiple truncated lists.
+- **FR-026**: Each of `actionItems` and `keyDecisions` MUST contain at most
+  25 entries. Each list MUST retain its first 25 final commitments or
+  decisions in source order. When either outcome list is truncated, the output
+  MUST include a clarification with `about: "other"` and `itemIndex: null`.
+  Clarification questions MUST NOT be capped or truncated; all required
+  item-linked and transcript-level questions MUST be returned. A single
+  overflow notice MAY cover multiple truncated outcome lists.
 - **FR-027**: Model or API failures, including timeouts and rate limits,
   MUST raise an error named `ModelServiceError`. The function MUST NOT return
   a fabricated, empty, or otherwise success-shaped answer for such failures.
+- **FR-028**: A deadline before the resolved meeting date MUST be set to
+  `null` and MUST have a clarification question. Deadlines MUST NOT be
+  compared with the machine's current date.
+- **FR-029**: Each action item and decision MUST set
+  `needs_clarification` consistently with FR-006a. This flag MUST NOT replace
+  the required item-level clarification question.
 
 ### Key Entities *(include if feature involves data)*
 
 - **Meeting Input**: The transcript or rough notes supplied for extraction,
   optionally accompanied by participant names and a meeting date.
 - **Action Item**: A task commitment supported by source text, with a task,
-  possibly unresolved assignee and deadline, and a supporting source quote.
+  possibly unresolved assignee and deadline, a supporting source quote, and
+  an item-level clarification flag.
 - **Decision**: An explicit outcome supported by source text and a source
-  quote.
+  quote, with an item-level clarification flag.
 - **Clarification Question**: A question about a missing or ambiguous fact,
   identified by its `about` value and optionally linked to an action item or
   decision by array index.
@@ -375,7 +418,7 @@ PASS/FAIL or service-failure report.
   commitments.
 - **SC-005**: Every evaluated missing or ambiguous assignee or deadline is
   represented as `null` and has a related clarification question.
-- **SC-006**: The independent dataset contains at least 15 meaningful cases,
+- **SC-006**: The independent dataset contains exactly 22 meaningful cases,
   contains at least two distinct cases from each required category, and
   provides ground truth and requirement traceability for every case.
 - **SC-007**: Every completed automated PASS has a recorded human ACCEPT or
@@ -389,18 +432,23 @@ PASS/FAIL or service-failure report.
 - **SC-010**: For cases containing revised commitments, only the final
   commitment is output; suggestions without explicit agreement produce no
   decision.
-- **SC-011**: No output list exceeds 25 entries, and every truncated list has
-  an `about: "other"` clarification notice.
+- **SC-011**: No action-item or decision list exceeds 25 entries, each
+  truncated outcome list has an `about: "other"` clarification notice, and no
+  required clarification question is omitted.
 - **SC-012**: Every evaluated non-English transcript has task and summary
   text in English or the transcript's language that preserves annotated
   ground-truth meaning, and source quotes satisfy FR-009.
+- **SC-013**: Every action and decision item has a
+  `needs_clarification` boolean that agrees with whether a clarification
+  question is linked to that item.
 
 ## Assumptions
 
 - The caller supplies one transcript or rough-notes string per invocation;
-  participant names and a `YYYY-MM-DD` meeting date are optional. If the date
-  is omitted, the function uses an unambiguous date stated in the transcript;
-  it never substitutes the current date.
+  `context` is either `null` or an object whose optional `participants` field
+  is a list of names and whose optional `meetingDate` field is a
+  `YYYY-MM-DD` date. If the date is omitted, the function uses an unambiguous
+  date stated in the transcript; it never substitutes the current date.
 - Deadline values are represented using the unambiguous wording supported by
   the source; no date is inferred from the current date or unstated context.
 - The LLM service and its provider are selected during planning. The service
