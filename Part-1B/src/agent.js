@@ -1,5 +1,3 @@
-import path from "node:path";
-import { pathToFileURL } from "node:url";
 import Ajv2020 from "ajv/dist/2020.js";
 import { readFile } from "node:fs/promises";
 import { ModelServiceError } from "./errors.js";
@@ -9,8 +7,11 @@ const REQUEST_TIMEOUT_MS = 120_000;
 const MAX_OUTCOME_ITEMS = 25;
 const REDACTED = "[REDACTED]";
 
-const schemaUrl = pathToFileURL(path.join(process.cwd(), ".harness/response.schema.json"));
-const promptUrl = pathToFileURL(path.join(process.cwd(), "prompts/system_prompt.md"));
+const schemaUrl = new URL(
+  "../specs/001-meeting-action-extractor/contracts/response.schema.json",
+  import.meta.url,
+);
+const promptUrl = new URL("../prompts/system_prompt.md", import.meta.url);
 
 let contractPromise;
 async function loadContract() {
@@ -24,6 +25,7 @@ async function loadContract() {
       }
       const ajv = new Ajv2020({ strict: false, allErrors: true });
       const extendedSchema = structuredClone(schema);
+      delete extendedSchema.$id;
       if (extendedSchema.properties?.action_items) {
         delete extendedSchema.properties.action_items.maxItems;
       }
@@ -469,9 +471,15 @@ function addQuestion(questions, question, about, itemIndex, indexKey, prefersSna
 
 function prepareQuestions(rawQuestions, actionMap, decisionMap, transcript, schema) {
   const questions = [];
-  const clarifProps = schema?.properties?.clarifications?.items?.properties || {};
+  const clarifProps =
+    schema?.properties?.clarificationQuestions?.items?.properties || {};
   const indexKey = "item_index" in clarifProps ? "item_index" : "itemIndex";
-  const allowedAbouts = clarifProps?.about?.enum || ["action_item", "actionItem", "decision", "transcript", "other"];
+  const allowedAbouts = clarifProps?.about?.enum || [
+    "actionItem",
+    "decision",
+    "transcript",
+    "other",
+  ];
   const prefersSnakeAbout = allowedAbouts.includes("action_item");
 
   for (const raw of rawQuestions) {
@@ -703,17 +711,11 @@ function normalizeResponse(modelResponse, transcript, context, schema) {
     sanitizeText(rawSummaryInput, transcript),
   );
 
-  const topNeedsClarification =
-    questions.length > 0 ||
-    actionItems.some((item) => item.needs_clarification) ||
-    keyDecisions.some((item) => item.needs_clarification);
-
   return {
-    outcome: summary,
-    action_items: actionItems,
-    decisions: keyDecisions,
-    clarifications: questions,
-    needs_clarification: topNeedsClarification,
+    actionItems,
+    keyDecisions,
+    summary,
+    clarificationQuestions: questions,
   };
 }
 
@@ -788,21 +790,20 @@ export async function handle(transcript, context = null) {
   const { prompt, schema, validate, validateBeforeLimit } = await loadContract();
 
   if (transcript.trim().length === 0) {
-    const clarifProps = schema?.properties?.clarifications?.items?.properties || {};
-    const indexKey = "item_index" in clarifProps ? "item_index" : "itemIndex";
-    return {
-      outcome: "",
-      action_items: [],
-      decisions: [],
-      clarifications: [
+    const result = {
+      actionItems: [],
+      keyDecisions: [],
+      summary: "",
+      clarificationQuestions: [
         {
           question: "Please provide meeting transcript or rough notes.",
           about: "transcript",
-          [indexKey]: null,
+          itemIndex: null,
         },
       ],
-      needs_clarification: true,
     };
+    validateSchema(validate, result);
+    return result;
   }
 
   const responseText = await requestModel(transcript, inputContext, prompt);
