@@ -6,13 +6,13 @@
     "error": "The model response did not conform to SCH-1"
   },
   "MA-03": {
-    "error": "The model service returned HTTP 502"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-04": {
     "error": "The model response did not conform to SCH-1"
   },
   "MA-05": {
-    "error": "The model service returned HTTP 502"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-06": {
     "error": "The model response did not conform to SCH-1"
@@ -39,16 +39,17 @@
     "error": "The model response did not conform to SCH-1"
   },
   "MA-14": {
-    "actionItems": [],
-    "keyDecisions": [],
-    "summary": "",
-    "clarificationQuestions": [
+    "outcome": "",
+    "action_items": [],
+    "decisions": [],
+    "clarifications": [
       {
         "question": "Please provide meeting transcript or rough notes.",
         "about": "transcript",
-        "itemIndex": null
+        "item_index": null
       }
-    ]
+    ],
+    "needs_clarification": true
   },
   "MA-15": {
     "error": "The model response did not conform to SCH-1"
