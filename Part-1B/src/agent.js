@@ -24,6 +24,12 @@ async function loadContract() {
       }
       const ajv = new Ajv2020({ strict: false, allErrors: true });
       const extendedSchema = structuredClone(schema);
+      if (extendedSchema.properties?.action_items) {
+        delete extendedSchema.properties.action_items.maxItems;
+      }
+      if (extendedSchema.properties?.decisions) {
+        delete extendedSchema.properties.decisions.maxItems;
+      }
       if (extendedSchema.properties?.actionItems) {
         delete extendedSchema.properties.actionItems.maxItems;
       }
@@ -32,6 +38,7 @@ async function loadContract() {
       }
       return {
         prompt,
+        schema,
         validate: ajv.compile(schema),
         validateBeforeLimit: ajv.compile(extendedSchema),
       };
@@ -436,45 +443,62 @@ function summaryWithinSentenceLimit(summary) {
   return sentences.length <= 3 ? summary : sentences.slice(0, 3).join("").trim();
 }
 
-function addQuestion(questions, question, about, itemIndex = null) {
-  const validAbouts = new Set(["actionItem", "decision", "transcript", "other"]);
-  const targetAbout = validAbouts.has(about) ? about : "other";
-  const targetIndex = (targetAbout === "actionItem" || targetAbout === "decision")
+function addQuestion(questions, question, about, itemIndex, indexKey, prefersSnakeAbout) {
+  let targetAbout = about;
+  if (targetAbout === "actionItem" || targetAbout === "action_item") {
+    targetAbout = prefersSnakeAbout ? "action_item" : "actionItem";
+  }
+
+  const targetIndex = (targetAbout === "actionItem" || targetAbout === "action_item" || targetAbout === "decision")
     ? (typeof itemIndex === "number" ? itemIndex : null)
     : null;
+
+  const keyToUse = indexKey || "item_index";
 
   if (
     !questions.some(
       (entry) =>
         entry.about === targetAbout &&
-        entry.itemIndex === targetIndex &&
+        entry[keyToUse] === targetIndex &&
         entry.question.toLocaleLowerCase() === question.toLocaleLowerCase(),
     )
   ) {
-    questions.push({ question, about: targetAbout, itemIndex: targetIndex });
+    questions.push({ question, about: targetAbout, [keyToUse]: targetIndex });
   }
 }
 
-function prepareQuestions(rawQuestions, actionMap, decisionMap, transcript) {
+function prepareQuestions(rawQuestions, actionMap, decisionMap, transcript, schema) {
   const questions = [];
-  const validAbouts = new Set(["actionItem", "decision", "transcript", "other"]);
+  const clarifProps = schema?.properties?.clarifications?.items?.properties || {};
+  const indexKey = "item_index" in clarifProps ? "item_index" : "itemIndex";
+  const allowedAbouts = clarifProps?.about?.enum || ["action_item", "actionItem", "decision", "transcript", "other"];
+  const prefersSnakeAbout = allowedAbouts.includes("action_item");
+
   for (const raw of rawQuestions) {
-    const question = sanitizeText(raw.question, transcript);
+    const rawText = raw.question || raw.text || "";
+    const question = sanitizeText(rawText, transcript);
     if (!question) continue;
-    let about = validAbouts.has(raw.about) ? raw.about : "other";
+
+    let rawAbout = raw.about || "other";
+    if (rawAbout === "actionItem" || rawAbout === "action_item") {
+      rawAbout = prefersSnakeAbout ? "action_item" : "actionItem";
+    }
+
     let itemIndex = null;
-    if (about === "actionItem") {
-      itemIndex = actionMap.get(raw.itemIndex);
+    const origIdx = raw.itemIndex ?? raw.item_index;
+    if (rawAbout === "actionItem" || rawAbout === "action_item") {
+      itemIndex = actionMap.get(origIdx);
       if (itemIndex === undefined) continue;
-    } else if (about === "decision") {
-      itemIndex = decisionMap.get(raw.itemIndex);
+    } else if (rawAbout === "decision") {
+      itemIndex = decisionMap.get(origIdx);
       if (itemIndex === undefined) continue;
     } else {
       itemIndex = null;
     }
-    addQuestion(questions, question, about, itemIndex);
+
+    addQuestion(questions, question, rawAbout, itemIndex, indexKey, prefersSnakeAbout);
   }
-  return questions;
+  return { questions, indexKey, prefersSnakeAbout };
 }
 
 function validateSchema(validate, result) {
@@ -486,9 +510,34 @@ function validateSchema(validate, result) {
   }
 }
 
-function normalizeResponse(modelResponse, transcript, context) {
+function normalizeResponse(modelResponse, transcript, context, schema) {
   const eligibleSource = redactedEligibleTranscript(transcript);
-  const rawActionItems = modelResponse.actionItems.map((item, originalIndex) => ({
+
+  const rawActionsInput = Array.isArray(modelResponse.action_items)
+    ? modelResponse.action_items
+    : Array.isArray(modelResponse.actionItems)
+      ? modelResponse.actionItems
+      : [];
+
+  const rawDecisionsInput = Array.isArray(modelResponse.decisions)
+    ? modelResponse.decisions
+    : Array.isArray(modelResponse.keyDecisions)
+      ? modelResponse.keyDecisions
+      : [];
+
+  const rawQuestionsInput = Array.isArray(modelResponse.clarifications)
+    ? modelResponse.clarifications
+    : Array.isArray(modelResponse.clarificationQuestions)
+      ? modelResponse.clarificationQuestions
+      : [];
+
+  const rawSummaryInput = typeof modelResponse.outcome === "string"
+    ? modelResponse.outcome
+    : typeof modelResponse.summary === "string"
+      ? modelResponse.summary
+      : "";
+
+  const rawActionItems = rawActionsInput.map((item, originalIndex) => ({
     originalIndex,
     item: {
       ...item,
@@ -497,7 +546,8 @@ function normalizeResponse(modelResponse, transcript, context) {
       source_quote: sanitizeText(item.source_quote, transcript),
     },
   }));
-  const rawDecisions = modelResponse.keyDecisions.map((item, originalIndex) => ({
+
+  const rawDecisions = rawDecisionsInput.map((item, originalIndex) => ({
     originalIndex,
     item: {
       ...item,
@@ -505,11 +555,13 @@ function normalizeResponse(modelResponse, transcript, context) {
       source_quote: sanitizeText(item.source_quote, transcript),
     },
   }));
+
   const compareBySource = (field) => (left, right) => {
     const leftPosition = eligibleSource.indexOf(left.item[field]);
     const rightPosition = eligibleSource.indexOf(right.item[field]);
     return leftPosition - rightPosition || left.originalIndex - right.originalIndex;
   };
+
   const validActions = rawActionItems
     .filter(
       ({ item }) =>
@@ -517,6 +569,7 @@ function normalizeResponse(modelResponse, transcript, context) {
         quoteIsGrounded(item.source_quote, eligibleSource),
     )
     .sort(compareBySource("source_quote"));
+
   const validDecisions = rawDecisions
     .filter(
       ({ item }) =>
@@ -524,6 +577,7 @@ function normalizeResponse(modelResponse, transcript, context) {
         quoteIsGrounded(item.source_quote, eligibleSource),
     )
     .sort(compareBySource("source_quote"));
+
   const overflow =
     validActions.length > MAX_OUTCOME_ITEMS ||
     validDecisions.length > MAX_OUTCOME_ITEMS;
@@ -536,14 +590,14 @@ function normalizeResponse(modelResponse, transcript, context) {
     retainedDecisions.map(({ originalIndex }, index) => [originalIndex, index]),
   );
 
-  const questions = prepareQuestions(
-    Array.isArray(modelResponse.clarificationQuestions)
-      ? modelResponse.clarificationQuestions
-      : [],
+  const { questions, indexKey, prefersSnakeAbout } = prepareQuestions(
+    rawQuestionsInput,
     oldActionToNew,
     oldDecisionToNew,
     transcript,
+    schema,
   );
+
   const transcriptMeetingDate = getTranscriptMeetingDate(transcript);
   const dateConflict =
     context.meetingDate !== null &&
@@ -602,7 +656,9 @@ function normalizeResponse(modelResponse, transcript, context) {
         );
       }
 
-      for (const question of reasons) addQuestion(questions, question, "actionItem", index);
+      for (const question of reasons) {
+        addQuestion(questions, question, "action_item", index, indexKey, prefersSnakeAbout);
+      }
       return {
         task,
         assignee,
@@ -619,15 +675,16 @@ function normalizeResponse(modelResponse, transcript, context) {
       source_quote: item.source_quote,
       needs_clarification: questions.some(
         (question) =>
-          question.about === "decision" && question.itemIndex === index,
+          question.about === "decision" && question[indexKey] === index,
       ),
     }))
     .filter(Boolean);
 
   for (let index = 0; index < actionItems.length; index += 1) {
+    const actionAbout = prefersSnakeAbout ? "action_item" : "actionItem";
     actionItems[index].needs_clarification = questions.some(
       (question) =>
-        question.about === "actionItem" && question.itemIndex === index,
+        question.about === actionAbout && question[indexKey] === index,
     );
   }
 
@@ -637,20 +694,26 @@ function normalizeResponse(modelResponse, transcript, context) {
       "Some action items or decisions were omitted because the 25-item output limit was reached.",
       "other",
       null,
+      indexKey,
+      prefersSnakeAbout,
     );
   }
 
   const summary = summaryWithinSentenceLimit(
-    sanitizeText(
-      typeof modelResponse.summary === "string" ? modelResponse.summary : "",
-      transcript,
-    ),
+    sanitizeText(rawSummaryInput, transcript),
   );
+
+  const topNeedsClarification =
+    questions.length > 0 ||
+    actionItems.some((item) => item.needs_clarification) ||
+    keyDecisions.some((item) => item.needs_clarification);
+
   return {
-    actionItems,
-    keyDecisions,
-    summary,
-    clarificationQuestions: questions,
+    outcome: summary,
+    action_items: actionItems,
+    decisions: keyDecisions,
+    clarifications: questions,
+    needs_clarification: topNeedsClarification,
   };
 }
 
@@ -722,22 +785,26 @@ async function requestModel(transcript, context, prompt) {
 
 export async function handle(transcript, context = null) {
   const inputContext = validateInput(transcript, context);
+  const { prompt, schema, validate, validateBeforeLimit } = await loadContract();
+
   if (transcript.trim().length === 0) {
+    const clarifProps = schema?.properties?.clarifications?.items?.properties || {};
+    const indexKey = "item_index" in clarifProps ? "item_index" : "itemIndex";
     return {
-      actionItems: [],
-      keyDecisions: [],
-      summary: "",
-      clarificationQuestions: [
+      outcome: "",
+      action_items: [],
+      decisions: [],
+      clarifications: [
         {
           question: "Please provide meeting transcript or rough notes.",
           about: "transcript",
-          itemIndex: null,
+          [indexKey]: null,
         },
       ],
+      needs_clarification: true,
     };
   }
 
-  const { prompt, validate, validateBeforeLimit } = await loadContract();
   const responseText = await requestModel(transcript, inputContext, prompt);
   const parsed = extractJsonText(responseText);
   if (!isPlainObject(parsed)) {
@@ -745,7 +812,8 @@ export async function handle(transcript, context = null) {
       code: "INVALID_MODEL_OUTPUT",
     });
   }
-  const result = normalizeResponse(parsed, transcript, inputContext);
+
+  const result = normalizeResponse(parsed, transcript, inputContext, schema);
   validateSchema(validate, result);
   return result;
 }
