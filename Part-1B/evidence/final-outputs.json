@@ -1,68 +1,77 @@
 {
   "MA-01": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-02": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-03": {
-    "error": "transcript must be a string"
+    "error": "The model service returned HTTP 502"
   },
   "MA-04": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-05": {
-    "error": "transcript must be a string"
+    "error": "The model service returned HTTP 502"
   },
   "MA-06": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-07": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-08": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-09": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-10": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-11": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-12": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-13": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-14": {
-    "error": "transcript must be a string"
+    "actionItems": [],
+    "keyDecisions": [],
+    "summary": "",
+    "clarificationQuestions": [
+      {
+        "question": "Please provide meeting transcript or rough notes.",
+        "about": "transcript",
+        "itemIndex": null
+      }
+    ]
   },
   "MA-15": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-16": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-17": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-18": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-19": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-20": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-21": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   },
   "MA-22": {
-    "error": "transcript must be a string"
+    "error": "The model response did not conform to SCH-1"
   }
 }

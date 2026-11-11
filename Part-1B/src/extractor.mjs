@@ -1,5 +1,5 @@
-import fs from 'fs/promises';
-import path from 'path';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import { handle } from './agent.js';
 
 const args = process.argv.slice(2);
@@ -20,12 +20,31 @@ async function main() {
   
   const results = {};
   for (const testCase of dataset) {
-    console.log(`Processing test case: ${testCase.id}...`);
+    console.log(`Processing test case: ${testCase.id || 'unknown'}...`);
     try {
-      const output = await handle(testCase.transcript, testCase.context || null);
+      const transcript = 
+        typeof testCase.input === 'string' ? testCase.input :
+        testCase.transcript ?? 
+        testCase.input?.transcript ?? 
+        testCase.input?.body ?? 
+        testCase.input?.text ?? 
+        testCase.input?.content ?? '';
+
+      let rawContext = testCase.context ?? testCase.input?.context ?? null;
+      let context = null;
+      if (rawContext) {
+        context = {};
+        if (rawContext.meeting_date !== undefined) context.meetingDate = rawContext.meeting_date;
+        if (rawContext.meetingDate !== undefined) context.meetingDate = rawContext.meetingDate;
+        if (rawContext.participants !== undefined) context.participants = rawContext.participants;
+      }
+
+      const output = await handle(transcript, context);
       results[testCase.id] = output;
+      
+      await new Promise((resolve) => setTimeout(resolve, 1200));
     } catch (err) {
-      console.error(`Failed on case ${testCase.id}:`, err.message);
+      console.error(`Failed on case ${testCase.id}:`, err.stack || err.message);
       results[testCase.id] = { error: err.message };
     }
   }
@@ -36,6 +55,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error('Extractor failed:', err);
+  console.error('Extractor failed:', err.stack || err);
   process.exit(1);
 });
