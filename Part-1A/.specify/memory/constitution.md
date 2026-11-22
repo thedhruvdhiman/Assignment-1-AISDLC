@@ -1,17 +1,16 @@
 <!--
 Sync Impact Report
-Version change: unratified template → 1.0.0
+Version change: 2.0.0 → 3.0.0
 Modified principles:
-- Principle 1 placeholder → Domain State Integrity
-- Principle 2 placeholder → Contract-First Full-Stack Design
-- Principle 3 placeholder → Validated Data and Safe Operations
-- Principle 4 placeholder → Automated Verification
-- Principle 5 placeholder → Predictable, Usable Workflows
-Added sections: Technology & Data Constraints; Development Workflow & Quality Gates
+- I. Deterministic Task State → I. Domain State Integrity
+- II. Consistent CLI and REST Interfaces → II. Contract-First Full-Stack Design
+- III. Explicit Filtering and Sorting → III. Validated Data and Safe Operations
+- IV. Verified Persistence and Interfaces → IV. Automated Verification
+- V. Reliable JSON Data Safety → V. Predictable, Usable Workflows
+Added sections: None
 Removed sections: None
 Follow-up TODOs:
 - Confirm the original ratification date.
-- Product implementation requirements are deferred to /speckit-specify.
 -->
 # Book Library Management System Constitution
 
@@ -80,4 +79,4 @@ implementation reviews, and relevant tests MUST be checked for compliance; devia
 require an approved, documented exception. The original adoption date remains unknown
 and MUST be confirmed before this constitution is treated as formally ratified.
 
-**Version**: 1.0.0 | **Ratified**: TODO(RATIFICATION_DATE): confirm original adoption date | **Last Amended**: 2026-11-06
+**Version**: 2.0.0 | **Ratified**: TODO(RATIFICATION_DATE): confirm original adoption date | **Last Amended**: 2026-11-12

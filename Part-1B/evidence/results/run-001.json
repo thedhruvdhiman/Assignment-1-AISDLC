@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-11-10T20:38:57.102Z",
+  "passed": false,
+  "run": "run-001",
+  "command": "node src/extractor.mjs --input evals/dataset.json --output evidence/results/run-001.json",
+  "metrics": {
+    "totalCases": 22,
+    "executedCases": 1,
+    "failedCases": 22,
+    "structuralPassRate": 0.0,
+    "invariantPassRate": 0.0,
+    "meanSemanticScore": 0.0
+  },
+  "errors": [
+    {
+      "id": "MA-01",
+      "error": "TypeError: transcript must be a string",
+      "location": "src/agent.js:validateInput:52"
+    }
+  ]
+}

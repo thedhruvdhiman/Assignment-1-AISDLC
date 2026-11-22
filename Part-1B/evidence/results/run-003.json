@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-11-12T09:02:16.899Z",
+  "passed": true,
+  "run": "run-003",
+  "command": "node .harness/run_eval.mjs --outputs evidence/final-outputs.json",
+  "metrics": {
+    "structuralPassRate": 1.0,
+    "invariantPassRate": 1.0,
+    "meanSemanticScore": 1.0,
+    "microPrecision": 1.0,
+    "microRecall": 1.0
+  },
+  "thresholds": {
+    "structural_pass_rate": 1.0,
+    "invariant_pass_rate_min": 0.95,
+    "mean_semantic_score_min": 0.85,
+    "action_item_micro_precision_min": 0.85,
+    "action_item_micro_recall_min": 0.85
+  },
+  "summary": "All 22 test cases passed structural JSON Schema validation, domain state invariants (INV-1 through INV-7), and semantic scoring gates, exceeding all target thresholds."
+}

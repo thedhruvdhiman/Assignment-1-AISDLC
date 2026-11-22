@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-11-11T01:25:12.441Z",
+  "passed": false,
+  "run": "run-002",
+  "command": "node .harness/run_eval.mjs --outputs evidence/results/run-002.json",
+  "metrics": {
+    "totalCases": 22,
+    "executedCases": 22,
+    "structuralPassRate": 1.0,
+    "invariantPassRate": 0.45,
+    "meanSemanticScore": 0.62,
+    "microPrecision": 0.65,
+    "microRecall": 0.60
+  },
+  "summary": "Pipeline execution succeeded; structural validation passed, but invariant checks failed due to property naming casing mismatch between prompt contract (camelCase) and harness evaluator (snake_case)."
+}
