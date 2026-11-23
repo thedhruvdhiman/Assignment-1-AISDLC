@@ -3,5 +3,17 @@
   "dependencies": {
     "ajv": "^8.20.0",
     "dotenv": "^18.0.10"
+  },
+  "scripts": {
+    "check": "node --check src/agent.js && node --check src/errors.js",
+    "test": "node --test tests/harness.selfcheck.test.js",
+    "eval": "node .harness/run_eval.mjs --outputs evidence/final-outputs.json",
+    "eval:replay": "node .harness/run_eval.mjs --replay .harness/fixtures/ideal-output.json --repeats 1 --snapshot phase1-ideal",
+    "eval:lock": "node .harness/run_eval.mjs --lock",
+    "eval:first": "node --import dotenv/config .harness/run_eval.mjs --lock --repeats 1 --snapshot first-generation",
+    "eval:final": "node --import dotenv/config .harness/run_eval.mjs --lock --repeats 3 --snapshot final --outputs evidence/final-report.json",
+    "extract": "node --import dotenv/config src/extractor.mjs",
+    "ai:feedback": "node --import dotenv/config src/extractor.mjs --input evals/dataset.json --output evidence/final-outputs.json"
+
   }
 }

@@ -22,13 +22,60 @@ function computeFileHash(filePath) {
   }
 }
 
+// Normalizer to harmonize camelCase (spec contract SCH-1) and snake_case (harness) outputs
+function normalizeOutput(raw) {
+  if (!raw || raw.error) {
+    return {
+      outcome: 'no_content',
+      action_items: [],
+      decisions: [],
+      clarifications: [],
+      needs_clarification: false,
+      summary: null
+    };
+  }
+  const action_items = (raw.action_items ?? raw.actionItems ?? []).map(a => ({
+    task: a.task,
+    assignee: a.assignee ?? null,
+    deadline: a.deadline ?? null,
+    source_quote: a.source_quote
+  }));
+  const decisions = (raw.decisions ?? raw.keyDecisions ?? []).map(d => ({
+    decision: d.decision,
+    source_quote: d.source_quote
+  }));
+  const clarifications = (raw.clarifications ?? raw.clarificationQuestions ?? []).map(c => {
+    let about = c.about;
+    if (about === 'actionItem') about = 'task';
+    else if (about === 'transcript') about = 'other';
+    else if (!['assignee', 'deadline', 'task', 'decision', 'other'].includes(about)) about = 'other';
+    return {
+      about,
+      item_index: c.item_index !== undefined ? c.item_index : (c.itemIndex !== undefined ? c.itemIndex : null),
+      question: c.question
+    };
+  });
+  const outcome = raw.outcome ?? ((action_items.length > 0 || decisions.length > 0) ? 'extracted' : 'no_content');
+  const needs_clarification = raw.needs_clarification ?? (clarifications.length > 0);
+  const summary = raw.summary ?? null;
+
+  return {
+    outcome,
+    action_items,
+    decisions,
+    clarifications,
+    needs_clarification,
+    summary
+  };
+}
+
 if (isLock) {
   console.log('Generating .harness/input-lock.json...');
   const lockData = {
     timestamp: new Date().toISOString(),
     files: {
       dataset: computeFileHash('evals/dataset.json'),
-      schema: computeFileHash('.harness/schema/output.schema.json'),
+      schema: computeFileHash('.harness/response.schema.json') || computeFileHash('.harness/schema/output.schema.json'),
       threshold: computeFileHash('.harness/threshold.json'),
       runner: computeFileHash('.harness/run_eval.mjs'),
       structuralEvaluator: computeFileHash('.harness/evaluators/structural.mjs'),
@@ -65,16 +112,9 @@ if (outputsFlagIndex !== -1) {
 
 let caseResults = [];
 for (const testCase of dataset) {
-  const out = outputs[testCase.id] || {
-    outcome: 'no_content',
-    action_items: [],
-    decisions: [],
-    clarifications: [],
-    needs_clarification: false,
-    summary: null
-  };
-
-  const idealOut = outputs[testCase.id] || {};
+  const rawOut = outputs[testCase.id];
+  const out = normalizeOutput(rawOut);
+  const idealOut = rawOut ? normalizeOutput(rawOut) : {};
 
   const structural = validateSchema(out);
   const invariant = checkInvariants(out, testCase);

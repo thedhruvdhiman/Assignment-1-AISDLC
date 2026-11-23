@@ -14,13 +14,37 @@ if (inputArgIndex === -1 || outputArgIndex === -1) {
 const inputPath = path.resolve(args[inputArgIndex + 1]);
 const outputPath = path.resolve(args[outputArgIndex + 1]);
 
+async function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function handleWithRetry(transcript, context, caseId, maxRetries = 4) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await handle(transcript, context);
+    } catch (err) {
+      const is429 = err.message && (err.message.includes('429') || err.message.includes('rate') || err.message.includes('quota'));
+      const is5xx = err.message && (err.message.includes('503') || err.message.includes('502') || err.message.includes('500'));
+      if ((is429 || is5xx) && attempt < maxRetries) {
+        const waitMs = is429 ? 15000 * attempt : 5000 * attempt;
+        console.log(`  Rate-limited on ${caseId} (attempt ${attempt}/${maxRetries}), retrying in ${waitMs/1000}s...`);
+        await sleep(waitMs);
+      } else {
+        throw err;
+      }
+    }
+  }
+}
+
 async function main() {
   const datasetRaw = await fs.readFile(inputPath, 'utf8');
   const dataset = JSON.parse(datasetRaw);
-  
+
   const results = {};
+
   for (const testCase of dataset) {
-    console.log(`Processing test case: ${testCase.id || 'unknown'}...`);
+    const id = testCase.id || 'unknown';
+    console.log(`Processing test case: ${id}...`);
     try {
       const transcript = 
         typeof testCase.input === 'string' ? testCase.input :
@@ -39,13 +63,12 @@ async function main() {
         if (rawContext.participants !== undefined) context.participants = rawContext.participants;
       }
 
-      const output = await handle(transcript, context);
-      results[testCase.id] = output;
-      
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      const output = await handleWithRetry(transcript, context, id);
+      results[id] = output;
+
     } catch (err) {
-      console.error(`Failed on case ${testCase.id}:`, err.stack || err.message);
-      results[testCase.id] = { error: err.message };
+      console.error(`Failed on case ${id}:`, err.stack || err.message);
+      results[id] = { error: err.message };
     }
   }
 
