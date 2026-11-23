@@ -1,0 +1,153 @@
+{
+  "command": "python3 .harness/run.py",
+  "completed_at": "2026-11-23T17:54:41+00:00",
+  "gates": {
+    "Integrity": {
+      "command": [
+        "python3",
+        ".harness/run.py",
+        "--integrity-check"
+      ],
+      "completed_at": "2026-11-23T17:54:41+00:00",
+      "exit_code": 0,
+      "output": "Test hashes and prior run-history chain verified.",
+      "started_at": "2026-11-23T17:54:41+00:00",
+      "status": "PASS"
+    },
+    "Lint": {
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "completed_at": "2026-11-23T17:54:34+00:00",
+      "exit_code": 0,
+      "output": "npm notice run lint\nnpm notice run eslint backend frontend\n",
+      "started_at": "2026-11-23T17:54:33+00:00",
+      "status": "PASS"
+    },
+    "Secrets scan": {
+      "command": [
+        "python3",
+        ".harness/run.py",
+        "--secrets-scan"
+      ],
+      "completed_at": "2026-11-23T17:54:41+00:00",
+      "exit_code": 0,
+      "output": "No configured secret patterns found in non-ignored project files.",
+      "started_at": "2026-11-23T17:54:41+00:00",
+      "status": "PASS"
+    },
+    "Security": {
+      "command": [
+        "npm",
+        "audit",
+        "--omit=dev",
+        "--json"
+      ],
+      "completed_at": "2026-11-23T17:54:35+00:00",
+      "exit_code": 0,
+      "output": "{\n  \"auditReportVersion\": 2,\n  \"vulnerabilities\": {},\n  \"metadata\": {\n    \"vulnerabilities\": {\n      \"info\": 0,\n      \"low\": 0,\n      \"moderate\": 0,\n      \"high\": 0,\n      \"critical\": 0,\n      \"total\": 0\n    },\n    \"dependencies\": {\n      \"prod\": 139,\n      \"dev\": 619,\n      \"optional\": 88,\n      \"peer\": 2,\n      \"peerOptional\": 0,\n      \"total\": 757\n    }\n  }\n}\n",
+      "started_at": "2026-11-23T17:54:34+00:00",
+      "status": "PASS"
+    },
+    "Traceability": {
+      "command": [
+        "python3",
+        ".harness/run.py",
+        "--traceability-check"
+      ],
+      "completed_at": "2026-11-23T17:54:41+00:00",
+      "exit_code": 0,
+      "output": "Every functional requirement ID maps to an existing named test.",
+      "started_at": "2026-11-23T17:54:41+00:00",
+      "status": "PASS"
+    },
+    "Unit and contract tests": {
+      "command": [
+        "npm",
+        "run",
+        "test",
+        "-w",
+        "backend",
+        "--",
+        "--json",
+        "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-a39yjmjj/jest-results.json",
+        "&&",
+        "npm",
+        "run",
+        "test",
+        "-w",
+        "frontend",
+        "--",
+        "--reporter=junit",
+        "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-a39yjmjj/vitest-junit.xml"
+      ],
+      "completed_at": "2026-11-23T17:54:41+00:00",
+      "exit_code": 0,
+      "junit_report": "evidence/pytest-junit.xml",
+      "output": "=== Backend Jest (exit 0) ===\nnpm notice run test\nnpm notice run jest --runInBand --json --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-a39yjmjj/jest-results.json\n\nTest Suites: 6 passed, 6 total\nTests:       40 passed, 40 total\nSnapshots:   0 total\nTime:        4.167 s, estimated 5 s\nRan all test suites.\nTest results written to: ../../../../../../../../var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-a39yjmjj/jest-results.json\n\n=== Frontend Vitest (exit 0) ===\nJUNIT report written to /var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-a39yjmjj/vitest-junit.xml\n\nnpm notice run test\nnpm notice run vitest run --reporter=junit --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-a39yjmjj/vitest-junit.xml\n\nJUnit report: evidence/pytest-junit.xml",
+      "started_at": "2026-11-23T17:54:35+00:00",
+      "status": "PASS",
+      "subcommands": {
+        "backend": {
+          "command": [
+            "npm",
+            "run",
+            "test",
+            "-w",
+            "backend",
+            "--",
+            "--json",
+            "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-a39yjmjj/jest-results.json"
+          ],
+          "completed_at": "2026-11-23T17:54:39+00:00",
+          "exit_code": 0,
+          "output": "npm notice run test\nnpm notice run jest --runInBand --json --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-a39yjmjj/jest-results.json\n\nTest Suites: 6 passed, 6 total\nTests:       40 passed, 40 total\nSnapshots:   0 total\nTime:        4.167 s, estimated 5 s\nRan all test suites.\nTest results written to: ../../../../../../../../var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-a39yjmjj/jest-results.json\n",
+          "started_at": "2026-11-23T17:54:35+00:00",
+          "status": "PASS"
+        },
+        "frontend": {
+          "command": [
+            "npm",
+            "run",
+            "test",
+            "-w",
+            "frontend",
+            "--",
+            "--reporter=junit",
+            "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-a39yjmjj/vitest-junit.xml"
+          ],
+          "completed_at": "2026-11-23T17:54:41+00:00",
+          "exit_code": 0,
+          "output": "JUNIT report written to /var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-a39yjmjj/vitest-junit.xml\n\nnpm notice run test\nnpm notice run vitest run --reporter=junit --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-a39yjmjj/vitest-junit.xml\n",
+          "started_at": "2026-11-23T17:54:39+00:00",
+          "status": "PASS"
+        }
+      }
+    }
+  },
+  "history": {
+    "gates": {
+      "Integrity": "PASS",
+      "Lint": "PASS",
+      "Secrets scan": "PASS",
+      "Security": "PASS",
+      "Traceability": "PASS",
+      "Unit and contract tests": "PASS"
+    },
+    "hash": "64c6be47250142178442d244cba6b919e3384e8b1646eae50b7d10072c419894",
+    "overall": "PASS",
+    "previous_hash": "3dd6380d07a58e42166500ceba05f5f6b59425ee74f5d0f6215b98f8d06f21e8",
+    "run": "run-006",
+    "timestamp": "2026-11-23T17:54:33+00:00"
+  },
+  "notes": [
+    "Lint uses ESLint for the repository's TypeScript/Vue code.",
+    "Security gate audits production dependencies; full npm audit also covers development/test tools and was recorded in run-003.",
+    "The compatibility-named pytest-junit.xml is a merged report generated from Jest and Vitest machine reports."
+  ],
+  "overall": "PASS",
+  "run": "run-006",
+  "started_at": "2026-11-23T17:54:33+00:00"
+}

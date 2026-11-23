@@ -52,54 +52,54 @@
     <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1 AISDLC/Part-1A/backend/tests/unit/due-date.test.ts" name="library calendar dates uses the requested time zone for the current calendar date" />
     <testcase classname="/Users/dhruvdhiman/Documents/BITS/AI-Augmented Software Development Life Cycle/Assignment 1 AISDLC/Part-1A/backend/tests/unit/due-date.test.ts" name="library calendar dates rejects non-positive loan periods" />
   </testsuite>
-  <testsuite name="tests/components/CatalogView.test.ts" timestamp="2026-11-22T20:51:00.287Z" hostname="Dhruvs-MacBook-Air.local" tests="22" failures="0" errors="0" skipped="0" time="0.138844083">
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; does not request or render catalog data before authentication" time="0.015447458">
+  <testsuite name="tests/components/CatalogView.test.ts" timestamp="2026-11-23T17:56:38.230Z" hostname="Dhruvs-MacBook-Air.local" tests="22" failures="0" errors="0" skipped="0" time="0.120000666">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; does not request or render catalog data before authentication" time="0.014381459">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; signs in before loading the librarian dashboard and signs out cleanly" time="0.012783">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; signs in before loading the librarian dashboard and signs out cleanly" time="0.012339833">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; keeps the login screen and reports failed credentials" time="0.002977459">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; keeps the login screen and reports failed credentials" time="0.003276333">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; renders labeled search and availability controls after authentication" time="0.002546375">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; renders labeled search and availability controls after authentication" time="0.002384583">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; returns to sign-in and clears dashboard data when the session expires" time="0.003541458">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; returns to sign-in and clears dashboard data when the session expires" time="0.002419459">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; applies search and status filters and announces an empty result" time="0.004083583">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; applies search and status filters and announces an empty result" time="0.010234">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; pages and sorts catalog results deterministically" time="0.016102583">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; pages and sorts catalog results deterministically" time="0.006441916">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; lets a librarian edit an existing book" time="0.014379125">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; lets a librarian edit an existing book" time="0.011340833">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; lets a librarian browse archived books and restore one to the active catalog" time="0.005592208">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; lets a librarian browse archived books and restore one to the active catalog" time="0.004985375">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; lets a librarian browse archived members and restore one to the active list" time="0.005369791">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; lets a librarian browse archived members and restore one to the active list" time="0.004555792">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; shows duplicate book errors in the management form" time="0.003750042">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; shows duplicate book errors in the management form" time="0.003104792">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; adds a book after sign-in and refreshes the inventory" time="0.004007292">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; adds a book after sign-in and refreshes the inventory" time="0.004027584">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; confirms book issue and displays the due date" time="0.004167916">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; confirms book issue and displays the due date" time="0.004293625">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; announces member-loading failures in the issue dialog" time="0.003625416">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; announces member-loading failures in the issue dialog" time="0.003199042">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; announces pending member loading in the issue dialog" time="0.004641375">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; announces pending member loading in the issue dialog" time="0.002730125">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; requires return confirmation before calling the API" time="0.015498333">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; requires return confirmation before calling the API" time="0.011915083">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; lets a librarian edit a member profile" time="0.004333875">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; lets a librarian edit a member profile" time="0.004182292">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; shows an accessible empty state when there are no overdue loans" time="0.002120958">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; shows an accessible empty state when there are no overdue loans" time="0.00295075">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; provides named tables, dialog relationships, and visible keyboard focus" time="0.002844125">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; provides named tables, dialog relationships, and visible keyboard focus" time="0.002177625">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; validates member registration and shows duplicate-email errors" time="0.00607425">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; validates member registration and shows duplicate-email errors" time="0.004691792">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; keeps the UI desktop-targeted with visible keyboard focus styling" time="0.000214167">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; keeps the UI desktop-targeted with visible keyboard focus styling" time="0.000210042">
         </testcase>
-    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; shows overdue loan summaries and a friendly empty state" time="0.004076334">
+    <testcase classname="tests/components/CatalogView.test.ts" name="library application requirements &gt; shows overdue loan summaries and a friendly empty state" time="0.003555708">
         </testcase>
   </testsuite>
-  <testsuite name="tests/components/accessibility.test.ts" timestamp="2026-11-22T20:51:00.289Z" hostname="Dhruvs-MacBook-Air.local" tests="2" failures="0" errors="0" skipped="0" time="0.376825708">
-    <testcase classname="tests/components/accessibility.test.ts" name="WCAG 2.2 AA accessibility &gt; audits the sign-in screen and authenticated catalog" time="0.375766125">
+  <testsuite name="tests/components/accessibility.test.ts" timestamp="2026-11-23T17:56:38.231Z" hostname="Dhruvs-MacBook-Air.local" tests="2" failures="0" errors="0" skipped="0" time="0.346618458">
+    <testcase classname="tests/components/accessibility.test.ts" name="WCAG 2.2 AA accessibility &gt; audits the sign-in screen and authenticated catalog" time="0.345588709">
       <system-err>
 Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
 
@@ -119,7 +119,7 @@ Not implemented: HTMLCanvasElement's getContext() method: without installing the
 
             </system-err>
     </testcase>
-    <testcase classname="tests/components/accessibility.test.ts" name="WCAG 2.2 AA accessibility &gt; keeps the interface palette above WCAG AA text and focus contrast thresholds" time="0.000646125">
+    <testcase classname="tests/components/accessibility.test.ts" name="WCAG 2.2 AA accessibility &gt; keeps the interface palette above WCAG AA text and focus contrast thresholds" time="0.0006015">
         </testcase>
   </testsuite>
 </testsuites>

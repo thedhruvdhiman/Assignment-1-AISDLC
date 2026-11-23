@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-10T19:59:32.446Z",
+  "timestamp": "2026-11-23T17:57:03.045Z",
   "passed": true,
   "metrics": {
     "structuralPassRate": 1,
@@ -365,9 +365,9 @@
         "precision": 1,
         "recall": 1
       },
-      "produced_count": 1,
-      "expected_count": 1,
-      "matched_count": 1
+      "produced_count": 0,
+      "expected_count": 0,
+      "matched_count": 0
     },
     {
       "id": "MA-19",
@@ -385,9 +385,9 @@
         "precision": 1,
         "recall": 1
       },
-      "produced_count": 1,
-      "expected_count": 1,
-      "matched_count": 1
+      "produced_count": 0,
+      "expected_count": 0,
+      "matched_count": 0
     },
     {
       "id": "MA-20",

@@ -1,0 +1,18 @@
+{
+  "structural_pass_rate": 1.0,
+  "invariant_pass_rate_min": 0.95,
+  "guardrail_pass_rate": 1.0,
+  "mean_semantic_score_min": 0.85,
+  "action_item_micro_precision_min": 0.85,
+  "action_item_micro_recall_min": 0.85,
+  "model_error_tolerance_percent": 20.0,
+  "weights": {
+    "outcome_match": 0.15,
+    "action_item_recall": 0.25,
+    "action_item_precision": 0.20,
+    "assignee_accuracy": 0.10,
+    "deadline_accuracy": 0.10,
+    "decision_recall": 0.10,
+    "clarification": 0.10
+  }
+}

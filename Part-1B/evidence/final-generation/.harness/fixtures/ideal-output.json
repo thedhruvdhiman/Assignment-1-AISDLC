@@ -1,0 +1,187 @@
+{
+  "MA-01": {
+    "outcome": "extracted",
+    "action_items": [{"task": "send the revised budget to finance", "assignee": "Priya", "deadline": "2026-11-13", "source_quote": "I'll send the revised budget to finance by Friday."}],
+    "decisions": [],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": "Priya will send the budget."
+  },
+  "MA-02": {
+    "outcome": "extracted",
+    "action_items": [
+      {"task": "get the signed contract back", "assignee": "Sam", "deadline": "2026-11-11", "source_quote": "I'll get the signed contract back by Wednesday."},
+      {"task": "update the project plan", "assignee": "Rahul", "deadline": "2026-11-12", "source_quote": "I'll update the project plan by Thursday."}
+    ],
+    "decisions": [{"decision": "agreed on vendor B for printing", "source_quote": "we agreed on vendor B for printing"}],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": "Vendor B chosen; Sam and Rahul assigned tasks."
+  },
+  "MA-03": {
+    "outcome": "extracted",
+    "action_items": [
+      {"task": "fix the login bug", "assignee": "Rahul", "deadline": "2026-11-10", "source_quote": "I'll fix the login bug tomorrow."},
+      {"task": "release notes", "assignee": "Priya", "deadline": "2026-11-30", "source_quote": "release notes by the end of the month"}
+    ],
+    "decisions": [],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": "Bug fix and release notes assigned."
+  },
+  "MA-04": {
+    "outcome": "extracted",
+    "action_items": [],
+    "decisions": [{"decision": "postpone the launch to January", "source_quote": "we decided to postpone the launch to January"}],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": "Launch postponed."
+  },
+  "MA-05": {
+    "outcome": "extracted",
+    "action_items": [{"task": "send the report to the client", "assignee": "Priya", "deadline": null, "source_quote": "Please send the report to the client."}],
+    "decisions": [],
+    "clarifications": [{"about": "deadline", "item_index": 0, "question": "What is the deadline for sending the report?"}],
+    "needs_clarification": true,
+    "summary": "Report sending assigned without deadline."
+  },
+  "MA-06": {
+    "outcome": "extracted",
+    "action_items": [{"task": "book the conference room for the offsite", "assignee": null, "deadline": "2026-11-16", "source_quote": "Someone needs to book the conference room for the offsite by Monday the 16th."}],
+    "decisions": [],
+    "clarifications": [{"about": "assignee", "item_index": 0, "question": "Who is assigned to book the conference room?"}],
+    "needs_clarification": true,
+    "summary": "Offsite room booking needs an assignee."
+  },
+  "MA-07": {
+    "outcome": "extracted",
+    "action_items": [{"task": "share the design mockups", "assignee": "Rahul", "deadline": null, "source_quote": "I'll share the design mockups next week."}],
+    "decisions": [],
+    "clarifications": [{"about": "deadline", "item_index": 0, "question": "What is the exact deadline for sharing mockups?"}],
+    "needs_clarification": true,
+    "summary": "Mockups assigned with vague deadline."
+  },
+  "MA-08": {
+    "outcome": "extracted",
+    "action_items": [{"task": "review the security checklist", "assignee": null, "deadline": null, "source_quote": "The team should review the security checklist before the audit."}],
+    "decisions": [],
+    "clarifications": [
+      {"about": "assignee", "item_index": 0, "question": "Who is assigned to review the checklist?"},
+      {"about": "deadline", "item_index": 0, "question": "What is the exact deadline before the audit?"}
+    ],
+    "needs_clarification": true,
+    "summary": "Security review needs owner and deadline."
+  },
+  "MA-09": {
+    "outcome": "extracted",
+    "action_items": [{"task": "update the vendor list", "assignee": null, "deadline": "2026-11-12", "source_quote": "Sam, can you update the vendor list by Thursday?"}],
+    "decisions": [],
+    "clarifications": [{"about": "assignee", "item_index": 0, "question": "Which Sam is assigned to update the vendor list?"}],
+    "needs_clarification": true,
+    "summary": "Vendor list update needs specific Sam."
+  },
+  "MA-10": {
+    "outcome": "extracted",
+    "action_items": [{"task": "send the agenda", "assignee": "Sam", "deadline": "2026-11-13", "source_quote": "I'll send the agenda by Friday."}],
+    "decisions": [],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": "Agenda task assigned."
+  },
+  "MA-11": {
+    "outcome": "extracted",
+    "action_items": [{"task": "API docs", "assignee": "Priya", "deadline": "2026-11-13", "source_quote": "actually make that Friday"}],
+    "decisions": [],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": "API docs deadline revised to Friday."
+  },
+  "MA-12": {
+    "outcome": "extracted",
+    "action_items": [{"task": "check invoices", "assignee": "Priya", "deadline": "2026-11-13", "source_quote": "I'll take it, by Friday"}],
+    "decisions": [],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": "Invoice check taken by Priya."
+  },
+  "MA-13": {
+    "outcome": "no_content",
+    "action_items": [],
+    "decisions": [],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": null
+  },
+  "MA-14": {
+    "outcome": "no_content",
+    "action_items": [],
+    "decisions": [],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": null
+  },
+  "MA-15": {
+    "outcome": "no_content",
+    "action_items": [],
+    "decisions": [],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": null
+  },
+  "MA-16": {
+    "outcome": "extracted",
+    "action_items": [{"task": "enviar el informe al cliente", "assignee": "Priya", "deadline": "2026-11-13", "source_quote": "Yo me encargo de enviar el informe al cliente antes del viernes."}],
+    "decisions": [],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": "Priya enviará el informe."
+  },
+  "MA-17": {
+    "outcome": "extracted",
+    "action_items": [{"task": "send the invoice", "assignee": "Rahul", "deadline": null, "source_quote": "I'll send the invoice by last Friday"}],
+    "decisions": [],
+    "clarifications": [{"about": "deadline", "item_index": 0, "question": "Deadline is in the past; what is the correct future deadline?"}],
+    "needs_clarification": true,
+    "summary": "Invoice deadline was in the past."
+  },
+  "MA-18": {
+    "outcome": "extracted",
+    "action_items": [{"task": "update the roadmap", "assignee": "Rahul", "deadline": "2026-11-12", "source_quote": "Rahul will update the roadmap by Thursday."}],
+    "decisions": [],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": "Rahul updating roadmap."
+  },
+  "MA-19": {
+    "outcome": "extracted",
+    "action_items": [{"task": "prepares slides", "assignee": "Priya", "deadline": "2026-11-13", "source_quote": "Priya prepares slides by Friday."}],
+    "decisions": [],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": "Priya preparing slides."
+  },
+  "MA-20": {
+    "outcome": "extracted",
+    "action_items": [{"task": "rotate the staging credentials", "assignee": "Rahul", "deadline": "2026-11-13", "source_quote": "I'll rotate the staging credentials by Friday."}],
+    "decisions": [],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": "Rahul rotating credentials."
+  },
+  "MA-21": {
+    "outcome": "extracted",
+    "action_items": [{"task": "have the draft ready", "assignee": null, "deadline": "2026-11-12", "source_quote": "Let's have the draft ready in 3 days."}],
+    "decisions": [],
+    "clarifications": [{"about": "assignee", "item_index": 0, "question": "Who is assigned to have the draft ready?"}],
+    "needs_clarification": true,
+    "summary": "Draft preparation needs assignee."
+  },
+  "MA-22": {
+    "outcome": "extracted",
+    "action_items": [{"task": "confirm the venue", "assignee": "Anita", "deadline": "2026-11-12", "source_quote": "Anita will confirm the venue by Thursday."}],
+    "decisions": [],
+    "clarifications": [],
+    "needs_clarification": false,
+    "summary": "Anita confirming venue."
+  }
+}

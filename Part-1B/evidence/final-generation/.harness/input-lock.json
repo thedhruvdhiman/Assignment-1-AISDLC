@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-11-23T16:39:53.316Z",
+  "files": {
+    "dataset": "5975dcf043f23c24f8add19216113a2f010e0f73a169283a5be2168918339cff",
+    "schema": "920000d14d2884333d5772e74929bba9b06e20d2698ea6f6d8f626f2b1b11c27",
+    "threshold": "395a3236c12a8d6af70f7e948750ea9c130c0c306d1746d86ea44cbe6cb60220",
+    "runner": "600ac139d2122a3c247e7da4fad0868fb109d0c90244c30ec259fa78d6f9631a",
+    "structuralEvaluator": "3f5b40fa6007b70bf019af89766092ac9f2ff6e960e47037fc5493646ab82e4f",
+    "invariantEvaluator": "ab43de8e57e088f86912cd821171bde3a16d65c870d369983d6b1ef658069c60",
+    "semanticEvaluator": "8ad8d239173d157eaa705deea41b07dc698d6f20d7772310b61f9bfbe157ecfa",
+    "matchingModule": "c45fc69c364883682cf35ec6ac716091393b66cf0a6642438dcd772cc05a6625",
+    "aggregateModule": "2dcbe73785a3d66d17dafe577bdbdd68a996ad7930c57836a2d67b5b4649cd49"
+  }
+}

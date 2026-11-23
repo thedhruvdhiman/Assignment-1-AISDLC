@@ -32,12 +32,12 @@
     ],
     "keyDecisions": [
       {
-        "decision": "Vendor B selected for printing",
+        "decision": "Select vendor B for printing",
         "source_quote": "Anita: we agreed on vendor B for printing.",
         "needs_clarification": false
       }
     ],
-    "summary": "The team decided to use vendor B for printing services. Sam committed to returning the signed contract by Wednesday, and Rahul will update the project plan by Thursday.",
+    "summary": "The group agreed to use vendor B for printing. Sam committed to returning the signed contract by Wednesday, and Rahul committed to updating the project plan by Thursday.",
     "clarificationQuestions": []
   },
   "MA-03": {
@@ -50,7 +50,7 @@
         "needs_clarification": false
       },
       {
-        "task": "Prepare release notes",
+        "task": "Write release notes",
         "assignee": "Priya",
         "deadline": "2026-11-30",
         "source_quote": "Anita: Priya, release notes by the end of the month? Priya: Sure.",
@@ -58,7 +58,7 @@
       }
     ],
     "keyDecisions": [],
-    "summary": "Rahul committed to fixing the login bug by tomorrow. Priya agreed to complete the release notes by the end of the month.",
+    "summary": "Rahul committed to fixing the login bug by the next day. Priya agreed to provide release notes by the end of the month.",
     "clarificationQuestions": []
   },
   "MA-04": {
@@ -70,7 +70,7 @@
         "needs_clarification": false
       }
     ],
-    "summary": "The group decided to postpone the launch to January with unanimous agreement.",
+    "summary": "The group decided to postpone the launch to January.",
     "clarificationQuestions": []
   },
   "MA-05": {
@@ -84,7 +84,7 @@
       }
     ],
     "keyDecisions": [],
-    "summary": "Anita requested that Priya send the report to the client, and Priya agreed to complete the task.",
+    "summary": "Anita requested that Priya send a report to the client. Priya accepted the task.",
     "clarificationQuestions": [
       {
         "question": "What is the deadline for sending the report to the client?",
@@ -109,10 +109,10 @@
       }
     ],
     "keyDecisions": [],
-    "summary": "The team discussed the need to book a conference room for the upcoming offsite by November 16th, 2026.",
+    "summary": "The meeting identified a need to book a conference room for an upcoming offsite. The deadline for this task is Monday, November 16, 2026.",
     "clarificationQuestions": [
       {
-        "question": "Who is responsible for booking the conference room?",
+        "question": "Who is specifically assigned to book the conference room?",
         "about": "actionItem",
         "itemIndex": 0
       },
@@ -134,10 +134,10 @@
       }
     ],
     "keyDecisions": [],
-    "summary": "Rahul committed to sharing the design mockups.",
+    "summary": "Rahul committed to sharing design mockups next week.",
     "clarificationQuestions": [
       {
-        "question": "Could you please provide a specific date for when the design mockups will be shared, as 'next week' is ambiguous?",
+        "question": "What is the specific date for sharing the design mockups?",
         "about": "actionItem",
         "itemIndex": 0
       },
@@ -151,7 +151,7 @@
   "MA-08": {
     "actionItems": [
       {
-        "task": "Review the security checklist before the audit.",
+        "task": "Review the security checklist before the audit",
         "assignee": null,
         "deadline": null,
         "source_quote": "The team should review the security checklist before the audit.",
@@ -159,10 +159,15 @@
       }
     ],
     "keyDecisions": [],
-    "summary": "The team discussed the need to review the security checklist prior to the upcoming audit.",
+    "summary": "The team discussed reviewing the security checklist before the audit.",
     "clarificationQuestions": [
       {
-        "question": "Who is responsible for reviewing the security checklist, and what is the specific deadline for this task?",
+        "question": "Who is specifically assigned to review the security checklist?",
+        "about": "actionItem",
+        "itemIndex": 0
+      },
+      {
+        "question": "What is the specific deadline for reviewing the security checklist?",
         "about": "actionItem",
         "itemIndex": 0
       },
@@ -185,17 +190,23 @@
         "assignee": "Sam K.",
         "deadline": "2026-11-12",
         "source_quote": "Sam, can you update the vendor list by Thursday?",
-        "needs_clarification": false
+        "needs_clarification": true
       }
     ],
     "keyDecisions": [],
-    "summary": "Sam K. was assigned to update the vendor list by Thursday, November 12, 2026.",
-    "clarificationQuestions": []
+    "summary": "Sam K. was asked to update the vendor list by Thursday.",
+    "clarificationQuestions": [
+      {
+        "question": "Which participant is the assignee for the vendor list update, as 'Sam' is ambiguous between Sam K. and Sam R.?",
+        "about": "actionItem",
+        "itemIndex": 0
+      }
+    ]
   },
   "MA-10": {
     "actionItems": [
       {
-        "task": "Send the meeting agenda",
+        "task": "Send the agenda",
         "assignee": "Sam",
         "deadline": "2026-11-13",
         "source_quote": "Sam: I'll send the agenda by Friday.",
@@ -203,7 +214,7 @@
       }
     ],
     "keyDecisions": [],
-    "summary": "Sam committed to sending the meeting agenda by Friday, November 13th. The team discussed a potential migration to Kubernetes but decided to defer the topic.",
+    "summary": "Sam committed to sending the agenda by Friday. The team discussed a potential migration to Kubernetes, but Rahul suggested parking the topic.",
     "clarificationQuestions": []
   },
   "MA-11": {
@@ -212,12 +223,12 @@
         "task": "Complete API documentation",
         "assignee": null,
         "deadline": null,
-        "source_quote": "Priya: API docs by Wednesday ... later, actually make that Friday, the vendor is late.",
+        "source_quote": "API docs by Wednesday ... later, actually make that Friday, the vendor is late.",
         "needs_clarification": true
       }
     ],
     "keyDecisions": [],
-    "summary": "The team discussed the deadline for the API documentation, which has been moved to Friday, November 13th, 2026, due to vendor delays.",
+    "summary": "The meeting discussed the timeline for API documentation, with the deadline revised from Wednesday to Friday due to vendor delays.",
     "clarificationQuestions": [
       {
         "question": "Who is responsible for completing the API documentation?",
@@ -242,21 +253,21 @@
         "task": "Check invoices",
         "assignee": "Priya",
         "deadline": "2026-11-13",
-        "source_quote": "Sam asks Rahul to check invoices; Rahul declines; Priya: I'll take it, by Friday.",
+        "source_quote": "Priya: I'll take it, by Friday.",
         "needs_clarification": false
       }
     ],
     "keyDecisions": [],
-    "summary": "Priya agreed to check the invoices by Friday, November 13th, after Rahul declined the task.",
+    "summary": "Priya committed to checking invoices by Friday.",
     "clarificationQuestions": []
   },
   "MA-13": {
     "actionItems": [],
     "keyDecisions": [],
-    "summary": "The meeting participants gathered on November 9, 2026, but no specific business, action items, or decisions were discussed before the meeting was concluded.",
+    "summary": "The meeting transcript contains no action items or decisions.",
     "clarificationQuestions": [
       {
-        "question": "The transcript provided contains only a greeting and a closing statement. Could you please provide the actual meeting notes or transcript content?",
+        "question": "Please provide the meeting notes or a more detailed transcript.",
         "about": "transcript",
         "itemIndex": null
       }
@@ -277,10 +288,10 @@
   "MA-15": {
     "actionItems": [],
     "keyDecisions": [],
-    "summary": "The provided transcript contains no intelligible meeting content or discussion. No actions or decisions were identified.",
+    "summary": "",
     "clarificationQuestions": [
       {
-        "question": "The provided transcript consists of non-meaningful characters. Please provide the actual meeting notes or transcript.",
+        "question": "The provided transcript appears to be empty or contains only unintelligible characters. Please provide the actual meeting notes or transcript.",
         "about": "transcript",
         "itemIndex": null
       }
@@ -292,12 +303,12 @@
         "task": "Enviar el informe al cliente",
         "assignee": "Priya",
         "deadline": null,
-        "source_quote": "Priya: Yo me encargo de enviar el informe al cliente antes del viernes.",
+        "source_quote": "Yo me encargo de enviar el informe al cliente antes del viernes.",
         "needs_clarification": true
       }
     ],
     "keyDecisions": [],
-    "summary": "Priya committed to sending the client report by Friday, November 13th, 2026.",
+    "summary": "Priya se comprometió a enviar el informe al cliente antes del viernes.",
     "clarificationQuestions": [
       {
         "question": "What is the definite deadline for this task?",
@@ -317,10 +328,10 @@
       }
     ],
     "keyDecisions": [],
-    "summary": "Rahul committed to sending an invoice, though the deadline mentioned was in the past.",
+    "summary": "Rahul committed to sending an invoice. The specified deadline was in the past relative to the meeting date.",
     "clarificationQuestions": [
       {
-        "question": "The deadline 'last Friday' is in the past relative to the meeting date of 2026-11-09. What is the new firm deadline for sending the invoice?",
+        "question": "The deadline 'last Friday' (2026-11-06) is before the meeting date (2026-11-09). What is the correct deadline for sending the invoice?",
         "about": "actionItem",
         "itemIndex": 0
       }
@@ -329,13 +340,13 @@
   "MA-18": {
     "actionItems": [],
     "keyDecisions": [],
-    "summary": "Rahul committed to updating the project roadmap by the upcoming Thursday.",
+    "summary": "Rahul committed to updating the roadmap by Thursday.",
     "clarificationQuestions": []
   },
   "MA-19": {
     "actionItems": [],
     "keyDecisions": [],
-    "summary": "Priya is responsible for preparing the presentation slides by the upcoming Friday.",
+    "summary": "Priya committed to preparing slides by Friday.",
     "clarificationQuestions": []
   },
   "MA-20": {
@@ -344,16 +355,38 @@
         "task": "Rotate the staging credentials",
         "assignee": "Rahul",
         "deadline": "2026-11-13",
-        "source_quote": "Rahul: I'll rotate the staging credentials by Friday. The current password is [REDACTED] and the vendor card is [REDACTED].",
+        "source_quote": "I'll rotate the staging credentials by Friday. The current password is [REDACTED] and the vendor card is [REDACTED].",
         "needs_clarification": false
       }
     ],
     "keyDecisions": [],
-    "summary": "Rahul committed to rotating the staging credentials by Friday, November 13th, 2026.",
+    "summary": "Rahul committed to rotating the staging credentials by Friday.",
     "clarificationQuestions": []
   },
   "MA-21": {
-    "error": "The model service returned HTTP 502"
+    "actionItems": [
+      {
+        "task": "Have the draft ready",
+        "assignee": null,
+        "deadline": "2026-11-12",
+        "source_quote": "Let's have the draft ready in 3 days.",
+        "needs_clarification": true
+      }
+    ],
+    "keyDecisions": [],
+    "summary": "Anita requested that a draft be ready in 3 days.",
+    "clarificationQuestions": [
+      {
+        "question": "Who is responsible for having the draft ready?",
+        "about": "actionItem",
+        "itemIndex": 0
+      },
+      {
+        "question": "Who is responsible for this task?",
+        "about": "actionItem",
+        "itemIndex": 0
+      }
+    ]
   },
   "MA-22": {
     "actionItems": [
@@ -361,12 +394,12 @@
         "task": "Confirm the venue",
         "assignee": "Anita",
         "deadline": "2026-11-12",
-        "source_quote": "Anita will confirm the venue by Thursday.",
+        "source_quote": "Finally, Anita will confirm the venue by Thursday.",
         "needs_clarification": false
       }
     ],
     "keyDecisions": [],
-    "summary": "The team held their quarterly sync covering revenue, marketing funnels, hiring pipelines, office snacks, and team bonding events. Anita committed to confirming the venue by Thursday.",
+    "summary": "The team discussed revenue, marketing funnels, hiring pipelines, office snacks, and team bonding events. Anita is responsible for confirming the venue by Thursday.",
     "clarificationQuestions": []
   }
 }

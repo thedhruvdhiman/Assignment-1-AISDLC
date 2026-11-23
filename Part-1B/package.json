@@ -14,6 +14,5 @@
     "eval:final": "node --import dotenv/config .harness/run_eval.mjs --lock --repeats 3 --snapshot final --outputs evidence/final-report.json",
     "extract": "node --import dotenv/config src/extractor.mjs",
     "ai:feedback": "node --import dotenv/config src/extractor.mjs --input evals/dataset.json --output evidence/final-outputs.json"
-
   }
 }
