@@ -1,0 +1,153 @@
+{
+  "command": "python3 .harness/run.py",
+  "completed_at": "2026-11-23T16:36:29+00:00",
+  "gates": {
+    "Integrity": {
+      "command": [
+        "python3",
+        ".harness/run.py",
+        "--integrity-check"
+      ],
+      "completed_at": "2026-11-23T16:36:29+00:00",
+      "exit_code": 0,
+      "output": "Test hashes and prior run-history chain verified.",
+      "started_at": "2026-11-23T16:36:29+00:00",
+      "status": "PASS"
+    },
+    "Lint": {
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "completed_at": "2026-11-23T16:36:21+00:00",
+      "exit_code": 0,
+      "output": "\n> lint\n> eslint backend frontend\n\n",
+      "started_at": "2026-11-23T16:36:20+00:00",
+      "status": "PASS"
+    },
+    "Secrets scan": {
+      "command": [
+        "python3",
+        ".harness/run.py",
+        "--secrets-scan"
+      ],
+      "completed_at": "2026-11-23T16:36:29+00:00",
+      "exit_code": 0,
+      "output": "No configured secret patterns found in non-ignored project files.",
+      "started_at": "2026-11-23T16:36:29+00:00",
+      "status": "PASS"
+    },
+    "Security": {
+      "command": [
+        "npm",
+        "audit",
+        "--omit=dev",
+        "--json"
+      ],
+      "completed_at": "2026-11-23T16:36:22+00:00",
+      "exit_code": 0,
+      "output": "{\n  \"auditReportVersion\": 2,\n  \"vulnerabilities\": {},\n  \"metadata\": {\n    \"vulnerabilities\": {\n      \"info\": 0,\n      \"low\": 0,\n      \"moderate\": 0,\n      \"high\": 0,\n      \"critical\": 0,\n      \"total\": 0\n    },\n    \"dependencies\": {\n      \"prod\": 139,\n      \"dev\": 619,\n      \"optional\": 88,\n      \"peer\": 2,\n      \"peerOptional\": 0,\n      \"total\": 757\n    }\n  }\n}\n",
+      "started_at": "2026-11-23T16:36:21+00:00",
+      "status": "PASS"
+    },
+    "Traceability": {
+      "command": [
+        "python3",
+        ".harness/run.py",
+        "--traceability-check"
+      ],
+      "completed_at": "2026-11-23T16:36:29+00:00",
+      "exit_code": 0,
+      "output": "Every functional requirement ID maps to an existing named test.",
+      "started_at": "2026-11-23T16:36:29+00:00",
+      "status": "PASS"
+    },
+    "Unit and contract tests": {
+      "command": [
+        "npm",
+        "run",
+        "test",
+        "-w",
+        "backend",
+        "--",
+        "--json",
+        "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-qbaj19q9/jest-results.json",
+        "&&",
+        "npm",
+        "run",
+        "test",
+        "-w",
+        "frontend",
+        "--",
+        "--reporter=junit",
+        "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-qbaj19q9/vitest-junit.xml"
+      ],
+      "completed_at": "2026-11-23T16:36:29+00:00",
+      "exit_code": 0,
+      "junit_report": "evidence/pytest-junit.xml",
+      "output": "=== Backend Jest (exit 0) ===\n\n> test\n> jest --runInBand --json --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-qbaj19q9/jest-results.json\n\n\nPASS tests/integration/library-api.test.ts\n  \u25cf Console\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.203Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a478\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.305Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a485\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.334Z\",\"event\":\"sign_in_failed\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.363Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a485\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.431Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a48e\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.502Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a496\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.569Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a49d\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.675Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a4b5\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.691Z\",\"event\":\"book_issue\",\"loan_id\":\"6b046b8953b861b45057a4be\",\"book_id\":\"6b046b8953b861b45057a4b8\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.706Z\",\"event\":\"book_return\",\"loan_id\":\"6b046b8953b861b45057a4be\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.771Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a4d2\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.792Z\",\"event\":\"book_issue\",\"loan_id\":\"6b046b8953b861b45057a4de\",\"book_id\":\"6b046b8953b861b45057a4d5\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:25.795Z\",\"event\":\"book_issue_failed\",\"book_id\":\"6b046b8953b861b45057a4d5\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at src/routes/loans.routes.ts:50:12\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.873Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a4e8\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:25.885Z\",\"event\":\"book_issue_failed\",\"book_id\":\"6b046b8953b861b45057a4eb\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at src/routes/loans.routes.ts:50:12\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.949Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a4f7\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:25.956Z\",\"event\":\"book_issue_failed\",\"book_id\":\"6b046b8953b861b45057a4fa\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at src/routes/loans.routes.ts:50:12\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.019Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a505\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.127Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8a53b861b45057a523\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:26.134Z\",\"event\":\"book_issue_failed\",\"book_id\":\"6b046b8a53b861b45057a526\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at src/routes/loans.routes.ts:50:12\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:26.136Z\",\"event\":\"book_return_failed\",\"loan_id\":\"6b046b8a53b861b45057a52d\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at src/routes/loans.routes.ts:64:12\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.148Z\",\"event\":\"book_issue\",\"loan_id\":\"6b046b8a53b861b45057a533\",\"book_id\":\"6b046b8a53b861b45057a526\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.155Z\",\"event\":\"book_return\",\"loan_id\":\"6b046b8a53b861b45057a533\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:26.157Z\",\"event\":\"book_return_failed\",\"loan_id\":\"6b046b8a53b861b45057a533\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at src/routes/loans.routes.ts:64:12\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.219Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8a53b861b45057a53e\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.236Z\",\"event\":\"book_issue\",\"loan_id\":\"6b046b8a53b861b45057a547\",\"book_id\":\"6b046b8a53b861b45057a541\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:26.243Z\",\"event\":\"book_return_failed\",\"loan_id\":\"6b046b8a53b861b45057a547\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at src/routes/loans.routes.ts:64:12\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:26.244Z\",\"event\":\"request_error\",\"message\":\"Loan, book, and member state is inconsistent; transaction aborted.\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at errorHandler (src/middleware/error-handler.ts:28:10)\n      at Layer.handleError (../node_modules/router/lib/layer.js:116:17)\n      at trimPrefix (../node_modules/router/index.js:340:13)\n      at ../node_modules/router/index.js:297:9\n      at processParams (../node_modules/router/index.js:582:12)\n      at next (../node_modules/router/index.js:291:5)\n      at ../node_modules/router/index.js:688:15\n      at next (../node_modules/router/index.js:276:14)\n      at next (../node_modules/router/lib/route.js:132:14)\n      at ../node_modules/router/lib/layer.js:161:9\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.308Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8a53b861b45057a554\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.404Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8a53b861b45057a582\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.493Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8a53b861b45057a593\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.606Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8a53b861b45057a5b7\"}\n\n      at write (src/observability/logger.ts:11:16)\n\nPASS tests/integration/startup.test.ts\nPASS tests/integration/seed-safety.test.ts\nPASS tests/unit/development-database.test.ts\nPASS tests/contract/openapi.test.ts\nPASS tests/unit/due-date.test.ts\n\nTest Suites: 6 passed, 6 total\nTests:       40 passed, 40 total\nSnapshots:   0 total\nTime:        4.563 s, estimated 5 s\nRan all test suites.\nTest results written to: ../../../../../../../../var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-qbaj19q9/jest-results.json\n\n=== Frontend Vitest (exit 0) ===\n\n> test\n> vitest run --reporter=junit --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-qbaj19q9/vitest-junit.xml\n\nJUNIT report written to /var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-qbaj19q9/vitest-junit.xml\n\nJUnit report: evidence/pytest-junit.xml",
+      "started_at": "2026-11-23T16:36:22+00:00",
+      "status": "PASS",
+      "subcommands": {
+        "backend": {
+          "command": [
+            "npm",
+            "run",
+            "test",
+            "-w",
+            "backend",
+            "--",
+            "--json",
+            "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-qbaj19q9/jest-results.json"
+          ],
+          "completed_at": "2026-11-23T16:36:27+00:00",
+          "exit_code": 0,
+          "output": "\n> test\n> jest --runInBand --json --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-qbaj19q9/jest-results.json\n\n\nPASS tests/integration/library-api.test.ts\n  \u25cf Console\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.203Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a478\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.305Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a485\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.334Z\",\"event\":\"sign_in_failed\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.363Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a485\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.431Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a48e\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.502Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a496\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.569Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a49d\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.675Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a4b5\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.691Z\",\"event\":\"book_issue\",\"loan_id\":\"6b046b8953b861b45057a4be\",\"book_id\":\"6b046b8953b861b45057a4b8\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.706Z\",\"event\":\"book_return\",\"loan_id\":\"6b046b8953b861b45057a4be\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.771Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a4d2\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.792Z\",\"event\":\"book_issue\",\"loan_id\":\"6b046b8953b861b45057a4de\",\"book_id\":\"6b046b8953b861b45057a4d5\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:25.795Z\",\"event\":\"book_issue_failed\",\"book_id\":\"6b046b8953b861b45057a4d5\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at src/routes/loans.routes.ts:50:12\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.873Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a4e8\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:25.885Z\",\"event\":\"book_issue_failed\",\"book_id\":\"6b046b8953b861b45057a4eb\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at src/routes/loans.routes.ts:50:12\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:25.949Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a4f7\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:25.956Z\",\"event\":\"book_issue_failed\",\"book_id\":\"6b046b8953b861b45057a4fa\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at src/routes/loans.routes.ts:50:12\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.019Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8953b861b45057a505\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.127Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8a53b861b45057a523\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:26.134Z\",\"event\":\"book_issue_failed\",\"book_id\":\"6b046b8a53b861b45057a526\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at src/routes/loans.routes.ts:50:12\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:26.136Z\",\"event\":\"book_return_failed\",\"loan_id\":\"6b046b8a53b861b45057a52d\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at src/routes/loans.routes.ts:64:12\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.148Z\",\"event\":\"book_issue\",\"loan_id\":\"6b046b8a53b861b45057a533\",\"book_id\":\"6b046b8a53b861b45057a526\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.155Z\",\"event\":\"book_return\",\"loan_id\":\"6b046b8a53b861b45057a533\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:26.157Z\",\"event\":\"book_return_failed\",\"loan_id\":\"6b046b8a53b861b45057a533\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at src/routes/loans.routes.ts:64:12\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.219Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8a53b861b45057a53e\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.236Z\",\"event\":\"book_issue\",\"loan_id\":\"6b046b8a53b861b45057a547\",\"book_id\":\"6b046b8a53b861b45057a541\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:26.243Z\",\"event\":\"book_return_failed\",\"loan_id\":\"6b046b8a53b861b45057a547\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at src/routes/loans.routes.ts:64:12\n\n    console.error\n      {\"timestamp\":\"2026-11-23T16:36:26.244Z\",\"event\":\"request_error\",\"message\":\"Loan, book, and member state is inconsistent; transaction aborted.\"}\n\n       8 |   );\n       9 |   const output = JSON.stringify({ timestamp: new Date().toISOString(), ...safeEntry });\n    > 10 |   if (level === 'error') console.error(output);\n         |                                  ^\n      11 |   else console.info(output);\n      12 | }\n      13 |\n\n      at write (src/observability/logger.ts:10:34)\n      at Object.error (src/observability/logger.ts:16:37)\n      at errorHandler (src/middleware/error-handler.ts:28:10)\n      at Layer.handleError (../node_modules/router/lib/layer.js:116:17)\n      at trimPrefix (../node_modules/router/index.js:340:13)\n      at ../node_modules/router/index.js:297:9\n      at processParams (../node_modules/router/index.js:582:12)\n      at next (../node_modules/router/index.js:291:5)\n      at ../node_modules/router/index.js:688:15\n      at next (../node_modules/router/index.js:276:14)\n      at next (../node_modules/router/lib/route.js:132:14)\n      at ../node_modules/router/lib/layer.js:161:9\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.308Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8a53b861b45057a554\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.404Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8a53b861b45057a582\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.493Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8a53b861b45057a593\"}\n\n      at write (src/observability/logger.ts:11:16)\n\n    console.info\n      {\"timestamp\":\"2026-11-23T16:36:26.606Z\",\"event\":\"sign_in_succeeded\",\"librarian_id\":\"6b046b8a53b861b45057a5b7\"}\n\n      at write (src/observability/logger.ts:11:16)\n\nPASS tests/integration/startup.test.ts\nPASS tests/integration/seed-safety.test.ts\nPASS tests/unit/development-database.test.ts\nPASS tests/contract/openapi.test.ts\nPASS tests/unit/due-date.test.ts\n\nTest Suites: 6 passed, 6 total\nTests:       40 passed, 40 total\nSnapshots:   0 total\nTime:        4.563 s, estimated 5 s\nRan all test suites.\nTest results written to: ../../../../../../../../var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-qbaj19q9/jest-results.json\n",
+          "started_at": "2026-11-23T16:36:22+00:00",
+          "status": "PASS"
+        },
+        "frontend": {
+          "command": [
+            "npm",
+            "run",
+            "test",
+            "-w",
+            "frontend",
+            "--",
+            "--reporter=junit",
+            "--outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-qbaj19q9/vitest-junit.xml"
+          ],
+          "completed_at": "2026-11-23T16:36:29+00:00",
+          "exit_code": 0,
+          "output": "\n> test\n> vitest run --reporter=junit --outputFile=/var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-qbaj19q9/vitest-junit.xml\n\nJUNIT report written to /var/folders/v1/27yqtys15lx6yyy7prmzlj200000gn/T/library-harness-qbaj19q9/vitest-junit.xml\n",
+          "started_at": "2026-11-23T16:36:27+00:00",
+          "status": "PASS"
+        }
+      }
+    }
+  },
+  "history": {
+    "gates": {
+      "Integrity": "PASS",
+      "Lint": "PASS",
+      "Secrets scan": "PASS",
+      "Security": "PASS",
+      "Traceability": "PASS",
+      "Unit and contract tests": "PASS"
+    },
+    "hash": "3dd6380d07a58e42166500ceba05f5f6b59425ee74f5d0f6215b98f8d06f21e8",
+    "overall": "PASS",
+    "previous_hash": "690daaf7744a5cd7300504300bcd6b11eaf0a05e6a2055658474465849737e3e",
+    "run": "run-005",
+    "timestamp": "2026-11-23T16:36:20+00:00"
+  },
+  "notes": [
+    "Lint uses ESLint for the repository's TypeScript/Vue code.",
+    "Security gate audits production dependencies; full npm audit also covers development/test tools and was recorded in run-003.",
+    "The compatibility-named pytest-junit.xml is a merged report generated from Jest and Vitest machine reports."
+  ],
+  "overall": "PASS",
+  "run": "run-005",
+  "started_at": "2026-11-23T16:36:20+00:00"
+}

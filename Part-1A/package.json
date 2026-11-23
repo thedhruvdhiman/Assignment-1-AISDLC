@@ -12,7 +12,8 @@
     "typecheck": "npm run typecheck -w backend && npm run typecheck -w frontend",
     "test": "npm run test -w backend && npm run test -w frontend",
     "provision:librarian": "npm run provision:librarian -w backend",
-    "seed:dev": "npm run seed:dev -w backend"
+    "seed:dev": "npm run seed:dev -w backend",
+    "harness": "python3 .harness/run.py"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
